@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='从零基础出发, 理解 sed 的工作模式, 以及 sed 的常用编辑指令, 最后带你利用 sed 进行 mysql 配置文件的脚本练习'>
+<meta name="keywords" content="sed, linux, shell"><title>文本处理三剑客之sed</title>
+
+<link rel='canonical' href='/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bsed/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='文本处理三剑客之sed'>
+<meta property='og:description' content='从零基础出发, 理解 sed 的工作模式, 以及 sed 的常用编辑指令, 最后带你利用 sed 进行 mysql 配置文件的脚本练习'>
+<meta property='og:url' content='/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bsed/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='Shell' /><meta property='article:tag' content='sed' /><meta property='article:published_time' content='2023-12-17T15:16:34&#43;08:00'/><meta property='article:modified_time' content='2023-12-17T15:16:34&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之sed/cover.webp' />
+<meta name="twitter:title" content="文本处理三剑客之sed">
+<meta name="twitter:description" content="从零基础出发, 理解 sed 的工作模式, 以及 sed 的常用编辑指令, 最后带你利用 sed 进行 mysql 配置文件的脚本练习"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之sed/cover.webp' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#sed-工作模式">sed 工作模式</a></li>
+    <li><a href="#sed-参数">sed 参数</a></li>
+    <li><a href="#pattern-用法">pattern 用法</a></li>
+    <li><a href="#sed-编辑命令">sed 编辑命令</a>
+      <ol>
+        <li><a href="#打印">打印</a></li>
+        <li><a href="#删除">删除</a></li>
+        <li><a href="#增加">增加</a></li>
+        <li><a href="#显示行号">显示行号</a></li>
+        <li><a href="#修改">修改</a></li>
+        <li><a href="#反向引用">反向引用</a></li>
+        <li><a href="#变量引用">变量引用</a></li>
+      </ol>
+    </li>
+    <li><a href="#脚本练习-查询-mysql-配置文件">脚本练习: 查询 mysql 配置文件</a></li>
+    <li><a href="#sed-文本练习">sed 文本练习</a>
+      <ol>
+        <li><a href="#文本删除">文本删除:</a></li>
+        <li><a href="#文本查找">文本查找</a></li>
+        <li><a href="#文本追加">文本追加</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bsed/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%e6%96%87%e6%9c%ac%e5%a4%84%e7%90%86%e4%b8%89%e5%89%91%e5%ae%a2%e4%b9%8bsed/cover.webp" loading="lazy" alt="Featured image of post 文本处理三剑客之sed" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/sed/" >
+                sed
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bsed/">文本处理三剑客之sed</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            从零基础出发, 理解 sed 的工作模式, 以及 sed 的常用编辑指令, 最后带你利用 sed 进行 mysql 配置文件的脚本练习
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 17, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <h2 id="sed-工作模式">sed 工作模式</h2>
+<!-- more -->
+<p><strong>sed 是流编辑器, 对标准输出文件逐行处理</strong></p>
+<p>匹配 + 执行 : 默认会打印原始信息, 还会打印执行后的结果</p>
+<p><em>语法格式:</em></p>
+<ol>
+<li><strong>stdout | sed [option] &ldquo;pattern command&rdquo;</strong></li>
+<li><strong>sed [optoin] &ldquo;pattern command&rdquo;</strong></li>
+</ol>
+<p><em>pattern 是可选的</em></p>
+<h2 id="sed-参数">sed 参数</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-n</td>
+<td>静默模式</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>进行多条匹配规则</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>使用文件, 文件为匹配规则</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>支持扩展正则表达式</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>直接修改文件内容</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -n <span class="s1">&#39;/python/p&#39;</span> set.txt  <span class="c1"># p 为打印操作</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -n -e <span class="s1">&#39;/python/p&#39;</span> -e <span class="s1">&#39;/PYTHON/p&#39;</span> sed.txt  <span class="c1"># 执行多条</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># print.sed: /python/p</span>
+</span></span><span class="line"><span class="cl">$ sed -n -f print.sed sed.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -n -r <span class="s1">&#39;/python|PYTHON/p&#39;</span> sed.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># g: 全部修改; p: 打印到终端; -i 直接修改到文件</span>
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/love/like/g;p&#39;</span> sed.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="pattern-用法">pattern 用法</h2>
+<p><em>匹配模式</em></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>匹配模式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10command</td>
+<td>匹配第 10 行</td>
+</tr>
+<tr>
+<td>10,20command</td>
+<td>从第 10 行开始, 到第 20 行结束</td>
+</tr>
+<tr>
+<td>10,+5command</td>
+<td>从第 10 行开始, 到第 16 行结束</td>
+</tr>
+<tr>
+<td><strong>/pattern1/command</strong> <em>(//d)</em></td>
+<td><strong>匹配 pattern1 的行</strong></td>
+</tr>
+<tr>
+<td><strong>/pattern1/,/pattern2/command</strong> <em>(//,//p)</em></td>
+<td><strong>匹配 pattern1 的行开始, 到 pattern2 的行结束</strong></td>
+</tr>
+<tr>
+<td>10,/pattern1/command</td>
+<td>从第 10 行开始, 到匹配 pattern1 的行结束</td>
+</tr>
+<tr>
+<td>/pattern1/,10command</td>
+<td>从匹配 pattern1 的行开始, 到第 10 行结束</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -n <span class="s1">&#39;10p&#39;</span> /etc/passwd
+</span></span><span class="line"><span class="cl">$ sed -n <span class="s1">&#39;10,20p&#39;</span> /etc/passwd
+</span></span><span class="line"><span class="cl">$ sed -n <span class="s1">&#39;10,+5p&#39;</span> /etc/passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -n <span class="s1">&#39;/^root/p&#39;</span> /etc/passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -n <span class="s1">&#39;/^root/,/^nginx/p&#39;</span> /etc/passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -n <span class="s1">&#39;/4,/^nginx/p&#39;</span> /etc/passwd
+</span></span><span class="line"><span class="cl">$ sed -n <span class="s1">&#39;/^root/,10p&#39;</span> /etc/passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="sed-编辑命令">sed 编辑命令</h2>
+<h3 id="打印">打印</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td>打印</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed <span class="s1">&#39;/^root/p&#39;</span> /etc/passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="删除">删除</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>删除行</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/\/sbin\/nologin/d&#39;</span> passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/^mail/,/^ftp/d&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="增加">增加</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>行后追加</td>
+</tr>
+<tr>
+<td>i</td>
+<td>行前追加</td>
+</tr>
+<tr>
+<td>r</td>
+<td>从外部读入文件, 追加到行后</td>
+</tr>
+<tr>
+<td>w</td>
+<td>把结果写到对应文件</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/^root/,/^nginx/a AAAAAA&#39;</span> passwd  <span class="c1"># 匹配到的每一行后追加</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/^root/,/^nginx/i AAAAAA&#39;</span> passwd  <span class="c1"># 匹配到的每一行前追加</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/root/,/nginx/r ./list&#39;</span> passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -n <span class="s1">&#39;/\/bin\/bash/w /tmp/login&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="显示行号">显示行号</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>=</td>
+<td>显示行号</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed <span class="s1">&#39;/\/bin\/bash/=&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="修改">修改</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>s/旧/新/</td>
+<td>更改每行第一个</td>
+</tr>
+<tr>
+<td>s/旧/新/3</td>
+<td>更改每行第一个</td>
+</tr>
+<tr>
+<td>s/旧/新/3</td>
+<td>更改每行所有</td>
+</tr>
+<tr>
+<td>s/旧/新/2g</td>
+<td>更改每行第 2 开始所有</td>
+</tr>
+<tr>
+<td>s/旧/新/ig</td>
+<td>更改每行所有, 忽略大小写</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/HADOOP/hadoop/&#39;</span> file
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/HADOOP/hadoop/2&#39;</span> file
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/HADOOP/hadoop/g&#39;</span> file
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/HADOOP/hadoop/2g&#39;</span> file
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/HADOOP/hadoop/ig&#39;</span> file
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="反向引用">反向引用</h3>
+<p><code>&amp;</code>与<code>\1</code> , <code>\1</code>需要与<code>()</code>一起使用(部分引用时)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/had..../&amp;s/g&#39;</span> file
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/had..../\1s/g&#39;</span> file
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/\(had=)..../\1DOOP/g&#39;</span> file
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="变量引用">变量引用</h3>
+<ol>
+<li>用<code>双引号</code></li>
+<li>用<code>单引号</code>变量</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s2">&#34;s/</span><span class="nv">$str1</span><span class="s2">/str2/g&#34;</span> file
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/&#39;</span><span class="nv">$str1</span><span class="s1">&#39;/&#39;</span><span class="nv">$str2</span><span class="s1">&#39;/g&#39;</span> file
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="脚本练习-查询-mysql-配置文件">脚本练习: 查询 mysql 配置文件</h2>
+<p><strong>知识点:</strong></p>
+<p>利用<code>sed</code>进行文件查询</p>
+<p><strong>预期:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mysqld&#39;s num: 22
+</span></span><span class="line"><span class="cl">client&#39;s num: 1
+</span></span><span class="line"><span class="cl">mysql&#39;s num: 1
+</span></span><span class="line"><span class="cl">server&#39;s num: 6
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>思路:</strong></p>
+<ol>
+<li>获取所有段</li>
+<li>根据获取的段信息, 获取每一段下的配置项数目</li>
+<li>打印结果</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">FILENAME</span><span class="o">=</span><span class="s2">&#34;/root/sed/my.ini&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 1. 获取所有段</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> get_segments
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">item</span><span class="o">=</span><span class="sb">`</span>sed -n <span class="s1">&#39;/\[.*\]/p&#39;</span> <span class="nv">$FILENAME</span> <span class="p">|</span> sed <span class="s1">&#39;s/\[//g&#39;</span> <span class="p">|</span> sed <span class="s1">&#39;s/\]//g&#39;</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="nv">$item</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 根据获取的段信息, 获取每一段下的配置项数目</span>
+</span></span><span class="line"><span class="cl"><span class="k">function</span> count_segment_num
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 根据 sed 的范围匹配</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 根据参数提供段范围匹配                       | 去除 [ 开头   | 去除 # 开头  | 去除空行</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">items</span><span class="o">=</span><span class="sb">`</span>sed -n <span class="s1">&#39;/\[&#39;</span><span class="nv">$1</span><span class="s1">&#39;\]/,/\[.*\]/p&#39;</span> <span class="nv">$FILENAME</span> <span class="p">|</span> grep -v <span class="s2">&#34;^\[&#34;</span> <span class="p">|</span> grep -v <span class="s2">&#34;^#&#34;</span> <span class="p">|</span> grep -v <span class="s2">&#34;^</span>$<span class="s2">&#34;</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 统计所有项</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">index</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> item in <span class="nv">$items</span>
+</span></span><span class="line"><span class="cl">    <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">index</span><span class="o">=</span><span class="sb">`</span>expr <span class="nv">$index</span> + 1<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">    <span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="nv">$index</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> seg in <span class="sb">`</span>get_segments<span class="sb">`</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">item_count</span><span class="o">=</span><span class="sb">`</span>count_segment_num <span class="nv">$seg</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">seg</span><span class="si">}</span><span class="s2">&#39;s num: </span><span class="nv">$item_count</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="sed-文本练习">sed 文本练习</h2>
+<h3 id="文本删除">文本删除:</h3>
+<p><strong>删除空行和注释行</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/^#/d&#39;</span> nginx.conf  <span class="c1"># 删除开头 #</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/^$/d&#39;</span> nginx.conf  <span class="c1"># 删除空行</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/[:blank]*#/d&#39;</span> nginx.conf  <span class="c1"># 删除 # 前有空格</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 合并写法</span>
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/[:blank]*#/d;/^$/d&#39;</span> nginx.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>对以非 # 开头行加 *</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 非 # : [^#]</span>
+</span></span><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;s/^[^#]/\*&amp;/g&#39;</span> nginx.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="文本查找">文本查找</h3>
+<p><strong>匹配到以 root 开始的行, 把 login 改为 LOGIN</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">sed -i <span class="s1">&#39;/^root/s/login/LOGIN/&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>修改以 root 开始的行, 到包含 mail 的行, 修改 bin 为 BIN</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">sed -i <span class="s1">&#39;/^root/,/mail/s/bin/BIN/g&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>把文本中数字删除</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/[0-9]*//g&#39;</span> file
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="文本追加">文本追加</h3>
+<p>根据行号</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;3,7/a Append&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>匹配到 /bin/bash 的行, 气候追加 After</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/\/bin\/bash/a After&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>以 nginx 开头的行前, 添加 Before</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/^nginx/i Before&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>每一行前加 Before</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;i Before&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>把 /etc/fstab 内容追加到含 /bin/bash 的行后</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/\/bin\/bash/r /etc/fstab&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>**把 /bin/bash 的行, 写入 /tmp/sed.txt **</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;/\bin\/bash/w /tmp/sed.txt&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>把第 10 行到以 nginx 开头的行写入 /tmp/sed.txt</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ sed -i <span class="s1">&#39;10,/\bin\/bash/w /tmp/sed.txt&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/shell/">Shell</a>
+        
+            <a href="/tags/sed/">sed</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%e6%96%87%e6%9c%ac%e5%a4%84%e7%90%86%e4%b8%89%e5%89%91%e5%ae%a2%e4%b9%8bgrep/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之grep/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">文本处理三剑客之grep</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bawk/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%e6%96%87%e6%9c%ac%e5%a4%84%e7%90%86%e4%b8%89%e5%89%91%e5%ae%a2%e4%b9%8bawk/cover.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之awk/cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">文本处理三剑客之awk</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/shell%E5%87%BD%E6%95%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell函数/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Shell函数</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/shell%E5%8F%98%E9%87%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/cover.webp" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell变量/cover.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Shell变量</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

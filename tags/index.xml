@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Tags on Ai-feier&#39;s Blog</title>
+        <link>/tags/</link>
+        <description>Recent content in Tags on Ai-feier&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sun, 24 Dec 2023 20:48:26 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>apiserver</title>
+        <link>/tags/apiserver/</link>
+        <pubDate>Sun, 24 Dec 2023 20:48:26 +0800</pubDate>
+        
+        <guid>/tags/apiserver/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>keepalived</title>
+        <link>/tags/keepalived/</link>
+        <pubDate>Sun, 24 Dec 2023 20:48:26 +0800</pubDate>
+        
+        <guid>/tags/keepalived/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>kubernetes</title>
+        <link>/tags/kubernetes/</link>
+        <pubDate>Sun, 24 Dec 2023 20:48:26 +0800</pubDate>
+        
+        <guid>/tags/kubernetes/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>nginx</title>
+        <link>/tags/nginx/</link>
+        <pubDate>Sun, 24 Dec 2023 20:48:26 +0800</pubDate>
+        
+        <guid>/tags/nginx/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>高可用</title>
+        <link>/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</link>
+        <pubDate>Sun, 24 Dec 2023 20:48:26 +0800</pubDate>
+        
+        <guid>/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>calico</title>
+        <link>/tags/calico/</link>
+        <pubDate>Sun, 24 Dec 2023 15:08:15 +0800</pubDate>
+        
+        <guid>/tags/calico/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>containerd</title>
+        <link>/tags/containerd/</link>
+        <pubDate>Sun, 24 Dec 2023 15:08:15 +0800</pubDate>
+        
+        <guid>/tags/containerd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>image repo</title>
+        <link>/tags/image-repo/</link>
+        <pubDate>Sun, 24 Dec 2023 15:08:15 +0800</pubDate>
+        
+        <guid>/tags/image-repo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>k8s 集群安装</title>
+        <link>/tags/k8s-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</link>
+        <pubDate>Sun, 24 Dec 2023 15:08:15 +0800</pubDate>
+        
+        <guid>/tags/k8s-%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>etcd</title>
+        <link>/tags/etcd/</link>
+        <pubDate>Wed, 20 Dec 2023 18:25:32 +0800</pubDate>
+        
+        <guid>/tags/etcd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>k8s</title>
+        <link>/tags/k8s/</link>
+        <pubDate>Wed, 20 Dec 2023 18:25:32 +0800</pubDate>
+        
+        <guid>/tags/k8s/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>高可用性</title>
+        <link>/tags/%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7/</link>
+        <pubDate>Wed, 20 Dec 2023 18:25:32 +0800</pubDate>
+        
+        <guid>/tags/%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>docker</title>
+        <link>/tags/docker/</link>
+        <pubDate>Mon, 18 Dec 2023 02:12:07 +0800</pubDate>
+        
+        <guid>/tags/docker/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Dockerfile</title>
+        <link>/tags/dockerfile/</link>
+        <pubDate>Mon, 18 Dec 2023 02:12:07 +0800</pubDate>
+        
+        <guid>/tags/dockerfile/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>namespaces</title>
+        <link>/tags/namespaces/</link>
+        <pubDate>Mon, 18 Dec 2023 02:11:39 +0800</pubDate>
+        
+        <guid>/tags/namespaces/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>容器网络</title>
+        <link>/tags/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C/</link>
+        <pubDate>Mon, 18 Dec 2023 02:11:39 +0800</pubDate>
+        
+        <guid>/tags/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Linux</title>
+        <link>/tags/linux/</link>
+        <pubDate>Sun, 17 Dec 2023 15:17:00 +0800</pubDate>
+        
+        <guid>/tags/linux/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Shell</title>
+        <link>/tags/shell/</link>
+        <pubDate>Sun, 17 Dec 2023 15:17:00 +0800</pubDate>
+        
+        <guid>/tags/shell/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>sed</title>
+        <link>/tags/sed/</link>
+        <pubDate>Sun, 17 Dec 2023 15:16:34 +0800</pubDate>
+        
+        <guid>/tags/sed/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Mysql</title>
+        <link>/tags/mysql/</link>
+        <pubDate>Sun, 17 Dec 2023 15:14:43 +0800</pubDate>
+        
+        <guid>/tags/mysql/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>find</title>
+        <link>/tags/find/</link>
+        <pubDate>Sun, 17 Dec 2023 15:13:03 +0800</pubDate>
+        
+        <guid>/tags/find/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

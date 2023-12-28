@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='涵盖 shell 编程中函数的多数常用变量操作, 变量替换, 变量测试, 字符串处理, 命令替换, 以及 shell 中的数学运算'>
+<meta name="keywords" content="shell, shell 函数使用"><title>Shell变量</title>
+
+<link rel='canonical' href='/p/shell%E5%8F%98%E9%87%8F/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Shell变量'>
+<meta property='og:description' content='涵盖 shell 编程中函数的多数常用变量操作, 变量替换, 变量测试, 字符串处理, 命令替换, 以及 shell 中的数学运算'>
+<meta property='og:url' content='/p/shell%E5%8F%98%E9%87%8F/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Shell' /><meta property='article:tag' content='Linux' /><meta property='article:published_time' content='2023-12-17T14:56:44&#43;08:00'/><meta property='article:modified_time' content='2023-12-17T14:56:44&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell变量/cover.webp' />
+<meta name="twitter:title" content="Shell变量">
+<meta name="twitter:description" content="涵盖 shell 编程中函数的多数常用变量操作, 变量替换, 变量测试, 字符串处理, 命令替换, 以及 shell 中的数学运算"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell变量/cover.webp' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-变量替换">1. 变量替换</a>
+      <ol>
+        <li><a href="#示例">示例:</a></li>
+      </ol>
+    </li>
+    <li><a href="#2-变量测试">2. 变量测试</a>
+      <ol>
+        <li><a href="#示例-1">示例:</a></li>
+      </ol>
+    </li>
+    <li><a href="#3-字符串处理">3. 字符串处理</a>
+      <ol>
+        <li><a href="#计算字符串长度">计算字符串长度</a></li>
+        <li><a href="#获取字符在字符串中的索引位置">获取字符在字符串中的索引位置</a></li>
+        <li><a href="#获取子串长度">获取子串长度</a></li>
+        <li><a href="#抽取子串">抽取子串</a></li>
+        <li><a href="#脚本练习">脚本练习</a></li>
+      </ol>
+    </li>
+    <li><a href="#4-命令替换">4. 命令替换</a>
+      <ol>
+        <li><a href="#示例-2">示例</a></li>
+        <li><a href="#有类型变量">有类型变量</a></li>
+      </ol>
+    </li>
+    <li><a href="#5-bash-数学运算">5. Bash 数学运算</a>
+      <ol>
+        <li><a href="#expr-与-">expr 与 $(())</a>
+          <ol>
+            <li><a href="#bc-只支持指数运算">bc 只支持指数运算</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/shell%E5%8F%98%E9%87%8F/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/cover.webp" loading="lazy" alt="Featured image of post Shell变量" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/shell/" >
+                Shell
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/shell%E5%8F%98%E9%87%8F/">Shell变量</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            涵盖 shell 编程中函数的多数常用变量操作, 变量替换, 变量测试, 字符串处理, 命令替换, 以及 shell 中的数学运算
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 17, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <h2 id="1-变量替换">1. 变量替换</h2>
+<!-- more -->
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>语法</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>${变量#匹配规则}</td>
+<td>从头开始匹配, 删除最短匹配</td>
+</tr>
+<tr>
+<td>${变量##匹配规则}</td>
+<td>从头开始匹配, 删除最长匹配(贪婪匹配)</td>
+</tr>
+<tr>
+<td>${变量%匹配规则}</td>
+<td>从尾部开始匹配, 删除最短匹配</td>
+</tr>
+<tr>
+<td>${变量%%匹配规则}</td>
+<td>从尾部开始匹配, 删除最长匹配(贪婪匹配)</td>
+</tr>
+<tr>
+<td>${变量/旧字符串/新字符串}</td>
+<td>替换变量, 只替换第一个匹配项</td>
+</tr>
+<tr>
+<td>${变量//旧字符串/新字符串}</td>
+<td>替换变量, 替换所有匹配项</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="示例">示例:</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="s2">&#34;I love you, Do you love me&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>${变量#匹配规则}</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var1</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">#*ov</span><span class="si">}</span>  <span class="c1"># 匹配时从第一个字符开始匹配</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">e you, Do you love me
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>${变量##匹配规则}</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var2</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">##*ov</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var2</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">e me
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>${变量%匹配规则}</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var3</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">%ov*</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var3</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">I love you, Do you l
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>${变量%%匹配规则}</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var4</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">%%ov*</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var4</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">I l
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>${变量/旧字符串/新字符串}</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$PATH</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var5</span><span class="o">=</span><span class="si">${</span><span class="nv">PATH</span><span class="p">/bin/BIN</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var5</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/usr/local/sBIN:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>${变量//旧字符串/新字符串}</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var6</span><span class="o">=</span><span class="si">${</span><span class="nv">PATH</span><span class="p">//bin/BIN</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var6</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/usr/local/sBIN:/usr/local/BIN:/usr/sBIN:/usr/BIN:/sBIN:/BIN:/snap/BIN
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="2-变量测试">2. 变量测试</h2>
+<p>变量测试实际用得较少, 大多都可以通过<code>if-else</code>替换</p>
+<p>变量替换参照表<img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231209180314353.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20231209180314353"
+	
+	
+></p>
+<h3 id="示例-1">示例:</h3>
+<p><strong>var=${str-expr}</strong></p>
+<p><strong>1. 没有设置变量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">unset</span> var
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">-expr</span><span class="si">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">expr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>2. 设置变量, 且变量为空</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">-expr</span><span class="si">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">         # 输出空值
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>3. 设置变量, 且变量非空</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="nb">test</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">-expr</span><span class="si">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">test
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="3-字符串处理">3. 字符串处理</h2>
+<h3 id="计算字符串长度">计算字符串长度</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th></th>
+<th>语法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>方法一</td>
+<td>${<code>#</code>string}</td>
+<td>无</td>
+</tr>
+<tr>
+<td>方法二</td>
+<td>expr length &ldquo;$string&rdquo;</td>
+<td>string 有空格，则必须加双引号, (建议加上 &quot;&quot; )</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>示范</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">str</span><span class="o">=</span>shellLearning
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${#</span><span class="nv">str</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 13</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$(</span>expr length <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2">&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 13</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="获取字符在字符串中的索引位置">获取字符在字符串中的索引位置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ expr index <span class="s2">&#34;</span><span class="nv">$string</span><span class="s2">&#34;</span> <span class="nv">$substring</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="s2">&#34;kubernetes is popular&#34;</span>  
+</span></span><span class="line"><span class="cl">$ <span class="nv">idx</span><span class="o">=</span><span class="sb">`</span>expr index <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> t<span class="sb">`</span>   <span class="c1"># var 中有空格, 加 &#34;&#34;</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$idx</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 8</span>
+</span></span><span class="line"><span class="cl">$ <span class="nv">idx</span><span class="o">=</span><span class="sb">`</span>expr index <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> te<span class="sb">`</span> <span class="c1"># 子串会被拆成一个个字符一次匹配, 返回第一个匹配</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$idx</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 4</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="获取子串长度">获取子串长度</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ expr match <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> substr
+</span></span><span class="line"><span class="cl"><span class="c1"># 子串必须从头第一个字符开始匹配</span>
+</span></span><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="s2">&#34;kubernetes is popular&#34;</span>  
+</span></span><span class="line"><span class="cl">$ <span class="nv">idx</span><span class="o">=</span><span class="sb">`</span>expr match <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> popu<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$idx</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 0</span>
+</span></span><span class="line"><span class="cl">$ <span class="nv">idx</span><span class="o">=</span><span class="sb">`</span>expr match <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> ku.*<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$idx</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 21</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="抽取子串">抽取子串</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>语法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>${string:position}</td>
+<td>从 string 中 position 开始到结尾</td>
+</tr>
+<tr>
+<td>${string:position:length}</td>
+<td>从 string 中 position 开始, 匹配长度为 length</td>
+</tr>
+<tr>
+<td>${string: -position}</td>
+<td>从右边开始匹配</td>
+</tr>
+<tr>
+<td>${string:(position)}</td>
+<td>从左边开始匹配</td>
+</tr>
+<tr>
+<td>expr substr &ldquo;$string&rdquo; $position $length</td>
+<td>从 string 中 position 开始, 匹配长度为 length</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><code>:</code>索引从 0 开始</p>
+<p>expr 索引从 1 开始</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="s2">&#34;kubecetes istio etcd operator&#34;</span>
+</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">:</span><span class="nv">7</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$substr</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># es istio etcd operator</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">:</span><span class="nv">7</span><span class="p">:</span><span class="nv">6</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$substr</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># es ist</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">: -7</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$substr</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># perator</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">:(-7)</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$substr</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># perator</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="sb">`</span>expr substr <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> <span class="m">7</span> 6<span class="sb">`</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># tes is</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="脚本练习">脚本练习</h3>
+<p><strong>思路:</strong></p>
+<ol>
+<li><strong>根据功能划分, 编写响应函数</strong></li>
+<li><strong>实现定义函数</strong></li>
+<li><strong>主流程设计</strong></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">str</span><span class="o">=</span><span class="s2">&#34;Bigdata process framework is Hadoop,Hadoop is an open source project&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> print_tips <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;************************************&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;(1) 打印 string 长度&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;(2) 删除字符串中所有的 Hadoop&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;(3) 替换第一个 Hadoop 为 Mapreduce&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;(4) 替换全部 Hadoop 为 Mapreduce&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;************************************&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> len_of_string
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${#</span><span class="nv">str</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> del_hadoop
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">str</span><span class="p">//Hadoop/</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> replace_hadoop_mapreduce_first
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">str</span><span class="p">/Hadoop/Mapreduce</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> replace_hadoop_mapreduce_all
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">str</span><span class="p">//Hadoop/Mapreduce</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;[string: </span><span class="nv">$str</span><span class="s2">]&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">	print_tips
+</span></span><span class="line"><span class="cl">	<span class="nb">read</span> -p <span class="s2">&#34;Please input your choice(1|2|3|4|q|Q): &#34;</span> choice
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">case</span> <span class="nv">$choice</span> in
+</span></span><span class="line"><span class="cl">		1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">			len_of_string
+</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">		2<span class="o">)</span>
+</span></span><span class="line"><span class="cl">			del_hadoop
+</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">		3<span class="o">)</span>
+</span></span><span class="line"><span class="cl">			replace_hadoop_mapreduce_first
+</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">		4<span class="o">)</span>
+</span></span><span class="line"><span class="cl">			replace_hadoop_mapreduce_all
+</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">		q<span class="p">|</span>Q<span class="o">)</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">exit</span>
+</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">		*<span class="o">)</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> <span class="s2">&#34;Error input, only {1|2|3|4|q|Q}&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">esac</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="4-命令替换">4. 命令替换</h2>
+<blockquote>
+<ol>
+<li>使用 `command`</li>
+<li>使用 <code>$(command)</code></li>
+</ol>
+</blockquote>
+<h3 id="示例-2">示例</h3>
+<p><strong>获取系统所有用户</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">index</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> user in <span class="sb">`</span>cat /etc/passwd <span class="p">|</span> cut -d <span class="s2">&#34;:&#34;</span> -f 1<span class="sb">`</span> 
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;This is </span><span class="nv">$index</span><span class="s2"> user: </span><span class="nv">$user</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">index</span><span class="o">=</span><span class="k">$((</span><span class="nv">$index</span><span class="o">+</span><span class="m">1</span><span class="k">))</span>  <span class="c1"># ((index++))</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>获取年份</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$(($(</span>date +%Y<span class="k">)</span> <span class="o">+</span> <span class="m">1</span><span class="k">))</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2024</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 等价</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$((</span>num1+num2<span class="k">))</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$((</span><span class="nv">$num1</span><span class="o">+</span><span class="nv">$num2</span><span class="k">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>计算星期</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Today is the </span><span class="k">$(</span>date +%j<span class="k">)</span><span class="s2"> of year.&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;This year has passed </span><span class="k">$(($(</span>date +%j<span class="k">)</span> <span class="o">/</span> <span class="m">7</span><span class="k">))</span><span class="s2"> weeks&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;This year has </span><span class="k">$((</span><span class="o">(</span><span class="m">365</span><span class="o">-</span><span class="k">$(</span>date +%j<span class="k">)</span><span class="o">)</span> <span class="o">/</span> <span class="m">7</span><span class="k">))</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>判断进程是否存活</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">nginx_num</span><span class="o">=</span><span class="k">$(</span>ps -ef <span class="p">|</span> grep nginx <span class="p">|</span> grep -v grep <span class="p">|</span> wc -l<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="nv">$nginx_num</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	systemctl start nginx
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="有类型变量">有类型变量</h3>
+<blockquote>
+<p>declare 与 typeset 命令</p>
+<p>两者等价</p>
+</blockquote>
+<p>declare 命令参数表:</p>
+<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210152406254.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20231210152406254"
+	
+	
+></p>
+<blockquote>
+<p>与之相反, 取消变量, 把<code>-</code>改为<code>+</code></p>
+</blockquote>
+<h2 id="5-bash-数学运算">5. Bash 数学运算</h2>
+<h3 id="expr-与-">expr 与 $(())</h3>
+<blockquote>
+<p>$(()) : 只可用于加减乘除</p>
+</blockquote>
+<p>参数表</p>
+<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210154009070.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20231210154009070"
+	
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">num1</span><span class="o">=</span><span class="m">17</span>
+</span></span><span class="line"><span class="cl">$ <span class="nv">num2</span><span class="o">=</span><span class="m">5</span>
+</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> + <span class="nv">$num2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 22</span>
+</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> - <span class="nv">$num2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 12</span>
+</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> <span class="se">\*</span> <span class="nv">$num2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 85</span>
+</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> / <span class="nv">$num2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 3</span>
+</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> % <span class="nv">$num2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2</span>
+</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> <span class="se">\&gt;</span> <span class="nv">$num2</span>      <span class="c1"># 真为 1, 假为 0</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1    </span>
+</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> <span class="se">\&lt;</span> <span class="nv">$num2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>练习:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">read</span> -p <span class="s2">&#34;Pls input a integer: &#34;</span>: num
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    expr <span class="nv">$num</span> + <span class="m">1</span> <span class="p">&amp;</span>&gt; /dev/null     <span class="c1"># expr 只支持整数</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[</span> <span class="sb">`</span>expr <span class="nv">$num</span> <span class="se">\&gt;</span> 0<span class="sb">`</span> -eq <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="o">((</span><span class="nv">i</span><span class="o">=</span>1<span class="p">;</span>i&lt;<span class="nv">$num</span><span class="p">;</span>i++<span class="o">))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">do</span>
+</span></span><span class="line"><span class="cl">                <span class="nv">sum</span><span class="o">=</span><span class="sb">`</span>expr <span class="nv">$sum</span> + <span class="nv">$i</span> <span class="sb">`</span>
+</span></span><span class="line"><span class="cl">            <span class="k">done</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;1+2+...+</span><span class="nv">$num</span><span class="s2"> = </span><span class="nv">$sum</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;error not positive&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;error inlegle input&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="bc-只支持指数运算">bc 只支持指数运算</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="s2">&#34;7.6/3.7&#34;</span> <span class="p">|</span> bc
+</span></span><span class="line"><span class="cl"><span class="c1"># 2</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="s2">&#34;scale=4;7.6/3.7&#34;</span> <span class="p">|</span> bc  <span class="c1"># bc 中 scale 为精度</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2.0540</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/shell/">Shell</a>
+        
+            <a href="/tags/linux/">Linux</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/shell%E5%87%BD%E6%95%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell函数/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Shell函数</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/shell%E8%84%9A%E6%9C%AC%E4%B9%8B%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e8%84%9a%e6%9c%ac%e4%b9%8b%e8%bf%9b%e7%a8%8b%e7%ae%a1%e7%90%86/cover.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell脚本之进程管理/cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Shell脚本之进程管理</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/shell%E8%84%9A%E6%9C%AC%E4%B8%8Emysql%E4%BA%A4%E4%BA%92/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e8%84%9a%e6%9c%ac%e4%b8%8eMysql%e4%ba%a4%e4%ba%92/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell脚本与Mysql交互/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Shell脚本与Mysql交互</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%e6%96%87%e6%9c%ac%e5%a4%84%e7%90%86%e4%b8%89%e5%89%91%e5%ae%a2%e4%b9%8bgrep/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之grep/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">文本处理三剑客之grep</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bsed/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%e6%96%87%e6%9c%ac%e5%a4%84%e7%90%86%e4%b8%89%e5%89%91%e5%ae%a2%e4%b9%8bsed/cover.webp" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之sed/cover.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">文本处理三剑客之sed</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

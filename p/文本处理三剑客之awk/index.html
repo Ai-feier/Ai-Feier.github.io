@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='本文介绍 linux 下最常用文本处理工具之一 awk, 从零基础起点出发, 涵盖 awk 编程绝大多数使用命令及场景'>
+<meta name="keywords" content="awk, linux, shell"><title>文本处理三剑客之awk</title>
+
+<link rel='canonical' href='/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bawk/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='文本处理三剑客之awk'>
+<meta property='og:description' content='本文介绍 linux 下最常用文本处理工具之一 awk, 从零基础起点出发, 涵盖 awk 编程绝大多数使用命令及场景'>
+<meta property='og:url' content='/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bawk/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='Shell' /><meta property='article:published_time' content='2023-12-17T15:16:07&#43;08:00'/><meta property='article:modified_time' content='2023-12-17T15:16:07&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之awk/cover.jpg' />
+<meta name="twitter:title" content="文本处理三剑客之awk">
+<meta name="twitter:description" content="本文介绍 linux 下最常用文本处理工具之一 awk, 从零基础起点出发, 涵盖 awk 编程绝大多数使用命令及场景"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之awk/cover.jpg' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#awk-工作模式">awk 工作模式</a></li>
+    <li><a href="#语法格式">语法格式</a></li>
+    <li><a href="#内置变量">内置变量</a></li>
+    <li><a href="#格式化输出-printf">格式化输出 printf</a></li>
+    <li><a href="#模式匹配">模式匹配</a></li>
+    <li><a href="#awk-算数运算">awk 算数运算</a></li>
+    <li><a href="#条件语句">条件语句</a></li>
+    <li><a href="#循环语句">循环语句</a></li>
+    <li><a href="#字符串函数">字符串函数</a></li>
+    <li><a href="#awk-常用选项">awk 常用选项</a></li>
+    <li><a href="#awk-与-shell-中数组">awk 与 shell 中数组</a>
+      <ol>
+        <li><a href="#shell-中数组">shell 中数组</a></li>
+        <li><a href="#awk-中数组">awk 中数组</a></li>
+      </ol>
+    </li>
+    <li><a href="#脚本练习">脚本练习</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bawk/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%e6%96%87%e6%9c%ac%e5%a4%84%e7%90%86%e4%b8%89%e5%89%91%e5%ae%a2%e4%b9%8bawk/cover.jpg" loading="lazy" alt="Featured image of post 文本处理三剑客之awk" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/awk/" >
+                awk
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bawk/">文本处理三剑客之awk</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            本文介绍 linux 下最常用文本处理工具之一 awk, 从零基础起点出发, 涵盖 awk 编程绝大多数使用命令及场景
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 17, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    8 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <h2 id="awk-工作模式">awk 工作模式</h2>
+<!-- more -->
+<p>与 sed 相同, 都是逐行处理</p>
+<h2 id="语法格式">语法格式</h2>
+<ol>
+<li><strong>awk &lsquo;BEGIN{}pattern{commands}END{} filename&rsquo;</strong></li>
+<li><strong>stdout | awk &lsquo;BEGIN{}pattern{commands}END{}&rsquo;</strong></li>
+</ol>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>语法格式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BEGIN{}</td>
+<td>处理文本前执行</td>
+</tr>
+<tr>
+<td>pattern</td>
+<td>匹配模式</td>
+</tr>
+<tr>
+<td>{commands}</td>
+<td>处理命令, <code>;</code>隔开</td>
+</tr>
+<tr>
+<td>END{}</td>
+<td>处理文本后执行</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>BEGIN{}, pattern, END{} 多可省略</p>
+</blockquote>
+<h2 id="内置变量">内置变量</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>内置变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$0</td>
+<td>整行内容</td>
+</tr>
+<tr>
+<td>$1-$n</td>
+<td>按分隔符的第 1-n 个字段</td>
+</tr>
+<tr>
+<td>NF    <em>(Number Field)</em></td>
+<td>当前行的字段个数(多少列)</td>
+</tr>
+<tr>
+<td>NR   <em>(Number Row)</em></td>
+<td>当前行行号, 从 1 开始计数</td>
+</tr>
+<tr>
+<td>FNR   <em>(File Number Row)</em></td>
+<td>多文件处理时, 每个文件单独技术, 从 1 开始</td>
+</tr>
+<tr>
+<td>FS   <em>(Field Separate)</em></td>
+<td>输入字段分隔符, 不指定为空格或 tab</td>
+</tr>
+<tr>
+<td>RS   <em>(Row Separator)</em></td>
+<td>输入行分隔符, 默认回车</td>
+</tr>
+<tr>
+<td>OFS   <em>(Output Field Separator)</em></td>
+<td>输出字段分隔符</td>
+</tr>
+<tr>
+<td>ORS   <em>(Output Row Separator)</em></td>
+<td>输出行分隔符, 默认回车</td>
+</tr>
+<tr>
+<td>FILENAME</td>
+<td>当前输入文件名</td>
+</tr>
+<tr>
+<td>ARGC</td>
+<td>命令行参数个数</td>
+</tr>
+<tr>
+<td>ARGV</td>
+<td>命令行参数数组</td>
+</tr>
+</tbody>
+</table></div>
+<p>基本使用:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;{print $0}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;{print $1,$3}&#39;</span> list
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;{print NF}&#39;</span> list
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;{print NR}&#39;</span> list
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;{print FNR}&#39;</span> list awk.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{print $1}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{RS=&#34;--&#34;}{print $0}&#39;</span> list
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;;OFS=&#34;|&#34;}{print $1,$3}&#39;</span> passwd  <span class="c1"># 每行输出字段</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{ORS=&#34;--&#34;}{print $0}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;{print FILENAME}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;{print ARGC}&#39;</span> passwd list  <span class="c1"># 3 个参数 awk, passwd, list</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="格式化输出-printf">格式化输出 printf</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>格式符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%s</td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>%d</td>
+<td>十进制</td>
+</tr>
+<tr>
+<td>%f</td>
+<td>浮点数</td>
+</tr>
+<tr>
+<td>%x</td>
+<td>十六进制</td>
+</tr>
+<tr>
+<td>%o</td>
+<td>八进制</td>
+</tr>
+<tr>
+<td>%e</td>
+<td>科学计数法</td>
+</tr>
+<tr>
+<td>%c</td>
+<td>单个字符</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>修饰符:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>修饰符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-</td>
+<td>左对齐</td>
+</tr>
+<tr>
+<td>+</td>
+<td>右对齐</td>
+</tr>
+<tr>
+<td>#</td>
+<td>打印 十六进制与八进制时使用, 在前打印进制标识</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>示例</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># %s: 默认左对齐</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># %10s: 默认右对齐</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{printf &#34;%s&#34;,$7}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{printf &#34;%10s&#34;,$7}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{printf &#34;%-10s&#34;,$7}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{printf &#34;%d&#34;,$3}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{printf &#34;%0.3f&#34;,$3}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{printf &#34;%x&#34;,$3}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{printf &#34;%#x&#34;,$3}&#39;</span> passwd  <span class="c1"># 显示 16 进制标识</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{printf &#34;%0&#34;,$3}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}{printf &#34;%e&#34;,$3}&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="模式匹配">模式匹配</h2>
+<ol>
+<li><strong>正则表达式</strong> (固定写法<code>//</code>)</li>
+<li><strong>关系运算匹配</strong></li>
+</ol>
+<p>正则表达式:****</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 含有 root 的行</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#39;</span>:<span class="s1">&#39;}/root/{print $0}&#39;</span> passwd
+</span></span><span class="line"><span class="cl"><span class="c1"># 以 nginx 开头</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#39;</span>:<span class="s1">&#39;}/^nginx/{print $0}&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>关系运算符</strong>:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>关系运算符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&lt;    <em>数值</em></td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&gt;    <em>数值</em></td>
+<td>大于</td>
+</tr>
+<tr>
+<td>&lt;=  <em>数值</em></td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>&gt;=  <em>数值</em></td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>==</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>!=</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>~</td>
+<td>匹配正则</td>
+</tr>
+<tr>
+<td>!~</td>
+<td>不匹配正则</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 第 3 个字段小于 50</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}$3&lt;50{print $0}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 第 7 个字段为 /bin/bash</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}$7==&#34;/bin/bash&#34;{print $0}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}$7!=&#34;/bin/bash&#34;{print $0}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 第 3 个字段包含 3 个及以上数字</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}$3~/[0-9]{3,}/{print $0}&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>逻辑运算符:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>逻辑运算符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>||</td>
+<td>或</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td>与</td>
+</tr>
+<tr>
+<td>!</td>
+<td>非</td>
+</tr>
+</tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}$1==&#34;root&#34;||$1==&#34;nginx&#34;{print $0}&#39;</span> passwd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{FS=&#34;:&#34;}$3&lt;50 &amp;&amp; $3 &gt;30 {print $0}&#39;</span> passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="awk-算数运算">awk 算数运算</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>加</td>
+</tr>
+<tr>
+<td>-</td>
+<td>减</td>
+</tr>
+<tr>
+<td>*</td>
+<td>乘</td>
+</tr>
+<tr>
+<td>/</td>
+<td>除</td>
+</tr>
+<tr>
+<td>%</td>
+<td>取余</td>
+</tr>
+<tr>
+<td>^ 或 **</td>
+<td>乘方</td>
+</tr>
+<tr>
+<td>x++ ; x&ndash;</td>
+<td>先返回 x, 后 +/- x</td>
+</tr>
+<tr>
+<td>++x ; &ndash;x</td>
+<td>先 +/- x, 后 返回 x</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>练习计算课程平均值</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 右对齐</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{printf &#34;%10s%10s%10s%10s%10s\n&#34;,&#34;Name&#34;, &#34;YuWen&#34;,&#34;ShuXue&#34;, &#34;English&#34;, &#34;AVG&#34;}{total=$1+$2+$3;AVG=total/3;printf &#34;%10s%10d%10d%10d%10.2f\n&#34;,$1,$2,$3,$4,AVG}&#39;</span> list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{printf &#34;%-10s%-10s%-10s%-10s%-10s\n&#34;,&#34;Name&#34;, &#34;YuWen&#34;,&#34;ShuXue&#34;, &#34;English&#34;, &#34;AVG&#34;}{total=$1+$2+$3;AVG=total/3;printf &#34;%-10s%-10d%-10d%-10d%-10.2f\n&#34;,$1,$2,$3,$4,AVG}&#39;</span> list
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="条件语句">条件语句</h2>
+<p>if-else</p>
+<p>示例: <em>script.awk</em></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">BEGIN<span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">FS</span><span class="o">=</span><span class="s2">&#34;:&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="o">(</span><span class="nv">$3</span>&lt;50<span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">printf</span> <span class="s2">&#34;%-20s%-10s%10d\n&#34;</span>,<span class="s2">&#34;UID&lt;50&#34;</span>,<span class="nv">$1</span>,<span class="nv">$3</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="nv">$3</span>&gt;50 <span class="o">&amp;&amp;</span> <span class="nv">$3</span> &lt;100<span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">printf</span> <span class="s2">&#34;%-20s%-10s%10d\n&#34;</span>,<span class="s2">&#34;50&lt;UID&lt;100&#34;</span>,<span class="nv">$1</span>,<span class="nv">$3</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">printf</span> <span class="s2">&#34;%-20s%-10s%10d\n&#34;</span>,<span class="s2">&#34;UID&gt;100&#34;</span>,<span class="nv">$1</span>,<span class="nv">$3</span>
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ awk -f script.awk /etc/passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="循环语句">循环语句</h2>
+<ol>
+<li><strong>do-while</strong></li>
+<li>while</li>
+<li>for</li>
+</ol>
+<p>计算 1+2+&hellip;100</p>
+<ol>
+<li>do-while</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">BEGIN<span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">do</span><span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">sum</span> <span class="o">+=</span> i
+</span></span><span class="line"><span class="cl">        i++
+</span></span><span class="line"><span class="cl">    <span class="o">}</span><span class="k">while</span><span class="o">(</span>i&lt;<span class="o">=</span>100<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    print sum
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>while</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">BEGIN<span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="o">(</span>i&lt;<span class="o">=</span>100<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">sum</span> <span class="o">+=</span> i
+</span></span><span class="line"><span class="cl">        i++
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    print sum
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>for</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">BEGIN<span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="o">(</span><span class="nv">i</span><span class="o">=</span>0<span class="p">;</span>i&lt;<span class="o">=</span>100<span class="p">;</span>i++<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">sum</span> <span class="o">+=</span> i
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    print sum
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>练习: 打印平均分大于 70的</strong>, 并计算平均分</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">BEGIN{
+</span></span><span class="line"><span class="cl">    printf &#34;%-10s%-10s%-10s%-10s%-10s\n&#34;,&#34;Name&#34;,&#34;YuWen&#34;,&#34;Math&#34;,&#34;English&#34;,&#34;AVG&#34;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    total = $2 + $3 + $3
+</span></span><span class="line"><span class="cl">    avg = total / 3
+</span></span><span class="line"><span class="cl">    if (avg &gt; 70)
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        printf &#34;%-10s%-10d%-10d%-10d%-0.2f\n&#34;,$1,$2,$3,$4,avg
+</span></span><span class="line"><span class="cl">        score_yuwen += $2
+</span></span><span class="line"><span class="cl">        score_math += $3
+</span></span><span class="line"><span class="cl">        score_english += $4
+</span></span><span class="line"><span class="cl">        score_avg += avg
+</span></span><span class="line"><span class="cl">        count++
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">END{
+</span></span><span class="line"><span class="cl">    printf &#34;%-10s%-10.2f%-10.2f%-10.2f%-0.2f\n&#34;,&#34;&#34;,score_yuwen/count,score_math/count,score_english/count,score_avg/count
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="字符串函数">字符串函数</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>解释</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>length(str)</td>
+<td>计算字符串长度</td>
+<td>长度值</td>
+</tr>
+<tr>
+<td>index(str1,str2)</td>
+<td>在 str1 中查找 str2</td>
+<td>返回位置索引, 从 1 计数</td>
+</tr>
+<tr>
+<td>tolower(str)</td>
+<td>转小写</td>
+<td>转小写后的字符串</td>
+</tr>
+<tr>
+<td>toupper(str)</td>
+<td>转大写</td>
+<td>转大写后的字符串</td>
+</tr>
+<tr>
+<td>substr(str,m,n)</td>
+<td>从 str m 字符, 截取 n 位(n 可省略)</td>
+<td>截取后的子串</td>
+</tr>
+<tr>
+<td>split(str,arr,fs)</td>
+<td>按 fs 切割字符串, 结果保存到 arr</td>
+<td>切割后的子串个数</td>
+</tr>
+<tr>
+<td><strong>match(str,RE)</strong></td>
+<td>与 index() 类似, 但支持正则(RE)</td>
+<td>返回索引位置</td>
+</tr>
+<tr>
+<td>sub(RE,RepStr,str)</td>
+<td>在 str 中搜索符合 RE 的子串将其替换为 RepStr; 只替换第一个</td>
+<td>替换个数</td>
+</tr>
+<tr>
+<td>gsub(RE,RepStr,str)</td>
+<td>在 str 中搜索符合 RE 的子串将其替换为 RepStr; 替换全部</td>
+<td>替换个数</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>1. 打印 passwd 每个字段长度:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">BEGIN<span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">FS</span><span class="o">=</span><span class="s2">&#34;:&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">i</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="o">(</span>i&lt;<span class="o">=</span>NF<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="o">(</span><span class="nv">i</span><span class="o">==</span>NF<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">printf</span> <span class="s2">&#34;%d&#34;</span>,length<span class="o">(</span><span class="nv">$i</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">printf</span> <span class="s2">&#34;%d:&#34;</span>,length<span class="o">(</span><span class="nv">$i</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        i++
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    print <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>2. 查询&quot;I have a dream&quot;中&quot;ea&quot;索引</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a dream&#34;;localtion=index(str,&#34;ea&#34;);print localtion}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 12</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a dream&#34;;localtion=match(str,&#34;ea&#34;);print localtion}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 12</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>3. 大小写转换</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a dream&#34;;print tolower(str)}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># i have a dream</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a dream&#34;;print toupper(str)}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># I HAVE A DREAM</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>4. 切分数组</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a dream&#34;;split(str,arr,&#34; &#34;);print arr[2]}&#39;</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a dream&#34;;split(str,arr);print arr[2]}&#39;</span>  <span class="c1"># 默认空格分隔</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># have</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 遍历, 不是顺序遍历</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a dream&#34;;split(str,arr);for(a in arr) print arr[a]}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># dream</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># I</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># have</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># a</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>5. 搜索第一个出现的数字</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 正则必须用 //</span>
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a 123 dream&#34;; print match(str, /[0-9]/)}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 10</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>6. 截取子串</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a 123 dream&#34;; print substr(str,3,7)}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># have a </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a 123 dream&#34;; print substr(str,3)}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># have a 123 dream</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>7. 替换数字</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a 123 dream 324 hello&#34;; print sub(/[0-9]+/,&#34;$&#34;,str); print str}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># I have a $ dream 324 hello</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk <span class="s1">&#39;BEGIN{str=&#34;I have a 123 dream 324 hello&#34;; print gsub(/[0-9]+/,&#34;$&#34;,str); print str}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># I have a $ dream $ hello</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="awk-常用选项">awk 常用选项</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-v</td>
+<td>参数传递</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>指定脚本文件</td>
+</tr>
+<tr>
+<td>-F</td>
+<td>指定分隔符</td>
+</tr>
+<tr>
+<td>-V</td>
+<td>查看版本</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>如果变量有空格, 要使用<code>&quot;&quot;</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">num</span><span class="o">=</span><span class="m">13</span>
+</span></span><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="s2">&#34;hello world&#34;</span>
+</span></span><span class="line"><span class="cl">$ awk -v <span class="nv">num1</span><span class="o">=</span><span class="nv">$num</span> -v <span class="nv">var1</span><span class="o">=</span><span class="nv">$var</span> <span class="s1">&#39;BEGIN{print num1,var1}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># awk: fatal: cannot open file `BEGIN{print num1,var1}&#39; for reading (No such file or directory)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk -v <span class="nv">num1</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$num</span><span class="s2">&#34;</span> -v <span class="nv">var1</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> <span class="s1">&#39;BEGIN{print num1,var1}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 13 hello world</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ awk -F <span class="s2">&#34;:&#34;</span> <span class="s1">&#39;{print $0}&#39;</span> /etc/passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="awk-与-shell-中数组">awk 与 shell 中数组</h2>
+<h3 id="shell-中数组">shell 中数组</h3>
+<p><strong>下标从 0 开始</strong></p>
+<p>打印数组:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">arr</span><span class="o">=(</span><span class="s2">&#34;kubernetes&#34;</span> <span class="s2">&#34;etcd&#34;</span> <span class="s2">&#34;time&#34;</span> <span class="s2">&#34;redis&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 打印数组</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[@]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[*]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># kubernetes etcd time redis</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 打印元素</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[2]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># time</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>打印数组/元素长度; 分片访问; 元素操作; 删除元素:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">arr</span><span class="o">=(</span><span class="s2">&#34;kubernetes&#34;</span> <span class="s2">&#34;etcd&#34;</span> <span class="s2">&#34;time&#34;</span> <span class="s2">&#34;redis&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 打印数组</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${#</span><span class="nv">arr</span><span class="p">[@]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${#</span><span class="nv">arr</span><span class="p">[*]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 打印元素</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${#</span><span class="nv">arr</span><span class="p">[3]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 5</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 分片访问</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[@]:</span><span class="nv">1</span><span class="p">:</span><span class="nv">3</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># etcd time redis</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 元素赋值</span>
+</span></span><span class="line"><span class="cl">$ arr<span class="o">[</span>2<span class="o">]=</span>mysqlserver
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[@]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># kubernetes etcd mysqlserver redis</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 元素内容替换</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[@]/e/E</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># kubErnetes Etcd mysqlsErver rEdis</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[@]//e/E</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># kubErnEtEs Etcd mysqlsErvEr rEdis</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 元素删除  *** 通过下标删除后, 被删除的下标的元素为空, 原数组的其他元素下标不变</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">unset</span> arr<span class="o">[</span>0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[@]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># etcd mysqlserver redis</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">unset</span> arr<span class="o">[</span>0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[@]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># etcd mysqlserver redis</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">unset</span> arr<span class="o">[</span>1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">arr</span><span class="p">[@]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># mysqlserver redis</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除数组</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">unset</span> arr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>通过下标删除后, 被删除的下标的元素为空, 原数组的其他元素下标不变</p>
+</blockquote>
+<p><strong>数组的遍历</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">arr</span><span class="o">=(</span><span class="s2">&#34;kubernetes&#34;</span> <span class="s2">&#34;etcd&#34;</span> <span class="s2">&#34;time&#34;</span> <span class="s2">&#34;redis&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">$ <span class="k">for</span> a in <span class="si">${</span><span class="nv">arr</span><span class="p">[@]</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$a</span><span class="p">;</span> <span class="k">done</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># kubernetes</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># etcd</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># time</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># redis</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="awk-中数组">awk 中数组</h3>
+<h2 id="脚本练习">脚本练习</h2>
+<p>数据生成脚本:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> create_random<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">min</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">max</span><span class="o">=</span><span class="k">$((</span><span class="nv">$2</span><span class="o">-</span><span class="nv">$min</span><span class="o">+</span><span class="m">1</span><span class="k">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">num</span><span class="o">=</span><span class="k">$(</span>date +%s%N<span class="k">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="k">$((</span><span class="nv">$num</span><span class="o">%</span><span class="nv">$max</span><span class="o">+</span>min<span class="k">))</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">INDEX</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> user in allen mike jerry tracy han lilei
+</span></span><span class="line"><span class="cl">    <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">COUNT</span><span class="o">=</span><span class="nv">$RANDOM</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">NUM1</span><span class="o">=</span><span class="sb">`</span>create_random <span class="m">1</span> <span class="nv">$COUNT</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">NUM2</span><span class="o">=</span><span class="sb">`</span>expr <span class="nv">$COUNT</span> - <span class="nv">$NUM1</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;`date &#39;+%Y-%m-%d %H:%M:%S&#39;` </span><span class="nv">$INDEX</span><span class="s2"> Batches: user </span><span class="nv">$user</span><span class="s2"> insert </span><span class="nv">$COUNT</span><span class="s2"> records into database:product table:detail, insert </span><span class="nv">$NUM1</span><span class="s2"> records successfully, failed </span><span class="nv">$NUM2</span><span class="s2"> records&#34;</span> &gt;&gt; ./db.log.<span class="sb">`</span>date +%Y%m%d<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">INDEX</span><span class="o">=</span><span class="sb">`</span>expr <span class="nv">$INDEX</span> + 1<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">    <span class="k">done</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>数据格式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">2023-12-12 02:49:31 1 Batches: user allen insert 25719 records into database:product table:detail, insert 24482 records successfully, failed 1237 records
+</span></span><span class="line"><span class="cl">2023-12-12 02:49:31 2 Batches: user mike insert 32653 records into database:product table:detail, insert 26055 records successfully, failed 6598 records
+</span></span><span class="line"><span class="cl">2023-12-12 02:49:31 3 Batches: user jerry insert 16986 records into database:product table:detail, insert 11636 records successfully, failed 5350 records
+</span></span><span class="line"><span class="cl">2023-12-12 02:49:31 4 Batches: user tracy insert 31899 records into database:product table:detail, insert 9250 records successfully, failed 22649 records
+</span></span><span class="line"><span class="cl">2023-12-12 02:49:31 5 Batches: user han insert 24256 records into database:product table:detail, insert 24033 records successfully, failed 223 records
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>统计所有成功, 失败, 总共记录数</strong></p>
+<p>count.awk:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">BEGIN<span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">printf</span> <span class="s2">&#34;%-10s%-20s%-20s%-20s\n&#34;</span>,<span class="s2">&#34;User&#34;</span>,<span class="s2">&#34;Total&#34;</span>,<span class="s2">&#34;Sucess&#34;</span>,<span class="s2">&#34;Failed&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    TOTAL<span class="o">[</span><span class="nv">$6</span><span class="o">]</span>+<span class="o">=</span><span class="nv">$8</span>
+</span></span><span class="line"><span class="cl">    SUCESS<span class="o">[</span><span class="nv">$6</span><span class="o">]</span>+<span class="o">=</span><span class="nv">$14</span>
+</span></span><span class="line"><span class="cl">    FAILED<span class="o">[</span><span class="nv">$6</span><span class="o">]</span>+<span class="o">=</span><span class="nv">$18</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">END<span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="o">(</span>t in TOTAL<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">total</span> <span class="o">+=</span> TOTAL<span class="o">[</span>t<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">sucess</span> <span class="o">+=</span> SUCESS<span class="o">[</span>t<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">failed</span> <span class="o">+=</span> FAILED<span class="o">[</span>t<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">printf</span> <span class="s2">&#34;%-10s%-20s%-20s%-20s\n&#34;</span>,t,TOTAL<span class="o">[</span>t<span class="o">]</span>,SUCESS<span class="o">[</span>t<span class="o">]</span>,FAILED<span class="o">[</span>t<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">printf</span> <span class="s2">&#34;%-10s%-20s%-20s%-20s\n&#34;</span>,<span class="s2">&#34;&#34;</span>,total,sucess,failed
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ awk -f count.awk db.log.20231212
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">User      Total               Sucess              Failed
+</span></span><span class="line"><span class="cl">tracy     6096344             2963340             3133004
+</span></span><span class="line"><span class="cl">allen     6293470             3182865             3110605
+</span></span><span class="line"><span class="cl">mike      5845083             2912982             2932101
+</span></span><span class="line"><span class="cl">jerry     5996178             3080723             2915455
+</span></span><span class="line"><span class="cl">lilei     6217104             3028971             3188133
+</span></span><span class="line"><span class="cl">han       5923975             3089899             2834076
+</span></span><span class="line"><span class="cl">          36372154            18258780            18113374
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>2. 打印丢失记录的行数</strong></p>
+<p>一条记录行中, 总记录数 != 成功记录数 + 失败记录数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ awk <span class="s1">&#39;{if($8 != $14 + $18) print NR}&#39;</span> db.log.20231212
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/shell/">Shell</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%e6%96%87%e6%9c%ac%e5%a4%84%e7%90%86%e4%b8%89%e5%89%91%e5%ae%a2%e4%b9%8bgrep/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之grep/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">文本处理三剑客之grep</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bsed/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%e6%96%87%e6%9c%ac%e5%a4%84%e7%90%86%e4%b8%89%e5%89%91%e5%ae%a2%e4%b9%8bsed/cover.webp" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之sed/cover.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">文本处理三剑客之sed</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/shell%E5%87%BD%E6%95%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell函数/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Shell函数</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/shell%E5%8F%98%E9%87%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/cover.webp" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell变量/cover.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Shell变量</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

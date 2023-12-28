@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='搭建高可用 etcd 集群, 高可用的 etcd 正是高可用 k8s 集群的必备基石, 带你一步步生成 etcd 证书, 到 etcd 集群的部署与生产化运维实践'>
+<meta name="keywords" content="etcd, 高可用 etcd 集群, ubuntu"><title>Etcd高可用集群部署</title>
+
+<link rel='canonical' href='/p/etcd%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Etcd高可用集群部署'>
+<meta property='og:description' content='搭建高可用 etcd 集群, 高可用的 etcd 正是高可用 k8s 集群的必备基石, 带你一步步生成 etcd 证书, 到 etcd 集群的部署与生产化运维实践'>
+<meta property='og:url' content='/p/etcd%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='etcd' /><meta property='article:tag' content='k8s' /><meta property='article:tag' content='高可用性' /><meta property='article:published_time' content='2023-12-20T18:25:32&#43;08:00'/><meta property='article:modified_time' content='2023-12-20T18:25:32&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/etcd高可用集群部署/cover.png' />
+<meta name="twitter:title" content="Etcd高可用集群部署">
+<meta name="twitter:description" content="搭建高可用 etcd 集群, 高可用的 etcd 正是高可用 k8s 集群的必备基石, 带你一步步生成 etcd 证书, 到 etcd 集群的部署与生产化运维实践"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/etcd高可用集群部署/cover.png' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#主机规划">主机规划</a></li>
+    <li><a href="#etcd-集群证书">etcd 集群证书</a>
+      <ol>
+        <li><a href="#安装-cfssl">安装 cfssl</a></li>
+        <li><a href="#生成默认证书">生成默认证书</a></li>
+        <li><a href="#修改证书">修改证书</a></li>
+        <li><a href="#生成-ca-证书">生成 CA 证书</a></li>
+        <li><a href="#创建-etcd-证书签名请求etcd-csrjson">创建 etcd 证书签名请求（etcd-csr.json)</a></li>
+        <li><a href="#使用-ca-证书签发-etcd-证书">使用 ca 证书签发 etcd 证书</a></li>
+        <li><a href="#复制证书">复制证书</a></li>
+      </ol>
+    </li>
+    <li><a href="#etcd-ha-部署">etcd HA 部署</a>
+      <ol>
+        <li><a href="#安装-etcd">安装 etcd</a></li>
+        <li><a href="#分别在各个节点启动-etcd">分别在各个节点启动 etcd</a></li>
+        <li><a href="#查看集群状态">查看集群状态</a></li>
+      </ol>
+    </li>
+    <li><a href="#etcd-集群备份与恢复">etcd 集群备份与恢复</a>
+      <ol>
+        <li><a href="#插入数据">插入数据</a></li>
+        <li><a href="#备份-etcd-数据">备份 etcd 数据</a></li>
+        <li><a href="#杀掉个节点-etcd-进程">杀掉个节点 etcd 进程</a></li>
+        <li><a href="#删除-etcd-数据">删除 etcd 数据</a></li>
+        <li><a href="#恢复-etcd-数据">恢复 etcd 数据</a></li>
+        <li><a href="#重启-etcd">重启 etcd</a></li>
+        <li><a href="#查看集群状态-1">查看集群状态</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/etcd%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/etcd%e9%ab%98%e5%8f%af%e7%94%a8%e9%9b%86%e7%be%a4%e9%83%a8%e7%bd%b2/cover.png" loading="lazy" alt="Featured image of post Etcd高可用集群部署" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/etcd/" >
+                etcd
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/etcd%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">Etcd高可用集群部署</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            搭建高可用 etcd 集群, 高可用的 etcd 正是高可用 k8s 集群的必备基石, 带你一步步生成 etcd 证书, 到 etcd 集群的部署与生产化运维实践
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 20, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    6 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <h2 id="主机规划">主机规划</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>主机</th>
+<th>IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>node1</td>
+<td>11.0.1.144</td>
+</tr>
+<tr>
+<td>node2</td>
+<td>11.0.1.145</td>
+</tr>
+<tr>
+<td>node3</td>
+<td>11.0.1.146</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>确保 Go 版本 1.15+</strong></p>
+<h2 id="etcd-集群证书">etcd 集群证书</h2>
+<h3 id="安装-cfssl">安装 cfssl</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">apt install golang-cfssl -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="生成默认证书">生成默认证书</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">cfssl print-defaults config &gt; ca-config.json
+</span></span><span class="line"><span class="cl">cfssl print-defaults crs &gt; ca-crs.json
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="修改证书">修改证书</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@ubuntu:~/tls# cat ca-config.json
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;signing&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;default&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;expiry&#34;</span>: <span class="s2">&#34;876000h&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;profiles&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;etcdha&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;expiry&#34;</span>: <span class="s2">&#34;876000h&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;usages&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;signing&#34;</span>,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;key encipherment&#34;</span>,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;client auth&#34;</span>,
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;server auth&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="o">]</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@ubuntu:~/tls# cat ca-csr.json
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;CN&#34;</span>: <span class="s2">&#34;CA&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;key&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;algo&#34;</span>: <span class="s2">&#34;rsa&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;size&#34;</span>: <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;names&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">        <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;C&#34;</span>: <span class="s2">&#34;CN&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;O&#34;</span>: <span class="s2">&#34;etcd&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;ST&#34;</span>: <span class="s2">&#34;xian&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;L&#34;</span>: <span class="s2">&#34;chengdu&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;OU&#34;</span>: <span class="s2">&#34;system&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="生成-ca-证书">生成 CA 证书</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">cfssl gencert -initca ca-csr.json <span class="p">|</span> cfssljson -bare ca
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="创建-etcd-证书签名请求etcd-csrjson">创建 etcd 证书签名请求（etcd-csr.json)</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@ubuntu:~/tls# cat etcd-csr.json
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;CN&#34;</span>: <span class="s2">&#34;etcd&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;hosts&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;127.0.0.1&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;11.0.1.144&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;11.0.1.145&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;11.0.1.146&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;key&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;algo&#34;</span>: <span class="s2">&#34;rsa&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;size&#34;</span>: <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;names&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;C&#34;</span>: <span class="s2">&#34;CN&#34;</span>,
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;O&#34;</span>: <span class="s2">&#34;etcdha&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="使用-ca-证书签发-etcd-证书">使用 ca 证书签发 etcd 证书</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">cfssl gencert -ca ca.pem -ca-key ca-key.pem -config ca-config.json -profile etcdha etcd-csr.json <span class="p">|</span> cfssljson -bare etcd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@ubuntu:~/tls# ls
+</span></span><span class="line"><span class="cl">ca-config.json  ca.csr  ca-csr.json  ca-key.pem  ca.pem  etcd.csr  etcd-csr.json  etcd-key.pem  etcd.pem
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="复制证书">复制证书</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">mkdir /opt/etcd -p
+</span></span><span class="line"><span class="cl">cp etcd*.pem ca*.pem /opt/etcd/ssl/
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /opt/etcd/ssl
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 确保事先有相应目录</span>
+</span></span><span class="line"><span class="cl">scp *.pem root@11.0.1.145:/opt/etcd/ssl/
+</span></span><span class="line"><span class="cl">scp *.pem root@11.0.1.146:/opt/etcd/ssl/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="etcd-ha-部署">etcd HA 部署</h2>
+<h3 id="安装-etcd">安装 etcd</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nv">ETCD_VER</span><span class="o">=</span>v3.5.11
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># choose either URL</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GOOGLE_URL</span><span class="o">=</span>https://storage.googleapis.com/etcd
+</span></span><span class="line"><span class="cl"><span class="nv">GITHUB_URL</span><span class="o">=</span>https://github.com/etcd-io/etcd/releases/download
+</span></span><span class="line"><span class="cl"><span class="nv">DOWNLOAD_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">GOOGLE_URL</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">rm -f /tmp/etcd-<span class="si">${</span><span class="nv">ETCD_VER</span><span class="si">}</span>-linux-amd64.tar.gz
+</span></span><span class="line"><span class="cl">rm -rf /tmp/etcd-download-test <span class="o">&amp;&amp;</span> mkdir -p /tmp/etcd-download-test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">curl -L <span class="si">${</span><span class="nv">DOWNLOAD_URL</span><span class="si">}</span>/<span class="si">${</span><span class="nv">ETCD_VER</span><span class="si">}</span>/etcd-<span class="si">${</span><span class="nv">ETCD_VER</span><span class="si">}</span>-linux-amd64.tar.gz -o /tmp/etcd-<span class="si">${</span><span class="nv">ETCD_VER</span><span class="si">}</span>-linux-amd64.tar.gz
+</span></span><span class="line"><span class="cl">tar xzvf /tmp/etcd-<span class="si">${</span><span class="nv">ETCD_VER</span><span class="si">}</span>-linux-amd64.tar.gz -C /tmp/etcd-download-test --strip-components<span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">rm -f /tmp/etcd-<span class="si">${</span><span class="nv">ETCD_VER</span><span class="si">}</span>-linux-amd64.tar.gz
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">/tmp/etcd-download-test/etcd --version
+</span></span><span class="line"><span class="cl">/tmp/etcd-download-test/etcdctl version
+</span></span><span class="line"><span class="cl">/tmp/etcd-download-test/etcdutl version
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mv /tmp/etcd-download-test/etcd /bin/
+</span></span><span class="line"><span class="cl">mv /tmp/etcd-download-test/etcdctl /bin/
+</span></span><span class="line"><span class="cl">mv /tmp/etcd-download-test/etcdutl /bin/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="分别在各个节点启动-etcd">分别在各个节点启动 etcd</h3>
+<p>node1:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nohup etcd --name infra0 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--data-dir<span class="o">=</span>/tmp/etcd/infra0 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-peer-urls https://11.0.1.144:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-advertise-peer-urls https://11.0.1.144:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-client-urls https://11.0.1.144:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--advertise-client-urls https://11.0.1.144:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-cluster-token etcd-cluster-1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-cluster <span class="nv">infra0</span><span class="o">=</span>https://11.0.1.144:2380,infra1<span class="o">=</span>https://11.0.1.145:2380,infra2<span class="o">=</span>https://11.0.1.146:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-cluster-state new <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--client-cert-auth --trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-client-cert-auth --peer-trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem 2&gt;<span class="p">&amp;</span><span class="m">1</span> &gt; /var/log/infra0.log <span class="p">&amp;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>node2:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nohup etcd --name infra1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--data-dir<span class="o">=</span>/tmp/etcd/infra1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-peer-urls https://11.0.1.145:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-advertise-peer-urls https://11.0.1.145:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-client-urls https://11.0.1.145:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--advertise-client-urls https://11.0.1.145:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-cluster-token etcd-cluster-1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-cluster <span class="nv">infra0</span><span class="o">=</span>https://11.0.1.144:2380,infra1<span class="o">=</span>https://11.0.1.145:2380,infra2<span class="o">=</span>https://11.0.1.146:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-cluster-state new <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--client-cert-auth --trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-client-cert-auth --peer-trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem 2&gt;<span class="p">&amp;</span><span class="m">1</span> &gt; /var/log/infra1.log <span class="p">&amp;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>node3:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nohup etcd --name infra2 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--data-dir<span class="o">=</span>/tmp/etcd/infra2 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-peer-urls https://11.0.1.146:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-advertise-peer-urls https://11.0.1.146:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-client-urls https://11.0.1.146:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--advertise-client-urls https://11.0.1.146:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-cluster-token etcd-cluster-1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-cluster <span class="nv">infra0</span><span class="o">=</span>https://11.0.1.144:2380,infra1<span class="o">=</span>https://11.0.1.145:2380,infra2<span class="o">=</span>https://11.0.1.146:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--initial-cluster-state new <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--client-cert-auth --trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-client-cert-auth --peer-trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem 2&gt;<span class="p">&amp;</span><span class="m">1</span> &gt; /var/log/infra2.log <span class="p">&amp;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="查看集群状态">查看集群状态</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@ubuntu:/opt/etcd/ssl# etcdctl --endpoints<span class="o">=</span>https://11.0.1.144:2379  --cacert /opt/etcd/ssl/ca.pem --cert /opt/etcd/ssl/etcd.pem --key /opt/etcd/ssl/etcd-key.pem  member list -wtable
+</span></span><span class="line"><span class="cl">+------------------+---------+--------+-------------------------+-------------------------+------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span>        ID        <span class="p">|</span> STATUS  <span class="p">|</span>  NAME  <span class="p">|</span>       PEER ADDRS        <span class="p">|</span>      CLIENT ADDRS       <span class="p">|</span> IS LEARNER <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+------------------+---------+--------+-------------------------+-------------------------+------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span>  68e936a39e332ee <span class="p">|</span> started <span class="p">|</span> infra1 <span class="p">|</span> https://11.0.1.145:2380 <span class="p">|</span> https://11.0.1.145:2379 <span class="p">|</span>      <span class="nb">false</span> <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> 65d6166ada62ab60 <span class="p">|</span> started <span class="p">|</span> infra0 <span class="p">|</span> https://11.0.1.144:2380 <span class="p">|</span> https://11.0.1.144:2379 <span class="p">|</span>      <span class="nb">false</span> <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> 8a036567f69e370a <span class="p">|</span> started <span class="p">|</span> infra2 <span class="p">|</span> https://11.0.1.146:2380 <span class="p">|</span> https://11.0.1.146:2379 <span class="p">|</span>      <span class="nb">false</span> <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+------------------+---------+--------+-------------------------+-------------------------+------------+
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="etcd-集群备份与恢复">etcd 集群备份与恢复</h2>
+<h3 id="插入数据">插入数据</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@ubuntu:~# etcdctl --endpoints<span class="o">=</span>https://11.0.1.144:2379  --cacert /opt/etcd/ssl/ca.pem --cert /opt/etcd/ssl/etcd.pem --key /opt/etcd/ssl/etcd-key.pem  put /test1 val1
+</span></span><span class="line"><span class="cl">OK
+</span></span><span class="line"><span class="cl">root@ubuntu:~# etcdctl --endpoints<span class="o">=</span>https://11.0.1.144:2379  --cacert /opt/etcd/ssl/ca.pem --cert /opt/etcd/ssl/etcd.pem --key /opt/etcd/ssl/etcd-key.pem  put /test2 val2
+</span></span><span class="line"><span class="cl">OK
+</span></span><span class="line"><span class="cl">root@ubuntu:~# etcdctl --endpoints<span class="o">=</span>https://11.0.1.144:2379  --cacert /opt/etcd/ssl/ca.pem --cert /opt/etcd/ssl/etcd.pem --key /opt/etcd/ssl/etcd-key.pem  put /test1/t1 val1/v1
+</span></span><span class="line"><span class="cl">OK
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@ubuntu:~# etcdctl --endpoints<span class="o">=</span>https://11.0.1.144:2379  --cacert /opt/etcd/ssl/ca.pem --cert /opt/etcd/ssl/etcd.pem --key /opt/etcd/ssl/etcd-key.pem  get --prefix /test
+</span></span><span class="line"><span class="cl">/test1
+</span></span><span class="line"><span class="cl">val1
+</span></span><span class="line"><span class="cl">/test1/t1
+</span></span><span class="line"><span class="cl">val1/v1
+</span></span><span class="line"><span class="cl">/test2
+</span></span><span class="line"><span class="cl">val2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="备份-etcd-数据">备份 etcd 数据</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">etcdctl --endpoints<span class="o">=</span>https://11.0.1.144:2379  --cacert /opt/etcd/ssl/ca.pem --cert /opt/etcd/ssl/etcd.pem --key /opt/etcd/ssl/etcd-key.pem  snapshot save /tmp/snapshot.db
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">scp /tmp/snapshot.db root@11.0.1.145:/tmp/
+</span></span><span class="line"><span class="cl">scp /tmp/snapshot.db root@11.0.1.146:/tmp/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="杀掉个节点-etcd-进程">杀掉个节点 etcd 进程</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">ps -ef <span class="p">|</span> grep infra <span class="p">|</span> grep -v grep <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> xargs <span class="nb">kill</span> -9
+</span></span><span class="line"><span class="cl">ps -ef <span class="p">|</span> grep etcd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="删除-etcd-数据">删除 etcd 数据</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">rm -rf /tmp/etcd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="恢复-etcd-数据">恢复 etcd 数据</h3>
+<p>node1:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">etcdctl snapshot restore /tmp/snapshot.db <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --name infra0 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --data-dir<span class="o">=</span>/tmp/etcd/infra0 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --initial-cluster <span class="nv">infra0</span><span class="o">=</span>https://11.0.1.144:2380,infra1<span class="o">=</span>https://11.0.1.145:2379,infra2<span class="o">=</span>https://11.0.1.146:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --initial-cluster-token etcd-cluster-1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --initial-advertise-peer-urls https://11.0.1.144:2380
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>node2:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">etcdctl snapshot restore /tmp/snapshot.db <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name infra1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --data-dir<span class="o">=</span>/tmp/etcd/infra1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --initial-cluster <span class="nv">infra0</span><span class="o">=</span>https://11.0.1.144:2380,infra1<span class="o">=</span>https://11.0.1.145:2380,infra2<span class="o">=</span>https://11.0.1.146:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --initial-cluster-token etcd-cluster-1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --initial-advertise-peer-urls https://11.0.1.145:2380
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>node3:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">etcdctl snapshot restore /tmp/snapshot.db <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --name infra2 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --data-dir<span class="o">=</span>/tmp/etcd/infra2 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --initial-cluster <span class="nv">infra0</span><span class="o">=</span>https://11.0.1.144:2380,infra1<span class="o">=</span>https://11.0.1.145:2380,infra2<span class="o">=</span>https://11.0.1.146:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --initial-cluster-token etcd-cluster-1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --initial-advertise-peer-urls https://11.0.1.146:2380
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="重启-etcd">重启 etcd</h3>
+<p>node1:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nohup etcd --name infra0 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--data-dir<span class="o">=</span>/tmp/etcd/infra0 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-peer-urls https://11.0.1.144:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-client-urls https://11.0.1.144:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--advertise-client-urls https://11.0.1.144:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--client-cert-auth --trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-client-cert-auth --peer-trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem 2&gt;<span class="p">&amp;</span><span class="m">1</span> &gt; /var/log/infra0.log <span class="p">&amp;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>node2:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nohup etcd --name infra1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--data-dir<span class="o">=</span>/tmp/etcd/infra1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-peer-urls https://11.0.1.145:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-client-urls https://11.0.1.145:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--advertise-client-urls https://11.0.1.145:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--client-cert-auth --trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-client-cert-auth --peer-trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem 2&gt;<span class="p">&amp;</span><span class="m">1</span> &gt; /var/log/infra1.log <span class="p">&amp;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>node3:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nohup etcd --name infra2 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--data-dir<span class="o">=</span>/tmp/etcd/infra2 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-peer-urls https://11.0.1.146:2380 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--listen-client-urls https://11.0.1.146:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--advertise-client-urls https://11.0.1.146:2379 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--client-cert-auth --trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-client-cert-auth --peer-trusted-ca-file<span class="o">=</span>/opt/etcd/ssl/ca.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-cert-file<span class="o">=</span>/opt/etcd/ssl/etcd.pem <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--peer-key-file<span class="o">=</span>/opt/etcd/ssl/etcd-key.pem 2&gt;<span class="p">&amp;</span><span class="m">1</span> &gt; /var/log/infra2.log <span class="p">&amp;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="查看集群状态-1">查看集群状态</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@ubuntu:/tmp# etcdctl --endpoints<span class="o">=</span>https://11.0.1.146:2379  --cacert /opt/etcd/ssl/ca.pem --cert /opt/etcd/ssl/etcd.pem --key /opt/etcd/ssl/etcd-key.pem  member list -wtable
+</span></span><span class="line"><span class="cl">+------------------+-----------+--------+-------------------------+-------------------------+------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span>        ID        <span class="p">|</span>  STATUS   <span class="p">|</span>  NAME  <span class="p">|</span>       PEER ADDRS        <span class="p">|</span>      CLIENT ADDRS       <span class="p">|</span> IS LEARNER <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+------------------+-----------+--------+-------------------------+-------------------------+------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span>  68e936a39e332ee <span class="p">|</span>   started <span class="p">|</span> infra1 <span class="p">|</span> https://11.0.1.145:2380 <span class="p">|</span> https://11.0.1.145:2379 <span class="p">|</span>      <span class="nb">false</span> <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> 65d6166ada62ab60 <span class="p">|</span> unstarted <span class="p">|</span>        <span class="p">|</span> https://11.0.1.144:2380 <span class="p">|</span>                         <span class="p">|</span>      <span class="nb">false</span> <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> 8a036567f69e370a <span class="p">|</span>   started <span class="p">|</span> infra2 <span class="p">|</span> https://11.0.1.146:2380 <span class="p">|</span> https://11.0.1.146:2379 <span class="p">|</span>      <span class="nb">false</span> <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+------------------+-----------+--------+-------------------------+-------------------------+------------+
+</span></span><span class="line"><span class="cl">root@ubuntu:/tmp# etcdctl --endpoints<span class="o">=</span>https://11.0.1.146:2379  --cacert /opt/etcd/ssl/ca.pem --cert /opt/etcd/ssl/etcd.pem --key /opt/etcd/ssl/etcd-key.pem  get --prefix /
+</span></span><span class="line"><span class="cl">/test1
+</span></span><span class="line"><span class="cl">val1
+</span></span><span class="line"><span class="cl">/test1/t1
+</span></span><span class="line"><span class="cl">val1/v1
+</span></span><span class="line"><span class="cl">/test2
+</span></span><span class="line"><span class="cl">val2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><em>infra0未启动成功, 其余两个节点正常, 原因未知, 待大佬指正</em></p>
+<blockquote>
+<p>参考:</p>
+<ol>
+<li><a class="link" href="https://www.cnblogs.com/yangzp/p/15692046.html"  target="_blank" rel="noopener"
+    >etcd使用Cfssl生成自签证书(pem) - 西瓜君~ - 博客园 (cnblogs.com)</a></li>
+<li>[<a class="link" href="https://www.cnblogs.com/iiiiher/p/8085698.html"  target="_blank" rel="noopener"
+    >svc]证书各个字段的含义 - _毛台 - 博客园 (cnblogs.com)</a></li>
+</ol>
+</blockquote>
+
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/etcd/">etcd</a>
+        
+            <a href="/tags/k8s/">k8s</a>
+        
+            <a href="/tags/%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7/">高可用性</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
