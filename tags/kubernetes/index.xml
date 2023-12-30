@@ -526,7 +526,12 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 把 controlPlaneEndpoint 修改为高可用地址即可&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description>
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;单 master 转 vip 高可用的坑:&lt;/p&gt;
+&lt;p&gt;如果遇到加入新节点时, 出现 tls 相关报错, 显示连接 ip 不支持, 则需要&lt;a class=&#34;link&#34; href=&#34;https://ai-feier.github.io/p/%e6%89%a9%e5%b1%95-apiserver-%e8%bf%9e%e6%8e%a5%e8%ae%a4%e8%af%81-ip-%e8%af%81%e4%b9%a6%e6%9b%b4%e6%96%b0/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;更新 apiserver 证书&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
         </item>
         <item>
         <title>基于 Containerd 部署k8s 1.28.1 (Ubuntu 20.04)</title>
