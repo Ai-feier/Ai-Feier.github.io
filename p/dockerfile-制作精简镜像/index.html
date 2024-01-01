@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='从 docker 原理出发, 理解 rootfs, 知晓镜像层, 而后精简镜像'>
+<meta name="keywords" content="docker, dockerfile, 精简镜像, 容器压缩"><title>Dockerfile: 制作精简镜像</title>
+
+<link rel='canonical' href='/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Dockerfile: 制作精简镜像'>
+<meta property='og:description' content='从 docker 原理出发, 理解 rootfs, 知晓镜像层, 而后精简镜像'>
+<meta property='og:url' content='/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='docker' /><meta property='article:tag' content='dockerfile' /><meta property='article:published_time' content='2024-01-01T15:01:35&#43;08:00'/><meta property='article:modified_time' content='2024-01-01T15:01:35&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/cover.jpg' />
+<meta name="twitter:title" content="Dockerfile: 制作精简镜像">
+<meta name="twitter:description" content="从 docker 原理出发, 理解 rootfs, 知晓镜像层, 而后精简镜像"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/cover.jpg' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#写时复制">写时复制</a></li>
+    <li><a href="#制作精简镜像方法">制作精简镜像方法:</a>
+      <ol>
+        <li><a href="#多条命令构建">多条命令构建</a>
+          <ol>
+            <li><a href="#构造镜像">构造镜像</a></li>
+            <li><a href="#rootfs">ROOTFS</a></li>
+          </ol>
+        </li>
+        <li><a href="#一条命令构建-ubuntu">一条命令构建 ubuntu</a>
+          <ol>
+            <li><a href="#构造镜像-1">构造镜像</a></li>
+            <li><a href="#rootfs-1">ROOTFS</a></li>
+          </ol>
+        </li>
+        <li><a href="#更改基础镜像为-debian">更改基础镜像为 debian</a>
+          <ol>
+            <li><a href="#构造镜像-2">构造镜像</a></li>
+            <li><a href="#rootfs-2">ROOTFS</a></li>
+          </ol>
+        </li>
+        <li><a href="#使用分段构造">使用分段构造</a>
+          <ol>
+            <li><a href="#构造镜像-3">构造镜像</a></li>
+            <li><a href="#rootfs-3">ROOTFS</a></li>
+          </ol>
+        </li>
+        <li><a href="#镜像压缩">镜像压缩</a>
+          <ol>
+            <li><a href="#安装">安装</a></li>
+            <li><a href="#使用">使用</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/cover.jpg" loading="lazy" alt="Featured image of post Dockerfile: 制作精简镜像" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/docker/" >
+                docker
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/">Dockerfile: 制作精简镜像</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            从 docker 原理出发, 理解 rootfs, 知晓镜像层, 而后精简镜像
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 01, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <h2 id="写时复制">写时复制</h2>
+<p>dockerfile 一条指令对应一层, 最多 127 层</p>
+<p>从 busybox 入手理解 docker 镜像层的写时复制</p>
+<p>dockerfile:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> busybox </span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> mkdir -p /tmp/foo<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 新建一个 100M 的文件</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/tmp/foo/bar <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">100</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 删除文件</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> rm /tmp/foo/bar <span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>一条指令对应 1 层: 4 层</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ docker build -t busybox:copy-on-write -f dockerfile1 .
+</span></span><span class="line"><span class="cl">$ docker images <span class="p">|</span> grep busybox
+</span></span><span class="line"><span class="cl">busybox      copy-on-write   1f30f7a048eb   About a minute ago   106MB
+</span></span><span class="line"><span class="cl">busybox      latest          beae173ccac6   <span class="m">2</span> years ago          1.24MB
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看得出来就算镜像删除的文件, 下层创建的不会消失, 删除指令创建的层只会叠加上去</p>
+<p>使用 docker inspect 查看具体的层信息</p>
+<p>busybox:latest</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect busybox:latest
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Type&#34;</span>: <span class="s2">&#34;layers&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Layers&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:82ae998286b2bba64ce571578647adcabef93d53867748d6046cc844ff193a83&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">......
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>busybox:copy-on-write</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect busybox:copy-on-write
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Type&#34;</span>: <span class="s2">&#34;layers&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Layers&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:82ae998286b2bba64ce571578647adcabef93d53867748d6046cc844ff193a83&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:f70c1ce3ef10664a7aacf002afd20aa16f56bf98a83729b640c97363b10d329c&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:3c38ae07f686f954897d06c4c56e65e17d1be5843f2c02e8f2d6734b4978dd83&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:69d9b35636c7fa1f62c4bfe15f3c65f247553b122fe38af17dc34666f8cb2314&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">......
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到 busybox:copy-on-write 明显增加了层数</p>
+<h2 id="制作精简镜像方法">制作精简镜像方法:</h2>
+<ol>
+<li>串联 Dockerfile 指令</li>
+<li>选用更小的镜像</li>
+<li>压缩镜像</li>
+</ol>
+<p><strong>案例: 二进制部署 redis</strong></p>
+<h3 id="多条命令构建">多条命令构建</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:trusty</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> VER 7.2.3<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 安装依赖</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt update<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt install wget make gcc -y<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 获取源码包</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> wget https://download.redis.io/releases/redis-<span class="nv">$VER</span>.tar.gz<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> tar zxvf redis-<span class="nv">$VER</span>.tar.gz<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> redis-$VER</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 编译源码包</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> make<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> mkdir /usr/local/redis<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> make install <span class="nv">PREFIX</span><span class="o">=</span>/usr/local/redis <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get clean <span class="o">&amp;&amp;</span> apt-get remove -y wget gcc make <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 启动 redis</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/usr/local/redis/redis-server&#34;</span><span class="p">,</span> <span class="s2">&#34;/usr/local/redis/redis.conf&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="构造镜像">构造镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:many-lines-ubuntu -f dockerfile2 .
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="rootfs">ROOTFS</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Type&#34;</span>: <span class="s2">&#34;layers&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Layers&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:f2fa9f4cf8fd0a521d40e34492b522cee3f35004047e617c75fadeb8bfd1e6b7&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:30d3c4334a2379748937816c01f5c972a8291a5ccc958d6b33d735457a16196e&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:83109fa660b2ed9307948505abd3c1f24c27c64009691067edb765bd3714b98d&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:87c240db20b96e01aa53111dbf1a71b54095e95f2bb32076a7aee2de148aaaf1&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:c45a2d4a77a5eb88bd2bfaaa691468eade520c8da9b3d39d30813e9882ff7b0b&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:65faa09184aa345eeace30548ad9a337e4582f9b23d8a0871ad8a5be08fe6c09&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:af54af5d0e940764f3cd2b78d5ab121b2dba5eb1f527e81f8c70c3deeddf15b9&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:1819a309db341aed9bc39e040a3695151d2b33c9d1d267069d6f3918f3871a1d&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:e54f0072570654b50dd413197f5d921da283c90689d79336ed0c313112d3a591&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:b6499beec6f2099e86807b4fee915170820834dfafae3ca324309db26e5660fb&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:14a95f408690a544c45387595381902f921eb0356a53f8a73495198dc113b8a1&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:a545e5b1525c37272eb70af26d8baab872f592c5f71ba934353a7104f0680e21&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">......
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由于我们写了写多条 RUN 指令, 所以镜像 ROOTFS 极速增长</p>
+<h3 id="一条命令构建-ubuntu">一条命令构建 ubuntu</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:trusty</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> VER 7.2.3<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt update <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    apt install wget make gcc -y <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    wget https://download.redis.io/releases/redis-<span class="nv">$VER</span>.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    tar zxvf  redis-<span class="nv">$VER</span>.tar.gz <span class="o">&amp;&amp;</span> <span class="nb">cd</span> redis-<span class="nv">$VER</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    make <span class="o">&amp;&amp;</span> mkdir /usr/local/redis <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    make install <span class="nv">PREFIX</span><span class="o">=</span>/usr/local/redis <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    mkdir -p /usr/local/redis/<span class="o">{</span>conf,bin<span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    cp redis.conf /usr/local/redis/conf <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    apt-get clean <span class="o">&amp;&amp;</span> apt-get remove -y wget gcc make <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 启动 redis</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/usr/local/redis/bin/redis-server&#34;</span><span class="p">,</span> <span class="s2">&#34;/usr/local/redis/conf&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="构造镜像-1">构造镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:one-line-ubuntu -f dockerfile2 .
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="rootfs-1">ROOTFS</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect redis:one-line-ubuntu
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Type&#34;</span>: <span class="s2">&#34;layers&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Layers&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:f2fa9f4cf8fd0a521d40e34492b522cee3f35004047e617c75fadeb8bfd1e6b7&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:30d3c4334a2379748937816c01f5c972a8291a5ccc958d6b33d735457a16196e&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:83109fa660b2ed9307948505abd3c1f24c27c64009691067edb765bd3714b98d&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:72caaf8c025e80d97674e4d68ac4628b8dabab70dc9b73ef817c51b694c45daa&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">......
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看出指令数减少, ROOTFS 层数也明显减少</p>
+<h3 id="更改基础镜像为-debian">更改基础镜像为 debian</h3>
+<blockquote>
+<p>巨坑: debian 与 alpine 的镜像在切换国内时问题非常多, 建议直接使用原始镜像的软件源(确保能够访问外网)</p>
+<p>问题概览:</p>
+<ol>
+<li>debian 低版本切换阿里源时, 不支持 https: 需要将 http 软连接为 https</li>
+<li>显示 gpg key 错误时: wget <a class="link" href="http://http.us.debian.org/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_2023.4_all.deb"  target="_blank" rel="noopener"
+    >http://http.us.debian.org/debian/pool/main/d/debian-archive-keyring/debian-archive-keyring_2023.4_all.deb</a> &amp;&amp; dpkg -i debian-archive-keyring_2023.4_all.deb</li>
+<li>alpline 与 debian 安装的 gcc 可能会出现版本问题, 需要你更换 gcc 版本</li>
+</ol>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> debian</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> VER 7.2.3<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    apt-get install wget make gcc -y <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    wget https://download.redis.io/releases/redis-<span class="nv">$VER</span>.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    tar zxvf  redis-<span class="nv">$VER</span>.tar.gz <span class="o">&amp;&amp;</span> <span class="nb">cd</span> redis-<span class="nv">$VER</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    make <span class="o">&amp;&amp;</span> mkdir /usr/local/redis <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    make install <span class="nv">PREFIX</span><span class="o">=</span>/usr/local/redis <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    mkdir -p /usr/local/redis/<span class="o">{</span>conf,bin<span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    cp redis.conf /usr/local/redis/conf <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    apt-get clean <span class="o">&amp;&amp;</span> apt-get remove -y wget gcc make <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 启动 redis</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/usr/local/redis/bin/redis-server&#34;</span><span class="p">,</span> <span class="s2">&#34;/usr/local/redis/conf&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="构造镜像-2">构造镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:one-line-debian -f dockerfile2 .
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="rootfs-2">ROOTFS</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect redis:one-line-debian
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Type&#34;</span>: <span class="s2">&#34;layers&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Layers&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:ae134c61b154341a1dd932bd88cb44e805837508284e5d60ead8e94519eb339f&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:98547bcc9e3b713c48a4f5ca069fd442eaa71bc61b68c9a3c00a4af0d73cbe2d&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">......
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看出将多条指令合并书写能够有效减少 ROOTFS 层数</p>
+<h3 id="使用分段构造">使用分段构造</h3>
+<p>多段构造, 在到最后一段, 有小镜像承接, 前面段的内容不会保留下来</p>
+<p>推荐镜像:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>镜像</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scrach</td>
+<td>空镜像, 不带任何调试工具</td>
+</tr>
+<tr>
+<td>busybox</td>
+<td>小镜像, 带有基础调试工具</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>因为我们需要解压 tar 包, scrath 没有解压工具, 我们使用 busybox 演示</em></p>
+<p>使用 busybox 作为基础镜像</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:trusty as builder</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> VER 7.2.3<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt update <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    apt install wget make gcc -y <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    wget https://download.redis.io/releases/redis-<span class="nv">$VER</span>.tar.gz <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    tar zxvf  redis-<span class="nv">$VER</span>.tar.gz <span class="o">&amp;&amp;</span> <span class="nb">cd</span> redis-<span class="nv">$VER</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    make <span class="o">&amp;&amp;</span> mkdir /usr/local/redis <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    make install <span class="nv">PREFIX</span><span class="o">=</span>/usr/local/redis <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    cp redis.conf /usr/local/redis/conf <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    apt-get clean <span class="o">&amp;&amp;</span> apt-get remove -y wget gcc make <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> tar cvf /123.tar /usr/local/redis/<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> busybox</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>builder /123.tar /<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> tar xvf /123.tar -C /usr/local/<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 启动 redis</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/usr/local/redis/bin/redis-server&#34;</span><span class="p">,</span> <span class="s2">&#34;/usr/local/redis/conf&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="构造镜像-3">构造镜像</h4>
+<blockquote>
+<p>补充: 如果你遇到 Dockerfile 构造时的错误时, 可以加上 <code>--progress=plain --no-cache</code>查看详细构建日志</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:with-busybox -f dockerfile7 . --progress<span class="o">=</span>plain
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="rootfs-3">ROOTFS</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect redis:with-busybox
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Type&#34;</span>: <span class="s2">&#34;layers&#34;</span>,
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Layers&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:82ae998286b2bba64ce571578647adcabef93d53867748d6046cc844ff193a83&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:335bc67496eb30fe68fe25e6c8f97cb6b74d9989a1c6b24012971097bf22a1a3&#34;</span>,
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;sha256:abf10e66d6bddcb7e00f41707d71515b1927b1984889aa13ca6b232f9fb78b27&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">......
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="镜像压缩">镜像压缩</h3>
+<blockquote>
+<p>了解即可 <code>docker squash</code>已不在维护</p>
+</blockquote>
+<h4 id="安装">安装</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">wget https://github.com/jwilder/docker-squash/releases/download/v0.2.0/docker-squash-linux-amd64-v0.2.0.tar.gz 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">tar xzvf docker-squash-linux-amd64-v0.2.0.tar.gz -C /usr/local/bin/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="使用">使用</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@MKT:~/goproject/httppod/tmp# docker save redis:many-lines-ubuntu <span class="p">|</span> docker-squash -verbose -t redis:squash <span class="p">|</span> docker load
+</span></span><span class="line"><span class="cl">Loading <span class="nb">export</span> from STDIN using /tmp/docker-squash272131964 <span class="k">for</span> tempdir
+</span></span><span class="line"><span class="cl">Loaded image w/ <span class="m">13</span> layers
+</span></span><span class="line"><span class="cl">  -  redis <span class="o">(</span><span class="m">1</span> tags<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Extracting layers...
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/72c5745a74e809afa1c8bbb09164a25a99971cd6ebb60bf9a3c7c399932e2d92/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/e0d139e2e59aa8505f205730d7bd8924bf1289034504be42b618c284420cb9c2/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/10bc199db63a91cf1c3d75fddb1083740e09115320801e0e34f517f8160bd326/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/228aa3e189d788785b2d8c129b6bbf1553ad34e141608706f2d0459d5a1be035/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/42f6beebfd61e1ff415ab2237fdb49bd34dee9f319a1d49e2ca525dc18823e5d/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/45ce59804d1f796310cf5ba3e5878be2e63d644ba271c8d33a315230e737324f/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/462272b123320a876d404d41dac9f20ecf24140f22d979896cc2d0bfa487bae2/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/63b9671bfe8674a1e65dfbb88881ddb1c214eabf89f6ed98e3f0e1deaca9bd8f/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/075972677a1d485c0ba03f4d3b2fb6e3c39f273628f6f0d702149faa4e2831bd/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/88f0016636d34b6a24606c2db4d7ea26c0a02d830383e46aee831c2e1db897a9/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/a8626ef4bd7f2ec2fde454e5263f09eea4d369983ef770abb470f1688baa6681/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/a8ea63a42a3c2e60d8738e8bd81be0502d4bc6ecc827c8e472e171d4abf7e5cf/layer.tar
+</span></span><span class="line"><span class="cl">  -  /tmp/docker-squash272131964/b795b8b69dcd58cbf17a234cba5e8d1de61da850032d781ae92b3ba9eb0fdb69/layer.tar
+</span></span><span class="line"><span class="cl">Inserted new layer 2619184f193f after 228aa3e189d7
+</span></span><span class="line"><span class="cl">  -  228aa3e189d7
+</span></span><span class="line"><span class="cl">  -&gt; 2619184f193f /bin/sh -c <span class="c1">#(squash) from 228aa3e189d7</span>
+</span></span><span class="line"><span class="cl">  -  075972677a1d
+</span></span><span class="line"><span class="cl">  -  10bc199db63a
+</span></span><span class="line"><span class="cl">  -  a8626ef4bd7f
+</span></span><span class="line"><span class="cl">  -  88f0016636d3
+</span></span><span class="line"><span class="cl">  -  e0d139e2e59a
+</span></span><span class="line"><span class="cl">  -  63b9671bfe86
+</span></span><span class="line"><span class="cl">  -  45ce59804d1f
+</span></span><span class="line"><span class="cl">  -  462272b12332
+</span></span><span class="line"><span class="cl">  -  b795b8b69dcd
+</span></span><span class="line"><span class="cl">  -  42f6beebfd61
+</span></span><span class="line"><span class="cl">  -  a8ea63a42a3c
+</span></span><span class="line"><span class="cl">  -  72c5745a74e8
+</span></span><span class="line"><span class="cl">Squashing from 2619184f193f into 2619184f193f
+</span></span><span class="line"><span class="cl">  -  Deleting whiteouts <span class="k">for</span> layer 075972677a1d
+</span></span><span class="line"><span class="cl">  -  Deleting whiteouts <span class="k">for</span> layer 10bc199db63a
+</span></span><span class="line"><span class="cl">Removing extracted layers
+</span></span><span class="line"><span class="cl">Tagging 2619184f193f as redis:squash
+</span></span><span class="line"><span class="cl">Tarring new image to STDOUT
+</span></span><span class="line"><span class="cl">Done. New image created.
+</span></span><span class="line"><span class="cl">  -  228aa3e189d7 54.036378 years  206.1 MB
+</span></span><span class="line"><span class="cl">  -  2619184f193f <span class="m">17</span> seconds /bin/sh -c <span class="c1">#(squash) from 228aa3e189d7 370.1 MB</span>
+</span></span><span class="line"><span class="cl">Removing tempdir /tmp/docker-squash272131964
+</span></span><span class="line"><span class="cl">Loaded image: redis:many-lines-ubuntu
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="总结">总结</h2>
+<p>镜像大小</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@MKT:~/goproject/httppod/tmp# docker images
+</span></span><span class="line"><span class="cl">REPOSITORY   TAG                 IMAGE ID       CREATED             SIZE
+</span></span><span class="line"><span class="cl">redis        with-busybox        a26dc68d9da9   <span class="m">17</span> minutes ago      65.1MB
+</span></span><span class="line"><span class="cl">busybox      copy-on-write       e71e45a955a2   <span class="m">26</span> minutes ago      109MB
+</span></span><span class="line"><span class="cl">redis        many-lines-ubuntu   cf3ded3f5a5f   <span class="m">43</span> minutes ago      565MB
+</span></span><span class="line"><span class="cl">redis        one-line-debian     ac157643d4a6   About an hour ago   669MB
+</span></span><span class="line"><span class="cl">redis        one-line-ubuntu     86be0695bcf2   <span class="m">2</span> hours ago         562MB
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>精简镜像方式:</p>
+<ol>
+<li>使用单条指令替换多条指令</li>
+<li>使用更小的基础镜像</li>
+<li>使用镜像压缩工具</li>
+</ol>
+<p>参考:</p>
+<blockquote>
+<ol>
+<li><a class="link" href="https://www.cnblogs.com/radondb/p/16627585.html"  target="_blank" rel="noopener"
+    >容器化 | 使用 Alpine 构建 Redis 镜像 - RadonDB - 博客园 (cnblogs.com)</a></li>
+<li><a class="link" href="https://www.cnblogs.com/zhujingzhi/p/9742085.html"  target="_blank" rel="noopener"
+    >基于alpine用dockerfile创建的nginx镜像 - 一本正经的搞事情 - 博客园 (cnblogs.com)</a></li>
+<li><a class="link" href="https://blog.csdn.net/fenlin88l/article/details/89154900"  target="_blank" rel="noopener"
+    >redis二进制安装_二进制安装redis-CSDN博客</a></li>
+<li><a class="link" href="https://stackoverflow.com/questions/74531081/debian-8-jessie-archive-debian-org-gpg-error-keyexpired-since-2022-11-19-what-n"  target="_blank" rel="noopener"
+    >apt get - Debian 8 Jessie archive.debian.org GPG error KEYEXPIRED since 2022-11-19 (what now?) - Stack Overflow</a></li>
+</ol>
+</blockquote>
+
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/docker/">docker</a>
+        
+            <a href="/tags/dockerfile/">Dockerfile</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 -  2024 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
