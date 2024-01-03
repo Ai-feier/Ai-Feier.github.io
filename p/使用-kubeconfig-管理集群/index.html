@@ -246,28 +246,28 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ol>
+  <ul>
     <li><a href="#k8s-集群配置">k8s 集群配置</a></li>
     <li><a href="#认识-kubeconfig">认识 kubeconfig</a></li>
     <li><a href="#kubectl-config-参数详解">kubectl config 参数详解</a></li>
     <li><a href="#kubeconifg-使用">kubeconifg 使用</a>
-      <ol>
+      <ul>
         <li><a href="#配置文件参考">配置文件参考:</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#生成新的-context">生成新的 context</a>
-      <ol>
+      <ul>
         <li><a href="#新增-context">新增 context:</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#切换-context-上下文">切换 context 上下文</a></li>
     <li><a href="#多集群管理">多集群管理</a>
-      <ol>
+      <ul>
         <li><a href="#创建-context">创建 context</a></li>
         <li><a href="#新增-context-1">新增 context:</a></li>
-      </ol>
+      </ul>
     </li>
-  </ol>
+  </ul>
 </nav>
         </div>
     </section>
@@ -343,7 +343,7 @@
 
 
                 <time class="article-time--reading">
-                    3 minute read
+                    2 minute read
                 </time>
             </div>
         
@@ -424,328 +424,151 @@
 <p>user 与 cluster 是弱关联</p>
 </blockquote>
 <h2 id="kubectl-config-参数详解">kubectl config 参数详解</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl  config --help
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Available Commands:
-</span></span><span class="line"><span class="cl">  current-context 显示当前上下文
-</span></span><span class="line"><span class="cl">  delete-cluster  删除kubeconfig文件中指定的集群
-</span></span><span class="line"><span class="cl">  delete-context  删除kubeconfig文件中指定的context
-</span></span><span class="line"><span class="cl">  delete-user     删除kubeconfig文件中指定的user
-</span></span><span class="line"><span class="cl">  get-clusters    显示kubeconfig文件中定义的集群
-</span></span><span class="line"><span class="cl">  get-contexts    显示一个或多个contexts
-</span></span><span class="line"><span class="cl">  get-users       显示kubeconfig文件中定义的users
-</span></span><span class="line"><span class="cl">  rename-context  重命名kubeconfig文件里的context
-</span></span><span class="line"><span class="cl">  <span class="nb">set</span>             在kubecconfig文件中设置一个单独的值
-</span></span><span class="line"><span class="cl">  set-cluster     在kubecconfig中设置集群条目
-</span></span><span class="line"><span class="cl">  set-context     在kubecconfig中设置上下文条目
-</span></span><span class="line"><span class="cl">  set-credentials 在kubecconfig中设置一个用户条目
-</span></span><span class="line"><span class="cl">  <span class="nb">unset</span>           取消kubecconfig文件中单个值的设置
-</span></span><span class="line"><span class="cl">  use-context     在kubecconfig文件中设置当前上下文<span class="o">(</span>kubecconfig文件可以有多个上下文<span class="o">)</span>
-</span></span><span class="line"><span class="cl">  view            显示合并的 kubeconfig 配置或一个指定的 kubeconfig 文件
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="kubeconifg-使用">kubeconifg 使用</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ kubectl  config --help
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Available Commands:
+</span></span><span style="display:flex;"><span>  current-context 显示当前上下文
+</span></span><span style="display:flex;"><span>  delete-cluster  删除kubeconfig文件中指定的集群
+</span></span><span style="display:flex;"><span>  delete-context  删除kubeconfig文件中指定的context
+</span></span><span style="display:flex;"><span>  delete-user     删除kubeconfig文件中指定的user
+</span></span><span style="display:flex;"><span>  get-clusters    显示kubeconfig文件中定义的集群
+</span></span><span style="display:flex;"><span>  get-contexts    显示一个或多个contexts
+</span></span><span style="display:flex;"><span>  get-users       显示kubeconfig文件中定义的users
+</span></span><span style="display:flex;"><span>  rename-context  重命名kubeconfig文件里的context
+</span></span><span style="display:flex;"><span>  set             在kubecconfig文件中设置一个单独的值
+</span></span><span style="display:flex;"><span>  set-cluster     在kubecconfig中设置集群条目
+</span></span><span style="display:flex;"><span>  set-context     在kubecconfig中设置上下文条目
+</span></span><span style="display:flex;"><span>  set-credentials 在kubecconfig中设置一个用户条目
+</span></span><span style="display:flex;"><span>  unset           取消kubecconfig文件中单个值的设置
+</span></span><span style="display:flex;"><span>  use-context     在kubecconfig文件中设置当前上下文<span style="color:#f92672">(</span>kubecconfig文件可以有多个上下文<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  view            显示合并的 kubeconfig 配置或一个指定的 kubeconfig 文件
+</span></span></code></pre></div><h2 id="kubeconifg-使用">kubeconifg 使用</h2>
 <ol>
 <li>kubectl 自动加载 ~/.kube/config</li>
 <li>如果指定 <code>$KUBECONFIG</code>, 从<code>$KUBECONFIG</code>加载</li>
 <li>也可以通过 kubectl 指定: kubectl  config get-contexts &ndash;kubeconfig=/root/.kube/config1</li>
 </ol>
 <h3 id="配置文件参考">配置文件参考:</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">clusters</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">cluster</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">certificate-authority-data</span><span class="p">:</span><span class="w"> </span><span class="l">LS0tLS1CRUdJTiBD......</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="l">https://11.0.1.100:16443 </span><span class="w"> </span><span class="c"># 指定集群的入口</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">contexts</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">context</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin@kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">current-context</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin@kubernetes </span><span class="w"> </span><span class="c"># 指定当前 context 上下文</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Config</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">preferences</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">users</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">client-certificate-data</span><span class="p">:</span><span class="w"> </span><span class="l">......</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">client-key-data</span><span class="p">:</span><span class="w"> </span><span class="l">......</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="生成新的-context">生成新的 context</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 获取 kubeconfig 中所有 cluster</span>
-</span></span><span class="line"><span class="cl">$ kubectl config get-clusters
-</span></span><span class="line"><span class="cl">NAME
-</span></span><span class="line"><span class="cl">kubernetes
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ kubectl config set-context <span class="nb">test</span> --cluster<span class="o">=</span>kubernetes --user<span class="o">=</span>kubernetes-admin --kubeconfig<span class="o">=</span>/root/.kube/config --namespace<span class="o">=</span><span class="nb">test</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># --kubeconfig   kubeconfig 是默认路径可省略</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># --namespace    指定 context 的默认 namespace, 没有即为 default</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="新增-context">新增 context:</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">...</span><span class="l">...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">contexts</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">context</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin@kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">context</span><span class="p">:</span><span class="w">          </span><span class="c"># 新增 context</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">...</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="切换-context-上下文">切换 context 上下文</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 查看当前 context</span>
-</span></span><span class="line"><span class="cl">$ kubectl config current-context
-</span></span><span class="line"><span class="cl">kubernetes-admin@kubernetes
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看 kubeconfig 中所有 context</span>
-</span></span><span class="line"><span class="cl">$ kubectl config get-contexts
-</span></span><span class="line"><span class="cl">CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
-</span></span><span class="line"><span class="cl">          kubernetes-admin@kubernetes   kubernetes   kubernetes-admin
-</span></span><span class="line"><span class="cl">*         <span class="nb">test</span>                          kubernetes   kubernetes-admin   <span class="nb">test</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 切换 context</span>
-</span></span><span class="line"><span class="cl">$ kubectl config use-context <span class="nb">test</span>
-</span></span><span class="line"><span class="cl">Switched to context <span class="s2">&#34;test&#34;</span>.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 创建 pod | 默认在 test namespace 下创建</span>
-</span></span><span class="line"><span class="cl">$ k get po
-</span></span><span class="line"><span class="cl">NAME       READY   STATUS    RESTARTS   AGE
-</span></span><span class="line"><span class="cl">nginxpod   1/1     Running   <span class="m">0</span>          14m
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="多集群管理">多集群管理</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">clusters</span>:
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">cluster</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">certificate-authority-data</span>: <span style="color:#ae81ff">LS0tLS1CRUdJTiBD......</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server</span>: <span style="color:#ae81ff">https://11.0.1.100:16443 </span> <span style="color:#75715e"># 指定集群的入口</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">kubernetes</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">contexts</span>:
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">context</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cluster</span>: <span style="color:#ae81ff">kubernetes</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">user</span>: <span style="color:#ae81ff">kubernetes-admin</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">kubernetes-admin@kubernetes</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">current-context</span>: <span style="color:#ae81ff">kubernetes-admin@kubernetes </span> <span style="color:#75715e"># 指定当前 context 上下文</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Config</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">preferences</span>: {}
+</span></span><span style="display:flex;"><span><span style="color:#f92672">users</span>:
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">kubernetes-admin</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">user</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">client-certificate-data</span>: <span style="color:#ae81ff">......</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">client-key-data</span>: <span style="color:#ae81ff">......</span>
+</span></span></code></pre></div><h2 id="生成新的-context">生成新的 context</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 获取 kubeconfig 中所有 cluster</span>
+</span></span><span style="display:flex;"><span>$ kubectl config get-clusters
+</span></span><span style="display:flex;"><span>NAME
+</span></span><span style="display:flex;"><span>kubernetes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ kubectl config set-context test --cluster<span style="color:#f92672">=</span>kubernetes --user<span style="color:#f92672">=</span>kubernetes-admin --kubeconfig<span style="color:#f92672">=</span>/root/.kube/config --namespace<span style="color:#f92672">=</span>test
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --kubeconfig   kubeconfig 是默认路径可省略</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --namespace    指定 context 的默认 namespace, 没有即为 default</span>
+</span></span></code></pre></div><h3 id="新增-context">新增 context:</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>...<span style="color:#ae81ff">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">contexts</span>:
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">context</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cluster</span>: <span style="color:#ae81ff">kubernetes</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">user</span>: <span style="color:#ae81ff">kubernetes-admin</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">kubernetes-admin@kubernetes</span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">context</span>:          <span style="color:#75715e"># 新增 context</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cluster</span>: <span style="color:#ae81ff">kubernetes</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">user</span>: <span style="color:#ae81ff">kubernetes-admin</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><h2 id="切换-context-上下文">切换 context 上下文</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 查看当前 context</span>
+</span></span><span style="display:flex;"><span>$ kubectl config current-context
+</span></span><span style="display:flex;"><span>kubernetes-admin@kubernetes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看 kubeconfig 中所有 context</span>
+</span></span><span style="display:flex;"><span>$ kubectl config get-contexts
+</span></span><span style="display:flex;"><span>CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+</span></span><span style="display:flex;"><span>          kubernetes-admin@kubernetes   kubernetes   kubernetes-admin
+</span></span><span style="display:flex;"><span>*         test                          kubernetes   kubernetes-admin   test
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 切换 context</span>
+</span></span><span style="display:flex;"><span>$ kubectl config use-context test
+</span></span><span style="display:flex;"><span>Switched to context <span style="color:#e6db74">&#34;test&#34;</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建 pod | 默认在 test namespace 下创建</span>
+</span></span><span style="display:flex;"><span>$ k get po
+</span></span><span style="display:flex;"><span>NAME       READY   STATUS    RESTARTS   AGE
+</span></span><span style="display:flex;"><span>nginxpod   1/1     Running   <span style="color:#ae81ff">0</span>          14m
+</span></span></code></pre></div><h2 id="多集群管理">多集群管理</h2>
 <p>因集群配置有 vip, 本文将新增一个 cluster 直接指向 master apiserver 的地址, 所以, cluster 的 ca 不变</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ cat ~/.kube/config
-</span></span><span class="line"><span class="cl">apiVersion: v1
-</span></span><span class="line"><span class="cl">clusters:
-</span></span><span class="line"><span class="cl">- cluster:
-</span></span><span class="line"><span class="cl">    certificate-authority-data: LS0tLS1CRUdJTiBD......
-</span></span><span class="line"><span class="cl">    server: https://11.0.1.100:16443
-</span></span><span class="line"><span class="cl">  name: kubernetes
-</span></span><span class="line"><span class="cl">- cluster:
-</span></span><span class="line"><span class="cl">    certificate-authority-data: LS0tLS1CRUdJTiBD......
-</span></span><span class="line"><span class="cl">    server: https://11.0.1.150:6443
-</span></span><span class="line"><span class="cl">  name: direct-cluster
-</span></span><span class="line"><span class="cl">contexts:
-</span></span><span class="line"><span class="cl">- context:
-</span></span><span class="line"><span class="cl">    cluster: kubernetes
-</span></span><span class="line"><span class="cl">    user: kubernetes-admin
-</span></span><span class="line"><span class="cl">  name: kubernetes-admin@kubernetes
-</span></span><span class="line"><span class="cl">- context:
-</span></span><span class="line"><span class="cl">    cluster: kubernetes
-</span></span><span class="line"><span class="cl">    namespace: <span class="nb">test</span>
-</span></span><span class="line"><span class="cl">    user: kubernetes-admin
-</span></span><span class="line"><span class="cl">  name: <span class="nb">test</span>
-</span></span><span class="line"><span class="cl">current-context: <span class="nb">test</span>
-</span></span><span class="line"><span class="cl">kind: Config
-</span></span><span class="line"><span class="cl">preferences: <span class="o">{}</span>
-</span></span><span class="line"><span class="cl">users:
-</span></span><span class="line"><span class="cl">- name: kubernetes-admin
-</span></span><span class="line"><span class="cl">  user:
-</span></span><span class="line"><span class="cl">    client-certificate-data: ......
-</span></span><span class="line"><span class="cl">    client-key-data: ......
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>我们新增了一个<code>direct-cluster</code>的cluster</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ cat ~/.kube/config
+</span></span><span style="display:flex;"><span>apiVersion: v1
+</span></span><span style="display:flex;"><span>clusters:
+</span></span><span style="display:flex;"><span>- cluster:
+</span></span><span style="display:flex;"><span>    certificate-authority-data: LS0tLS1CRUdJTiBD......
+</span></span><span style="display:flex;"><span>    server: https://11.0.1.100:16443
+</span></span><span style="display:flex;"><span>  name: kubernetes
+</span></span><span style="display:flex;"><span>- cluster:
+</span></span><span style="display:flex;"><span>    certificate-authority-data: LS0tLS1CRUdJTiBD......
+</span></span><span style="display:flex;"><span>    server: https://11.0.1.150:6443
+</span></span><span style="display:flex;"><span>  name: direct-cluster
+</span></span><span style="display:flex;"><span>contexts:
+</span></span><span style="display:flex;"><span>- context:
+</span></span><span style="display:flex;"><span>    cluster: kubernetes
+</span></span><span style="display:flex;"><span>    user: kubernetes-admin
+</span></span><span style="display:flex;"><span>  name: kubernetes-admin@kubernetes
+</span></span><span style="display:flex;"><span>- context:
+</span></span><span style="display:flex;"><span>    cluster: kubernetes
+</span></span><span style="display:flex;"><span>    namespace: test
+</span></span><span style="display:flex;"><span>    user: kubernetes-admin
+</span></span><span style="display:flex;"><span>  name: test
+</span></span><span style="display:flex;"><span>current-context: test
+</span></span><span style="display:flex;"><span>kind: Config
+</span></span><span style="display:flex;"><span>preferences: <span style="color:#f92672">{}</span>
+</span></span><span style="display:flex;"><span>users:
+</span></span><span style="display:flex;"><span>- name: kubernetes-admin
+</span></span><span style="display:flex;"><span>  user:
+</span></span><span style="display:flex;"><span>    client-certificate-data: ......
+</span></span><span style="display:flex;"><span>    client-key-data: ......
+</span></span></code></pre></div><p>我们新增了一个<code>direct-cluster</code>的cluster</p>
 <h3 id="创建-context">创建 context</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 默认 namespace 为 default</span>
-</span></span><span class="line"><span class="cl">$ kubectl config set-context direct --user<span class="o">=</span>kubernetes-admin --cluster<span class="o">=</span>direct-cluster
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 切换 context</span>
-</span></span><span class="line"><span class="cl">$ kubectl config use-context direct
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ kubectl get po
-</span></span><span class="line"><span class="cl">No resources found in default namespace.
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="新增-context-1">新增 context:</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">...</span><span class="l">...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">contexts</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">context</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin@kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">context</span><span class="p">:</span><span class="w"> 
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">context</span><span class="p">:</span><span class="w">          </span><span class="c"># 新增 context</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="l">direct-cluster</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-admin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">direct</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">...</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>参考:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 默认 namespace 为 default</span>
+</span></span><span style="display:flex;"><span>$ kubectl config set-context direct --user<span style="color:#f92672">=</span>kubernetes-admin --cluster<span style="color:#f92672">=</span>direct-cluster
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 切换 context</span>
+</span></span><span style="display:flex;"><span>$ kubectl config use-context direct
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ kubectl get po
+</span></span><span style="display:flex;"><span>No resources found in default namespace.
+</span></span></code></pre></div><h3 id="新增-context-1">新增 context:</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>...<span style="color:#ae81ff">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">contexts</span>:
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">context</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cluster</span>: <span style="color:#ae81ff">kubernetes</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">user</span>: <span style="color:#ae81ff">kubernetes-admin</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">kubernetes-admin@kubernetes</span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">context</span>: 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cluster</span>: <span style="color:#ae81ff">kubernetes</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">user</span>: <span style="color:#ae81ff">kubernetes-admin</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">context</span>:          <span style="color:#75715e"># 新增 context</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cluster</span>: <span style="color:#ae81ff">direct-cluster</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">user</span>: <span style="color:#ae81ff">kubernetes-admin</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">direct</span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>参考:</p>
 <blockquote>
 <ol>
 <li><a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/configuration/organize-cluster-access-kubeconfig/"  target="_blank" rel="noopener"

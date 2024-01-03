@@ -246,28 +246,23 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ol>
+  <ul>
     <li><a href="#集群配置">集群配置</a>
-      <ol>
+      <ul>
         <li><a href="#配置清单">配置清单</a></li>
         <li><a href="#集群规划">集群规划</a></li>
         <li><a href="#集群网络规划">集群网络规划</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#安装配置-keepalived">安装配置 keepalived</a></li>
     <li><a href="#安装配置-nginx">安装配置 nginx</a></li>
     <li><a href="#配置高可用-apiserver">配置高可用 ApiServer</a>
-      <ol>
-        <li><a href="#可以使用-kubeadm-init-初始化集群时-指定高可用地址">可以使用 kubeadm init 初始化集群时, 指定高可用地址</a>
-          <ol>
-            <li><a href="#command-line">command line</a></li>
-            <li><a href="#yaml-方式初始化">yaml 方式初始化</a></li>
-          </ol>
-        </li>
+      <ul>
+        <li><a href="#可以使用-kubeadm-init-初始化集群时-指定高可用地址">可以使用 kubeadm init 初始化集群时, 指定高可用地址</a></li>
         <li><a href="#在已有集群上添加高可用地址">在已有集群上添加高可用地址</a></li>
-      </ol>
+      </ul>
     </li>
-  </ol>
+  </ul>
 </nav>
         </div>
     </section>
@@ -351,7 +346,7 @@
 
 
                 <time class="article-time--reading">
-                    4 minute read
+                    3 minute read
                 </time>
             </div>
         
@@ -424,468 +419,226 @@
 <li>Node 网络: 11.0.1.0/24</li>
 </ul>
 <h2 id="安装配置-keepalived">安装配置 keepalived</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 在规划的 vip 节点</span>
-</span></span><span class="line"><span class="cl">apt install keepalived -y
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># master1 </span>
-</span></span><span class="line"><span class="cl">cat &gt; /etc/keepalived/keepalived.conf  <span class="s">&lt;&lt; EOF
-</span></span></span><span class="line"><span class="cl"><span class="s">! Configuration File for keepalived
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">global_defs {
-</span></span></span><span class="line"><span class="cl"><span class="s">   router_id LVS_DEVEL
-</span></span></span><span class="line"><span class="cl"><span class="s">   vrrp_skip_check_adv_addr
-</span></span></span><span class="line"><span class="cl"><span class="s">   vrrp_strict
-</span></span></span><span class="line"><span class="cl"><span class="s">   vrrp_garp_interval 0
-</span></span></span><span class="line"><span class="cl"><span class="s">   vrrp_gna_interval 0
-</span></span></span><span class="line"><span class="cl"><span class="s">}
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">vrrp_instance VI_1 {
-</span></span></span><span class="line"><span class="cl"><span class="s">    state MASTER
-</span></span></span><span class="line"><span class="cl"><span class="s">    interface ens33
-</span></span></span><span class="line"><span class="cl"><span class="s">    virtual_router_id 50
-</span></span></span><span class="line"><span class="cl"><span class="s">    priority 100
-</span></span></span><span class="line"><span class="cl"><span class="s">    advert_int 1
-</span></span></span><span class="line"><span class="cl"><span class="s">    authentication {
-</span></span></span><span class="line"><span class="cl"><span class="s">        auth_type PASS
-</span></span></span><span class="line"><span class="cl"><span class="s">        auth_pass root
-</span></span></span><span class="line"><span class="cl"><span class="s">    }
-</span></span></span><span class="line"><span class="cl"><span class="s">    virtual_ipaddress {
-</span></span></span><span class="line"><span class="cl"><span class="s">        11.0.1.100
-</span></span></span><span class="line"><span class="cl"><span class="s">    }
-</span></span></span><span class="line"><span class="cl"><span class="s">}
-</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># master2</span>
-</span></span><span class="line"><span class="cl">cat &gt; /etc/keepalived/keepalived.conf  <span class="s">&lt;&lt; EOF
-</span></span></span><span class="line"><span class="cl"><span class="s">! Configuration File for keepalived
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">global_defs {
-</span></span></span><span class="line"><span class="cl"><span class="s">   router_id LVS_DEVEL
-</span></span></span><span class="line"><span class="cl"><span class="s">   vrrp_skip_check_adv_addr
-</span></span></span><span class="line"><span class="cl"><span class="s">   vrrp_strict
-</span></span></span><span class="line"><span class="cl"><span class="s">   vrrp_garp_interval 0
-</span></span></span><span class="line"><span class="cl"><span class="s">   vrrp_gna_interval 0
-</span></span></span><span class="line"><span class="cl"><span class="s">}
-</span></span></span><span class="line"><span class="cl"><span class="s">
-</span></span></span><span class="line"><span class="cl"><span class="s">vrrp_instance VI_1 {
-</span></span></span><span class="line"><span class="cl"><span class="s">	state BACKUP
-</span></span></span><span class="line"><span class="cl"><span class="s">    interface ens33
-</span></span></span><span class="line"><span class="cl"><span class="s">    virtual_router_id 50
-</span></span></span><span class="line"><span class="cl"><span class="s">    nopreempt
-</span></span></span><span class="line"><span class="cl"><span class="s">    priority 70
-</span></span></span><span class="line"><span class="cl"><span class="s">    advert_int 1
-</span></span></span><span class="line"><span class="cl"><span class="s">    virtual_ipaddress {
-</span></span></span><span class="line"><span class="cl"><span class="s">        11.0.1.100
-</span></span></span><span class="line"><span class="cl"><span class="s">    }
-</span></span></span><span class="line"><span class="cl"><span class="s">}
-</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 重启 keepalived</span>
-</span></span><span class="line"><span class="cl">systemctl restart keepalived.service <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> keepalived.service
-</span></span><span class="line"><span class="cl">systemctl status  keepalived.service
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 查看 vip</span>
-</span></span><span class="line"><span class="cl">ip a <span class="p">|</span> grep 11.0.1.100
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 可停掉 master1 看 vip 是否会漂移到 master2</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="安装配置-nginx">安装配置 nginx</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span><span class="lnt">84
-</span><span class="lnt">85
-</span><span class="lnt">86
-</span><span class="lnt">87
-</span><span class="lnt">88
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">apt install nginx -y
-</span></span><span class="line"><span class="cl">systemctl status nginx
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 修改 nginx 配置文件</span>
-</span></span><span class="line"><span class="cl">cat /etc/nginx/nginx.conf
-</span></span><span class="line"><span class="cl">user user<span class="p">;</span>
-</span></span><span class="line"><span class="cl">worker_processes auto<span class="p">;</span>
-</span></span><span class="line"><span class="cl">pid /run/nginx.pid<span class="p">;</span>
-</span></span><span class="line"><span class="cl">include /etc/nginx/modules-enabled/*.conf<span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">events <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        worker_connections 768<span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># multi_accept on;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">#添加了stream 这一段，其他的保持默认即可</span>
-</span></span><span class="line"><span class="cl">stream <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    log_format  main  <span class="s1">&#39;$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent&#39;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    access_log  /var/log/nginx/k8s-access.log  main<span class="p">;</span>
-</span></span><span class="line"><span class="cl">    upstream k8s-apiserver <span class="o">{</span>
-</span></span><span class="line"><span class="cl">       server 11.0.1.147:6443<span class="p">;</span>          <span class="c1">#master01的IP和6443端口</span>
-</span></span><span class="line"><span class="cl">       server 11.0.1.148:6443<span class="p">;</span>          <span class="c1">#master02的IP和6443端口</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    server <span class="o">{</span>
-</span></span><span class="line"><span class="cl">       listen 16443<span class="p">;</span>                                    <span class="c1">#监听的是16443端口，因为nginx和master复用机器，所以不能是6443端口</span>
-</span></span><span class="line"><span class="cl">       proxy_pass k8s-apiserver<span class="p">;</span>                <span class="c1">#使用proxy_pass模块进行反向代理</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">http <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># Basic Settings</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        sendfile on<span class="p">;</span>
-</span></span><span class="line"><span class="cl">        tcp_nopush on<span class="p">;</span>
-</span></span><span class="line"><span class="cl">        tcp_nodelay on<span class="p">;</span>
-</span></span><span class="line"><span class="cl">        keepalive_timeout 65<span class="p">;</span>
-</span></span><span class="line"><span class="cl">        types_hash_max_size 2048<span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># server_tokens off;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="c1"># server_names_hash_bucket_size 64;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># server_name_in_redirect off;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        include /etc/nginx/mime.types<span class="p">;</span>
-</span></span><span class="line"><span class="cl">        default_type application/octet-stream<span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># SSL Settings</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3<span class="p">;</span> <span class="c1"># Dropping SSLv3, ref: POODLE</span>
-</span></span><span class="line"><span class="cl">        ssl_prefer_server_ciphers on<span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># Logging Settings</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        access_log /var/log/nginx/access.log<span class="p">;</span>
-</span></span><span class="line"><span class="cl">        error_log /var/log/nginx/error.log<span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># Gzip Settings</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        gzip on<span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="c1"># gzip_vary on;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># gzip_proxied any;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># gzip_comp_level 6;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># gzip_buffers 16 8k;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># gzip_http_version 1.1;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># Virtual Host Configs</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        include /etc/nginx/conf.d/*.conf<span class="p">;</span>
-</span></span><span class="line"><span class="cl">        include /etc/nginx/sites-enabled/*<span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 重启 nginx 服务</span>
-</span></span><span class="line"><span class="cl">systemctl restart nginx <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> nginx <span class="o">&amp;&amp;</span> systemctl status nginx
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 端口检查</span>
-</span></span><span class="line"><span class="cl">netstat  -lntup<span class="p">|</span> grep <span class="m">16443</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="配置高可用-apiserver">配置高可用 ApiServer</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 在规划的 vip 节点</span>
+</span></span><span style="display:flex;"><span>apt install keepalived -y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># master1 </span>
+</span></span><span style="display:flex;"><span>cat &gt; /etc/keepalived/keepalived.conf  <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">! Configuration File for keepalived
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">global_defs {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   router_id LVS_DEVEL
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   vrrp_skip_check_adv_addr
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   vrrp_strict
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   vrrp_garp_interval 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   vrrp_gna_interval 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">vrrp_instance VI_1 {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    state MASTER
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    interface ens33
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    virtual_router_id 50
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    priority 100
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    advert_int 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    authentication {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        auth_type PASS
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        auth_pass root
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    virtual_ipaddress {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        11.0.1.100
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># master2</span>
+</span></span><span style="display:flex;"><span>cat &gt; /etc/keepalived/keepalived.conf  <span style="color:#e6db74">&lt;&lt; EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">! Configuration File for keepalived
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">global_defs {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   router_id LVS_DEVEL
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   vrrp_skip_check_adv_addr
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   vrrp_strict
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   vrrp_garp_interval 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   vrrp_gna_interval 0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">vrrp_instance VI_1 {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">	state BACKUP
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    interface ens33
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    virtual_router_id 50
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    nopreempt
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    priority 70
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    advert_int 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    virtual_ipaddress {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        11.0.1.100
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 重启 keepalived</span>
+</span></span><span style="display:flex;"><span>systemctl restart keepalived.service <span style="color:#f92672">&amp;&amp;</span> systemctl enable keepalived.service
+</span></span><span style="display:flex;"><span>systemctl status  keepalived.service
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看 vip</span>
+</span></span><span style="display:flex;"><span>ip a | grep 11.0.1.100
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 可停掉 master1 看 vip 是否会漂移到 master2</span>
+</span></span></code></pre></div><h2 id="安装配置-nginx">安装配置 nginx</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt install nginx -y
+</span></span><span style="display:flex;"><span>systemctl status nginx
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改 nginx 配置文件</span>
+</span></span><span style="display:flex;"><span>cat /etc/nginx/nginx.conf
+</span></span><span style="display:flex;"><span>user user;
+</span></span><span style="display:flex;"><span>worker_processes auto;
+</span></span><span style="display:flex;"><span>pid /run/nginx.pid;
+</span></span><span style="display:flex;"><span>include /etc/nginx/modules-enabled/*.conf;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>events <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        worker_connections 768;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># multi_accept on;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#添加了stream 这一段，其他的保持默认即可</span>
+</span></span><span style="display:flex;"><span>stream <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    log_format  main  <span style="color:#e6db74">&#39;$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent&#39;</span>;
+</span></span><span style="display:flex;"><span>    access_log  /var/log/nginx/k8s-access.log  main;
+</span></span><span style="display:flex;"><span>    upstream k8s-apiserver <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>       server 11.0.1.147:6443;          <span style="color:#75715e">#master01的IP和6443端口</span>
+</span></span><span style="display:flex;"><span>       server 11.0.1.148:6443;          <span style="color:#75715e">#master02的IP和6443端口</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    server <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>       listen 16443;                                    <span style="color:#75715e">#监听的是16443端口，因为nginx和master复用机器，所以不能是6443端口</span>
+</span></span><span style="display:flex;"><span>       proxy_pass k8s-apiserver;                <span style="color:#75715e">#使用proxy_pass模块进行反向代理</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>http <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Basic Settings</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        sendfile on;
+</span></span><span style="display:flex;"><span>        tcp_nopush on;
+</span></span><span style="display:flex;"><span>        tcp_nodelay on;
+</span></span><span style="display:flex;"><span>        keepalive_timeout 65;
+</span></span><span style="display:flex;"><span>        types_hash_max_size 2048;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># server_tokens off;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># server_names_hash_bucket_size 64;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># server_name_in_redirect off;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        include /etc/nginx/mime.types;
+</span></span><span style="display:flex;"><span>        default_type application/octet-stream;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># SSL Settings</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; <span style="color:#75715e"># Dropping SSLv3, ref: POODLE</span>
+</span></span><span style="display:flex;"><span>        ssl_prefer_server_ciphers on;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Logging Settings</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        access_log /var/log/nginx/access.log;
+</span></span><span style="display:flex;"><span>        error_log /var/log/nginx/error.log;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Gzip Settings</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        gzip on;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># gzip_vary on;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># gzip_proxied any;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># gzip_comp_level 6;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># gzip_buffers 16 8k;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># gzip_http_version 1.1;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Virtual Host Configs</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">##</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        include /etc/nginx/conf.d/*.conf;
+</span></span><span style="display:flex;"><span>        include /etc/nginx/sites-enabled/*;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 重启 nginx 服务</span>
+</span></span><span style="display:flex;"><span>systemctl restart nginx <span style="color:#f92672">&amp;&amp;</span> systemctl enable nginx <span style="color:#f92672">&amp;&amp;</span> systemctl status nginx
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 端口检查</span>
+</span></span><span style="display:flex;"><span>netstat  -lntup| grep <span style="color:#ae81ff">16443</span>
+</span></span></code></pre></div><h2 id="配置高可用-apiserver">配置高可用 ApiServer</h2>
 <h3 id="可以使用-kubeadm-init-初始化集群时-指定高可用地址">可以使用 kubeadm init 初始化集群时, 指定高可用地址</h3>
 <h4 id="command-line">command line</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kubeadm init <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>--apiserver-advertise-address<span class="o">=</span>11.0.1.147 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>--apiserver-bind-port<span class="o">=</span><span class="m">6443</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>--control-plane-endpoint<span class="o">=</span>11.0.1.100:16443 <span class="se">\ </span> <span class="c1"># 指定 vip + nginx 端口</span>
-</span></span><span class="line"><span class="cl">--image-repository registry.aliyuncs.com/google_containers <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>--kubernetes-version v1.28.1 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>--service-cidr<span class="o">=</span>10.96.0.0/12 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>--pod-network-cidr<span class="o">=</span>10.244.0.0/16
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="yaml-方式初始化">yaml 方式初始化</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubeadm init <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--apiserver-advertise-address<span style="color:#f92672">=</span>11.0.1.147 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--apiserver-bind-port<span style="color:#f92672">=</span><span style="color:#ae81ff">6443</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--control-plane-endpoint<span style="color:#f92672">=</span>11.0.1.100:16443 <span style="color:#ae81ff">\ </span> <span style="color:#75715e"># 指定 vip + nginx 端口</span>
+</span></span><span style="display:flex;"><span>--image-repository registry.aliyuncs.com/google_containers <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--kubernetes-version v1.28.1 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--service-cidr<span style="color:#f92672">=</span>10.96.0.0/12 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--pod-network-cidr<span style="color:#f92672">=</span>10.244.0.0/16
+</span></span></code></pre></div><h4 id="yaml-方式初始化">yaml 方式初始化</h4>
 <p>kubeadm 初始化集群文件 Kubernetes-cluster.yaml:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">kubeadm.k8s.io/v1beta3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">bootstrapTokens</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">groups</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">system:bootstrappers:kubeadm:default-node-token</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l">abcdef.0123456789abcdef</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ttl</span><span class="p">:</span><span class="w"> </span><span class="l">24h0m0s</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">usages</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">signing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">authentication</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">InitConfiguration</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">localAPIEndpoint</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 将此处IP地址替换为主节点IP ETCD容器会试图通过此地址绑定端口 如果主机不存在则会失败</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">advertiseAddress</span><span class="p">:</span><span class="w"> </span><span class="m">11.0.1.147</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">bindPort</span><span class="p">:</span><span class="w"> </span><span class="m">6443</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">nodeRegistration</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">criSocket</span><span class="p">:</span><span class="w"> </span><span class="l">unix:///run/containerd/containerd.sock</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">master1 </span><span class="w"> </span><span class="c"># 节点 hostname</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">taints</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># controlPlaneEndpoint 可配置高可用的 ApiServer</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiServer</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">timeoutForControlPlane</span><span class="p">:</span><span class="w"> </span><span class="l">4m0s</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">kubeadm.k8s.io/v1beta3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">controlPlaneEndpoint</span><span class="p">:</span><span class="w"> </span><span class="m">11.0.1.100</span><span class="p">:</span><span class="m">6443</span><span class="w">   </span><span class="c"># 使用 keepalived + nginx 的高可用地址</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">certificatesDir</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/kubernetes/pki</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">controllerManager</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">dns</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">etcd</span><span class="p">:</span><span class="w">  </span><span class="c"># 可使用外接 etcd 集群</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">local</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">dataDir</span><span class="p">:</span><span class="w"> </span><span class="l">/var/lib/etcd</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">imageRepository</span><span class="p">:</span><span class="w"> </span><span class="l">registry.aliyuncs.com/google_containers </span><span class="w"> </span><span class="c"># 国内源</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterConfiguration</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kubernetesVersion</span><span class="p">:</span><span class="w"> </span><span class="m">1.28.1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">networking</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">dnsDomain</span><span class="p">:</span><span class="w"> </span><span class="l">cluster.local</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 增加配置 指定pod网段</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">podSubnet</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;10.244.0.0/16&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">serviceSubnet</span><span class="p">:</span><span class="w"> </span><span class="m">10.96.0.0</span><span class="l">/12</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">scheduler</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">kubeproxy.config.k8s.io/v1alpha1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">KubeProxyConfiguration</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">ipvs </span><span class="w"> </span><span class="c"># kubeproxy 使用 ipvs</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">KubeletConfiguration</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">kubelet.config.k8s.io/v1beta1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">cgroupDriver</span><span class="p">:</span><span class="w"> </span><span class="l">systemd</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="在已有集群上添加高可用地址">在已有集群上添加高可用地址</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kubectl -n kube-system edit cm kubeadm-config
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 把 controlPlaneEndpoint 修改为高可用地址即可</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">kubeadm.k8s.io/v1beta3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">bootstrapTokens</span>:
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">groups</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">system:bootstrappers:kubeadm:default-node-token</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">token</span>: <span style="color:#ae81ff">abcdef.0123456789abcdef</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ttl</span>: <span style="color:#ae81ff">24h0m0s</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">usages</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">signing</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">authentication</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">InitConfiguration</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">localAPIEndpoint</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 将此处IP地址替换为主节点IP ETCD容器会试图通过此地址绑定端口 如果主机不存在则会失败</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">advertiseAddress</span>: <span style="color:#ae81ff">11.0.1.147</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">bindPort</span>: <span style="color:#ae81ff">6443</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">nodeRegistration</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">criSocket</span>: <span style="color:#ae81ff">unix:///run/containerd/containerd.sock</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">imagePullPolicy</span>: <span style="color:#ae81ff">IfNotPresent</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">master1 </span> <span style="color:#75715e"># 节点 hostname</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">taints</span>: <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># controlPlaneEndpoint 可配置高可用的 ApiServer</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiServer</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">timeoutForControlPlane</span>: <span style="color:#ae81ff">4m0s</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">kubeadm.k8s.io/v1beta3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">controlPlaneEndpoint</span>: <span style="color:#ae81ff">11.0.1.100</span>:<span style="color:#ae81ff">6443</span>   <span style="color:#75715e"># 使用 keepalived + nginx 的高可用地址</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">certificatesDir</span>: <span style="color:#ae81ff">/etc/kubernetes/pki</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">clusterName</span>: <span style="color:#ae81ff">kubernetes</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">controllerManager</span>: {}
+</span></span><span style="display:flex;"><span><span style="color:#f92672">dns</span>: {}
+</span></span><span style="display:flex;"><span><span style="color:#f92672">etcd</span>:  <span style="color:#75715e"># 可使用外接 etcd 集群</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">local</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">dataDir</span>: <span style="color:#ae81ff">/var/lib/etcd</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">imageRepository</span>: <span style="color:#ae81ff">registry.aliyuncs.com/google_containers </span> <span style="color:#75715e"># 国内源</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ClusterConfiguration</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kubernetesVersion</span>: <span style="color:#ae81ff">1.28.1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">networking</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">dnsDomain</span>: <span style="color:#ae81ff">cluster.local</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 增加配置 指定pod网段</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">podSubnet</span>: <span style="color:#e6db74">&#34;10.244.0.0/16&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">serviceSubnet</span>: <span style="color:#ae81ff">10.96.0.0</span><span style="color:#ae81ff">/12</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">scheduler</span>: {}
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">kubeproxy.config.k8s.io/v1alpha1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">KubeProxyConfiguration</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">mode</span>: <span style="color:#ae81ff">ipvs </span> <span style="color:#75715e"># kubeproxy 使用 ipvs</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">KubeletConfiguration</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">kubelet.config.k8s.io/v1beta1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">cgroupDriver</span>: <span style="color:#ae81ff">systemd</span>
+</span></span></code></pre></div><h3 id="在已有集群上添加高可用地址">在已有集群上添加高可用地址</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl -n kube-system edit cm kubeadm-config
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 把 controlPlaneEndpoint 修改为高可用地址即可</span>
+</span></span></code></pre></div><blockquote>
 <p>单 master 转 vip 高可用的坑:</p>
 <p>如果遇到加入新节点时, 出现 tls 相关报错, 显示连接 ip 不支持, 则需要<a class="link" href="https://ai-feier.github.io/p/%e6%89%a9%e5%b1%95-apiserver-%e8%bf%9e%e6%8e%a5%e8%ae%a4%e8%af%81-ip-%e8%af%81%e4%b9%a6%e6%9b%b4%e6%96%b0/"  target="_blank" rel="noopener"
     >更新 apiserver 证书</a></p>
@@ -936,6 +689,25 @@
     <h2 class="section-title">Related content</h2>
     <div class="related-content">
         <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/2024-cka-%E9%A2%98%E5%BA%93/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cka%20%26%20cks/cert.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cka%20%26%20cks/cert.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">2024 CKA 题库</h2>
+        </div>
+    </a>
+</article>
+
             
                 
 <article class="has-image">

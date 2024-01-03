@@ -246,42 +246,38 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ol>
+  <ul>
     <li><a href="#1-变量替换">1. 变量替换</a>
-      <ol>
+      <ul>
         <li><a href="#示例">示例:</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#2-变量测试">2. 变量测试</a>
-      <ol>
+      <ul>
         <li><a href="#示例-1">示例:</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#3-字符串处理">3. 字符串处理</a>
-      <ol>
+      <ul>
         <li><a href="#计算字符串长度">计算字符串长度</a></li>
         <li><a href="#获取字符在字符串中的索引位置">获取字符在字符串中的索引位置</a></li>
         <li><a href="#获取子串长度">获取子串长度</a></li>
         <li><a href="#抽取子串">抽取子串</a></li>
         <li><a href="#脚本练习">脚本练习</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#4-命令替换">4. 命令替换</a>
-      <ol>
+      <ul>
         <li><a href="#示例-2">示例</a></li>
         <li><a href="#有类型变量">有类型变量</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#5-bash-数学运算">5. Bash 数学运算</a>
-      <ol>
-        <li><a href="#expr-与-">expr 与 $(())</a>
-          <ol>
-            <li><a href="#bc-只支持指数运算">bc 只支持指数运算</a></li>
-          </ol>
-        </li>
-      </ol>
+      <ul>
+        <li><a href="#expr-与-">expr 与 $(())</a></li>
+      </ul>
     </li>
-  </ol>
+  </ul>
 </nav>
         </div>
     </section>
@@ -357,7 +353,7 @@
 
 
                 <time class="article-time--reading">
-                    5 minute read
+                    4 minute read
                 </time>
             </div>
         
@@ -414,152 +410,41 @@
 </tbody>
 </table></div>
 <h3 id="示例">示例:</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="s2">&#34;I love you, Do you love me&#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>${变量#匹配规则}</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var1</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">#*ov</span><span class="si">}</span>  <span class="c1"># 匹配时从第一个字符开始匹配</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var1</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">e you, Do you love me
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>${变量##匹配规则}</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var2</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">##*ov</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var2</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">e me
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>${变量%匹配规则}</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var3</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">%ov*</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var3</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">I love you, Do you l
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>${变量%%匹配规则}</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var4</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">%%ov*</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var4</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">I l
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>${变量/旧字符串/新字符串}</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$PATH</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var5</span><span class="o">=</span><span class="si">${</span><span class="nv">PATH</span><span class="p">/bin/BIN</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var5</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/usr/local/sBIN:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>${变量//旧字符串/新字符串}</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var6</span><span class="o">=</span><span class="si">${</span><span class="nv">PATH</span><span class="p">//bin/BIN</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$var6</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/usr/local/sBIN:/usr/local/BIN:/usr/sBIN:/usr/BIN:/sBIN:/BIN:/snap/BIN
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="2-变量测试">2. 变量测试</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;I love you, Do you love me&#34;</span>
+</span></span></code></pre></div><p><strong>${变量#匹配规则}</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var1<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>var#*ov<span style="color:#e6db74">}</span>  <span style="color:#75715e"># 匹配时从第一个字符开始匹配</span>
+</span></span><span style="display:flex;"><span>$ echo $var1
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>e you, Do you love me
+</code></pre><p><strong>${变量##匹配规则}</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var2<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>var##*ov<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$ echo $var2
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>e me
+</code></pre><p><strong>${变量%匹配规则}</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var3<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>var%ov*<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$ echo $var3
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>I love you, Do you l
+</code></pre><p><strong>${变量%%匹配规则}</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var4<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>var%%ov*<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$ echo $var4
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>I l
+</code></pre><p><strong>${变量/旧字符串/新字符串}</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ echo $PATH
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+</code></pre><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var5<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>PATH/bin/BIN<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$ echo $var5
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>/usr/local/sBIN:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+</code></pre><p><strong>${变量//旧字符串/新字符串}</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var6<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>PATH//bin/BIN<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$ echo $var6
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>/usr/local/sBIN:/usr/local/BIN:/usr/sBIN:/usr/BIN:/sBIN:/BIN:/snap/BIN
+</code></pre><h2 id="2-变量测试">2. 变量测试</h2>
 <p>变量测试实际用得较少, 大多都可以通过<code>if-else</code>替换</p>
 <p>变量替换参照表<img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231209180314353.png"
 	
@@ -574,66 +459,21 @@
 <h3 id="示例-1">示例:</h3>
 <p><strong>var=${str-expr}</strong></p>
 <p><strong>1. 没有设置变量</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">unset</span> var
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">-expr</span><span class="si">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">expr
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>2. 设置变量, 且变量为空</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">-expr</span><span class="si">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">         # 输出空值
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>3. 设置变量, 且变量非空</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="nb">test</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">-expr</span><span class="si">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">test
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="3-字符串处理">3. 字符串处理</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ unset var
+</span></span><span style="display:flex;"><span>$ echo <span style="color:#e6db74">${</span>var-expr<span style="color:#e6db74">}</span>
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>expr
+</code></pre><p><strong>2. 设置变量, 且变量为空</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var<span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>$ echo <span style="color:#e6db74">${</span>var-expr<span style="color:#e6db74">}</span>
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>         # 输出空值
+</code></pre><p><strong>3. 设置变量, 且变量非空</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var<span style="color:#f92672">=</span>test
+</span></span><span style="display:flex;"><span>$ echo <span style="color:#e6db74">${</span>var-expr<span style="color:#e6db74">}</span>
+</span></span></code></pre></div><p>输出:</p>
+<pre tabindex="0"><code>test
+</code></pre><h2 id="3-字符串处理">3. 字符串处理</h2>
 <h3 id="计算字符串长度">计算字符串长度</h3>
 <div class="table-wrapper"><table>
 <thead>
@@ -657,73 +497,32 @@
 </tbody>
 </table></div>
 <p><strong>示范</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">str</span><span class="o">=</span>shellLearning
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="si">${#</span><span class="nv">str</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 13</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$(</span>expr length <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2">&#34;</span><span class="k">)</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 13</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="获取字符在字符串中的索引位置">获取字符在字符串中的索引位置</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ expr index <span class="s2">&#34;</span><span class="nv">$string</span><span class="s2">&#34;</span> <span class="nv">$substring</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="s2">&#34;kubernetes is popular&#34;</span>  
-</span></span><span class="line"><span class="cl">$ <span class="nv">idx</span><span class="o">=</span><span class="sb">`</span>expr index <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> t<span class="sb">`</span>   <span class="c1"># var 中有空格, 加 &#34;&#34;</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$idx</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 8</span>
-</span></span><span class="line"><span class="cl">$ <span class="nv">idx</span><span class="o">=</span><span class="sb">`</span>expr index <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> te<span class="sb">`</span> <span class="c1"># 子串会被拆成一个个字符一次匹配, 返回第一个匹配</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$idx</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 4</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="获取子串长度">获取子串长度</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ expr match <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> substr
-</span></span><span class="line"><span class="cl"><span class="c1"># 子串必须从头第一个字符开始匹配</span>
-</span></span><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="s2">&#34;kubernetes is popular&#34;</span>  
-</span></span><span class="line"><span class="cl">$ <span class="nv">idx</span><span class="o">=</span><span class="sb">`</span>expr match <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> popu<span class="sb">`</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$idx</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 0</span>
-</span></span><span class="line"><span class="cl">$ <span class="nv">idx</span><span class="o">=</span><span class="sb">`</span>expr match <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> ku.*<span class="sb">`</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$idx</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 21</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="抽取子串">抽取子串</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ str<span style="color:#f92672">=</span>shellLearning
+</span></span><span style="display:flex;"><span>$ echo <span style="color:#e6db74">${#</span>str<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 13</span>
+</span></span><span style="display:flex;"><span>$ echo <span style="color:#66d9ef">$(</span>expr length <span style="color:#e6db74">&#34;</span>$str<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 13</span>
+</span></span></code></pre></div><h3 id="获取字符在字符串中的索引位置">获取字符在字符串中的索引位置</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ expr index <span style="color:#e6db74">&#34;</span>$string<span style="color:#e6db74">&#34;</span> $substring
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;kubernetes is popular&#34;</span>  
+</span></span><span style="display:flex;"><span>$ idx<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr index <span style="color:#e6db74">&#34;</span>$var<span style="color:#e6db74">&#34;</span> t<span style="color:#e6db74">`</span>   <span style="color:#75715e"># var 中有空格, 加 &#34;&#34;</span>
+</span></span><span style="display:flex;"><span>$ echo $idx
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 8</span>
+</span></span><span style="display:flex;"><span>$ idx<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr index <span style="color:#e6db74">&#34;</span>$var<span style="color:#e6db74">&#34;</span> te<span style="color:#e6db74">`</span> <span style="color:#75715e"># 子串会被拆成一个个字符一次匹配, 返回第一个匹配</span>
+</span></span><span style="display:flex;"><span>$ echo $idx
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4</span>
+</span></span></code></pre></div><h3 id="获取子串长度">获取子串长度</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ expr match <span style="color:#e6db74">&#34;</span>$var<span style="color:#e6db74">&#34;</span> substr
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 子串必须从头第一个字符开始匹配</span>
+</span></span><span style="display:flex;"><span>$ var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;kubernetes is popular&#34;</span>  
+</span></span><span style="display:flex;"><span>$ idx<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr match <span style="color:#e6db74">&#34;</span>$var<span style="color:#e6db74">&#34;</span> popu<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>$ echo $idx
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 0</span>
+</span></span><span style="display:flex;"><span>$ idx<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr match <span style="color:#e6db74">&#34;</span>$var<span style="color:#e6db74">&#34;</span> ku.*<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>$ echo $idx
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 21</span>
+</span></span></code></pre></div><h3 id="抽取子串">抽取子串</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -758,188 +557,95 @@
 <p><code>:</code>索引从 0 开始</p>
 <p>expr 索引从 1 开始</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">var</span><span class="o">=</span><span class="s2">&#34;kubecetes istio etcd operator&#34;</span>
-</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">:</span><span class="nv">7</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$substr</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># es istio etcd operator</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">:</span><span class="nv">7</span><span class="p">:</span><span class="nv">6</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$substr</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># es ist</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">: -7</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$substr</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># perator</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="si">${</span><span class="nv">var</span><span class="p">:(-7)</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$substr</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># perator</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ <span class="nv">substr</span><span class="o">=</span><span class="sb">`</span>expr substr <span class="s2">&#34;</span><span class="nv">$var</span><span class="s2">&#34;</span> <span class="m">7</span> 6<span class="sb">`</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># tes is</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="脚本练习">脚本练习</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;kubecetes istio etcd operator&#34;</span>
+</span></span><span style="display:flex;"><span>$ substr<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>var:7<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$ echo $substr
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># es istio etcd operator</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ substr<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>var:7:6<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$ echo $substr
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># es ist</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ substr<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>var: -7<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$ echo $substr
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># perator</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ substr<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>var:(-7)<span style="color:#e6db74">}</span>
+</span></span><span style="display:flex;"><span>$ echo $substr
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># perator</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ substr<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr substr <span style="color:#e6db74">&#34;</span>$var<span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">7</span> 6<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># tes is</span>
+</span></span></code></pre></div><h3 id="脚本练习">脚本练习</h3>
 <p><strong>思路:</strong></p>
 <ol>
 <li><strong>根据功能划分, 编写响应函数</strong></li>
 <li><strong>实现定义函数</strong></li>
 <li><strong>主流程设计</strong></li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">str</span><span class="o">=</span><span class="s2">&#34;Bigdata process framework is Hadoop,Hadoop is an open source project&#34;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">function</span> print_tips <span class="o">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;************************************&#34;</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;(1) 打印 string 长度&#34;</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;(2) 删除字符串中所有的 Hadoop&#34;</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;(3) 替换第一个 Hadoop 为 Mapreduce&#34;</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;(4) 替换全部 Hadoop 为 Mapreduce&#34;</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;************************************&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">function</span> len_of_string
-</span></span><span class="line"><span class="cl"><span class="o">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${#</span><span class="nv">str</span><span class="si">}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">function</span> del_hadoop
-</span></span><span class="line"><span class="cl"><span class="o">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">str</span><span class="p">//Hadoop/</span><span class="si">}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">function</span> replace_hadoop_mapreduce_first
-</span></span><span class="line"><span class="cl"><span class="o">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">str</span><span class="p">/Hadoop/Mapreduce</span><span class="si">}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">function</span> replace_hadoop_mapreduce_all
-</span></span><span class="line"><span class="cl"><span class="o">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">str</span><span class="p">//Hadoop/Mapreduce</span><span class="si">}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">true</span>
-</span></span><span class="line"><span class="cl"><span class="k">do</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;[string: </span><span class="nv">$str</span><span class="s2">]&#34;</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span>
-</span></span><span class="line"><span class="cl">	print_tips
-</span></span><span class="line"><span class="cl">	<span class="nb">read</span> -p <span class="s2">&#34;Please input your choice(1|2|3|4|q|Q): &#34;</span> choice
-</span></span><span class="line"><span class="cl">	
-</span></span><span class="line"><span class="cl">	<span class="k">case</span> <span class="nv">$choice</span> in
-</span></span><span class="line"><span class="cl">		1<span class="o">)</span>
-</span></span><span class="line"><span class="cl">			len_of_string
-</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
-</span></span><span class="line"><span class="cl">		2<span class="o">)</span>
-</span></span><span class="line"><span class="cl">			del_hadoop
-</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
-</span></span><span class="line"><span class="cl">		3<span class="o">)</span>
-</span></span><span class="line"><span class="cl">			replace_hadoop_mapreduce_first
-</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
-</span></span><span class="line"><span class="cl">		4<span class="o">)</span>
-</span></span><span class="line"><span class="cl">			replace_hadoop_mapreduce_all
-</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
-</span></span><span class="line"><span class="cl">		q<span class="p">|</span>Q<span class="o">)</span>
-</span></span><span class="line"><span class="cl">			<span class="nb">exit</span>
-</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
-</span></span><span class="line"><span class="cl">		*<span class="o">)</span>
-</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> <span class="s2">&#34;Error input, only {1|2|3|4|q|Q}&#34;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">;;</span>
-</span></span><span class="line"><span class="cl">	<span class="k">esac</span>
-</span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="4-命令替换">4. 命令替换</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>str<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Bigdata process framework is Hadoop,Hadoop is an open source project&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> print_tips <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;************************************&#34;</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;(1) 打印 string 长度&#34;</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;(2) 删除字符串中所有的 Hadoop&#34;</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;(3) 替换第一个 Hadoop 为 Mapreduce&#34;</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;(4) 替换全部 Hadoop 为 Mapreduce&#34;</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;************************************&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> len_of_string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${#</span>str<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> del_hadoop
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>str//Hadoop/<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> replace_hadoop_mapreduce_first
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>str/Hadoop/Mapreduce<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> replace_hadoop_mapreduce_all
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>str//Hadoop/Mapreduce<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> true
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;[string: </span>$str<span style="color:#e6db74">]&#34;</span>
+</span></span><span style="display:flex;"><span>	echo
+</span></span><span style="display:flex;"><span>	print_tips
+</span></span><span style="display:flex;"><span>	read -p <span style="color:#e6db74">&#34;Please input your choice(1|2|3|4|q|Q): &#34;</span> choice
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">case</span> $choice in
+</span></span><span style="display:flex;"><span>		1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			len_of_string
+</span></span><span style="display:flex;"><span>			;;
+</span></span><span style="display:flex;"><span>		2<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			del_hadoop
+</span></span><span style="display:flex;"><span>			;;
+</span></span><span style="display:flex;"><span>		3<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			replace_hadoop_mapreduce_first
+</span></span><span style="display:flex;"><span>			;;
+</span></span><span style="display:flex;"><span>		4<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			replace_hadoop_mapreduce_all
+</span></span><span style="display:flex;"><span>			;;
+</span></span><span style="display:flex;"><span>		q|Q<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			exit
+</span></span><span style="display:flex;"><span>			;;
+</span></span><span style="display:flex;"><span>		*<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>			echo <span style="color:#e6db74">&#34;Error input, only {1|2|3|4|q|Q}&#34;</span>
+</span></span><span style="display:flex;"><span>			;;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">esac</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><h2 id="4-命令替换">4. 命令替换</h2>
 <blockquote>
 <ol>
 <li>使用 `command`</li>
@@ -948,92 +654,39 @@
 </blockquote>
 <h3 id="示例-2">示例</h3>
 <p><strong>获取系统所有用户</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">index</span><span class="o">=</span><span class="m">1</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> user in <span class="sb">`</span>cat /etc/passwd <span class="p">|</span> cut -d <span class="s2">&#34;:&#34;</span> -f 1<span class="sb">`</span> 
-</span></span><span class="line"><span class="cl"><span class="k">do</span>
-</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;This is </span><span class="nv">$index</span><span class="s2"> user: </span><span class="nv">$user</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl">	<span class="nv">index</span><span class="o">=</span><span class="k">$((</span><span class="nv">$index</span><span class="o">+</span><span class="m">1</span><span class="k">))</span>  <span class="c1"># ((index++))</span>
-</span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>获取年份</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$(($(</span>date +%Y<span class="k">)</span> <span class="o">+</span> <span class="m">1</span><span class="k">))</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 2024</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 等价</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$((</span>num1+num2<span class="k">))</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$((</span><span class="nv">$num1</span><span class="o">+</span><span class="nv">$num2</span><span class="k">))</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>计算星期</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Today is the </span><span class="k">$(</span>date +%j<span class="k">)</span><span class="s2"> of year.&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;This year has passed </span><span class="k">$(($(</span>date +%j<span class="k">)</span> <span class="o">/</span> <span class="m">7</span><span class="k">))</span><span class="s2"> weeks&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;This year has </span><span class="k">$((</span><span class="o">(</span><span class="m">365</span><span class="o">-</span><span class="k">$(</span>date +%j<span class="k">)</span><span class="o">)</span> <span class="o">/</span> <span class="m">7</span><span class="k">))</span><span class="s2">&#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>判断进程是否存活</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">nginx_num</span><span class="o">=</span><span class="k">$(</span>ps -ef <span class="p">|</span> grep nginx <span class="p">|</span> grep -v grep <span class="p">|</span> wc -l<span class="k">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="nv">$nginx_num</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">	systemctl start nginx
-</span></span><span class="line"><span class="cl"><span class="k">fi</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="有类型变量">有类型变量</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>index<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> user in <span style="color:#e6db74">`</span>cat /etc/passwd | cut -d <span style="color:#e6db74">&#34;:&#34;</span> -f 1<span style="color:#e6db74">`</span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>	echo <span style="color:#e6db74">&#34;This is </span>$index<span style="color:#e6db74"> user: </span>$user<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>	index<span style="color:#f92672">=</span><span style="color:#66d9ef">$((</span>$index<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#66d9ef">))</span>  <span style="color:#75715e"># ((index++))</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><p><strong>获取年份</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ echo <span style="color:#66d9ef">$(($(</span>date +%Y<span style="color:#66d9ef">)</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#66d9ef">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2024</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 等价</span>
+</span></span><span style="display:flex;"><span>$ echo <span style="color:#66d9ef">$((</span>num1+num2<span style="color:#66d9ef">))</span>
+</span></span><span style="display:flex;"><span>$ echo <span style="color:#66d9ef">$((</span>$num1<span style="color:#f92672">+</span>$num2<span style="color:#66d9ef">))</span>
+</span></span></code></pre></div><p><strong>计算星期</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Today is the </span><span style="color:#66d9ef">$(</span>date +%j<span style="color:#66d9ef">)</span><span style="color:#e6db74"> of year.&#34;</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;This year has passed </span><span style="color:#66d9ef">$(($(</span>date +%j<span style="color:#66d9ef">)</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">7</span><span style="color:#66d9ef">))</span><span style="color:#e6db74"> weeks&#34;</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;This year has </span><span style="color:#66d9ef">$((</span><span style="color:#f92672">(</span><span style="color:#ae81ff">365</span><span style="color:#f92672">-</span><span style="color:#66d9ef">$(</span>date +%j<span style="color:#66d9ef">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">7</span><span style="color:#66d9ef">))</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p><strong>判断进程是否存活</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>nginx_num<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>ps -ef | grep nginx | grep -v grep | wc -l<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $nginx_num -eq <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>	systemctl start nginx
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><h3 id="有类型变量">有类型变量</h3>
 <blockquote>
 <p>declare 与 typeset 命令</p>
 <p>两者等价</p>
@@ -1068,115 +721,53 @@
 	
 	
 ></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nv">num1</span><span class="o">=</span><span class="m">17</span>
-</span></span><span class="line"><span class="cl">$ <span class="nv">num2</span><span class="o">=</span><span class="m">5</span>
-</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> + <span class="nv">$num2</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 22</span>
-</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> - <span class="nv">$num2</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 12</span>
-</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> <span class="se">\*</span> <span class="nv">$num2</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 85</span>
-</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> / <span class="nv">$num2</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 3</span>
-</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> % <span class="nv">$num2</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 2</span>
-</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> <span class="se">\&gt;</span> <span class="nv">$num2</span>      <span class="c1"># 真为 1, 假为 0</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 1    </span>
-</span></span><span class="line"><span class="cl">$ expr <span class="nv">$num1</span> <span class="se">\&lt;</span> <span class="nv">$num2</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 0</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>练习:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">true</span>
-</span></span><span class="line"><span class="cl"><span class="k">do</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">read</span> -p <span class="s2">&#34;Pls input a integer: &#34;</span>: num
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    expr <span class="nv">$num</span> + <span class="m">1</span> <span class="p">&amp;</span>&gt; /dev/null     <span class="c1"># expr 只支持整数</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[</span> <span class="sb">`</span>expr <span class="nv">$num</span> <span class="se">\&gt;</span> 0<span class="sb">`</span> -eq <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="o">((</span><span class="nv">i</span><span class="o">=</span>1<span class="p">;</span>i&lt;<span class="nv">$num</span><span class="p">;</span>i++<span class="o">))</span>
-</span></span><span class="line"><span class="cl">            <span class="k">do</span>
-</span></span><span class="line"><span class="cl">                <span class="nv">sum</span><span class="o">=</span><span class="sb">`</span>expr <span class="nv">$sum</span> + <span class="nv">$i</span> <span class="sb">`</span>
-</span></span><span class="line"><span class="cl">            <span class="k">done</span>
-</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;1+2+...+</span><span class="nv">$num</span><span class="s2"> = </span><span class="nv">$sum</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl">            <span class="nb">exit</span>
-</span></span><span class="line"><span class="cl">        <span class="k">else</span>
-</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;error not positive&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
-</span></span><span class="line"><span class="cl">    <span class="k">else</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;error inlegle input&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
-</span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="bc-只支持指数运算">bc 只支持指数运算</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="s2">&#34;7.6/3.7&#34;</span> <span class="p">|</span> bc
-</span></span><span class="line"><span class="cl"><span class="c1"># 2</span>
-</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="s2">&#34;scale=4;7.6/3.7&#34;</span> <span class="p">|</span> bc  <span class="c1"># bc 中 scale 为精度</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 2.0540</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ num1<span style="color:#f92672">=</span><span style="color:#ae81ff">17</span>
+</span></span><span style="display:flex;"><span>$ num2<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>$ expr $num1 + $num2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 22</span>
+</span></span><span style="display:flex;"><span>$ expr $num1 - $num2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 12</span>
+</span></span><span style="display:flex;"><span>$ expr $num1 <span style="color:#ae81ff">\*</span> $num2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 85</span>
+</span></span><span style="display:flex;"><span>$ expr $num1 / $num2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3</span>
+</span></span><span style="display:flex;"><span>$ expr $num1 % $num2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>$ expr $num1 <span style="color:#ae81ff">\&gt;</span> $num2      <span style="color:#75715e"># 真为 1, 假为 0</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1    </span>
+</span></span><span style="display:flex;"><span>$ expr $num1 <span style="color:#ae81ff">\&lt;</span> $num2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 0</span>
+</span></span></code></pre></div><p>练习:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> true
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    read -p <span style="color:#e6db74">&#34;Pls input a integer: &#34;</span>: num
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    expr $num + <span style="color:#ae81ff">1</span> &amp;&gt; /dev/null     <span style="color:#75715e"># expr 只支持整数</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $? -eq <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">`</span>expr $num <span style="color:#ae81ff">\&gt;</span> 0<span style="color:#e6db74">`</span> -eq <span style="color:#ae81ff">1</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span><span style="color:#f92672">((</span>i<span style="color:#f92672">=</span>1;i&lt;$num;i++<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>                sum<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>expr $sum + $i <span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>            echo <span style="color:#e6db74">&#34;1+2+...+</span>$num<span style="color:#e6db74"> = </span>$sum<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>            exit
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>            echo <span style="color:#e6db74">&#34;error not positive&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        echo <span style="color:#e6db74">&#34;error inlegle input&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><h4 id="bc-只支持指数运算">bc 只支持指数运算</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ echo <span style="color:#e6db74">&#34;7.6/3.7&#34;</span> | bc
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2</span>
+</span></span><span style="display:flex;"><span>$ echo <span style="color:#e6db74">&#34;scale=4;7.6/3.7&#34;</span> | bc  <span style="color:#75715e"># bc 中 scale 为精度</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2.0540</span>
+</span></span></code></pre></div>
 </section>
 
     <footer class="article-footer">
