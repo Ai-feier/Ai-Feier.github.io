@@ -246,20 +246,33 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ul>
+  <ol>
     <li><a href="#docker-网络模式">docker 网络模式</a>
-      <ul>
+      <ol>
         <li><a href="#bridge">Bridge</a></li>
-        <li><a href="#为-null-模式重新配置网络">为 Null 模式重新配置网络</a></li>
-      </ul>
+        <li><a href="#为-null-模式重新配置网络">为 Null 模式重新配置网络</a>
+          <ol>
+            <li><a href="#create-network-ns">Create network ns</a></li>
+            <li><a href="#start-nginx-docker-with-non-network-mode">Start nginx docker with non network mode</a></li>
+            <li><a href="#check-corresponding-pid">Check corresponding pid</a></li>
+            <li><a href="#check-network-config-for-the-container">Check network config for the container</a></li>
+            <li><a href="#link-network-namespace">Link network namespace</a></li>
+            <li><a href="#check-docker-bridge-on-the-host">Check docker bridge on the host</a></li>
+            <li><a href="#create-veth-pair">Create veth pair</a></li>
+            <li><a href="#config-a">Config A</a></li>
+            <li><a href="#config-b">Config B</a></li>
+            <li><a href="#check-connectivity">Check connectivity</a></li>
+          </ol>
+        </li>
+      </ol>
     </li>
     <li><a href="#容器的多主机间通信">容器的多主机间通信</a>
-      <ul>
+      <ol>
         <li><a href="#underlay">Underlay</a></li>
         <li><a href="#overlay">Overlay</a></li>
-      </ul>
+      </ol>
     </li>
-  </ul>
+  </ol>
 </nav>
         </div>
     </section>
@@ -405,55 +418,154 @@
 ></p>
 <h3 id="为-null-模式重新配置网络">为 Null 模式重新配置网络</h3>
 <h4 id="create-network-ns">Create network ns</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mkdir -p /var/run/netns
-</span></span><span style="display:flex;"><span>find -L /var/run/netns -type l -delete
-</span></span></code></pre></div><h4 id="start-nginx-docker-with-non-network-mode">Start nginx docker with non network mode</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker run --network<span style="color:#f92672">=</span>none  -d nginx
-</span></span></code></pre></div><h4 id="check-corresponding-pid">Check corresponding pid</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker ps|grep nginx
-</span></span><span style="display:flex;"><span>docker inspect &lt;containerid&gt;|grep -i pid
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;Pid&#34;</span>: 876884,
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;PidMode&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;PidsLimit&#34;</span>: null,
-</span></span></code></pre></div><h4 id="check-network-config-for-the-container">Check network config for the container</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nsenter -t <span style="color:#ae81ff">558754</span> -n ip a
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span style="color:#ae81ff">65536</span> qdisc noqueue state UNKNOWN group default qlen <span style="color:#ae81ff">1000</span>
-</span></span><span style="display:flex;"><span>    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-</span></span><span style="display:flex;"><span>    inet 127.0.0.1/8 scope host lo
-</span></span><span style="display:flex;"><span>       valid_lft forever preferred_lft forever
-</span></span></code></pre></div><h4 id="link-network-namespace">Link network namespace</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export pid<span style="color:#f92672">=</span><span style="color:#ae81ff">558754</span>
-</span></span><span style="display:flex;"><span>ln -s /proc/$pid/ns/net /var/run/netns/$pid
-</span></span><span style="display:flex;"><span>ip netns list
-</span></span></code></pre></div><h4 id="check-docker-bridge-on-the-host">Check docker bridge on the host</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>brctl show
-</span></span><span style="display:flex;"><span>ip a
-</span></span><span style="display:flex;"><span>4: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span style="color:#ae81ff">1500</span> qdisc noqueue state UP group default
-</span></span><span style="display:flex;"><span>    link/ether 02:42:35:40:d3:8b brd ff:ff:ff:ff:ff:ff
-</span></span><span style="display:flex;"><span>    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
-</span></span><span style="display:flex;"><span>       valid_lft forever preferred_lft forever
-</span></span><span style="display:flex;"><span>    inet6 fe80::42:35ff:fe40:d38b/64 scope link
-</span></span><span style="display:flex;"><span>       valid_lft forever preferred_lft forever
-</span></span></code></pre></div><h4 id="create-veth-pair">Create veth pair</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ip link add A type veth peer name B
-</span></span></code></pre></div><h4 id="config-a">Config A</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>brctl addif docker0 A
-</span></span><span style="display:flex;"><span>ip link set A up
-</span></span></code></pre></div><h4 id="config-b">Config B</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>SETIP<span style="color:#f92672">=</span>172.17.0.10
-</span></span><span style="display:flex;"><span>SETMASK<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>
-</span></span><span style="display:flex;"><span>GATEWAY<span style="color:#f92672">=</span>172.17.0.1
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>ip link set B netns $pid
-</span></span><span style="display:flex;"><span>ip netns exec $pid ip link set dev B name eth0
-</span></span><span style="display:flex;"><span>ip netns exec $pid ip link set eth0 up
-</span></span><span style="display:flex;"><span>ip netns exec $pid ip addr add $SETIP/$SETMASK dev eth0
-</span></span><span style="display:flex;"><span>ip netns exec $pid ip route add default via $GATEWAY
-</span></span></code></pre></div><h4 id="check-connectivity">Check connectivity</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl 172.17.0.10
-</span></span></code></pre></div><h2 id="容器的多主机间通信">容器的多主机间通信</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">mkdir -p /var/run/netns
+</span></span><span class="line"><span class="cl">find -L /var/run/netns -type l -delete
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="start-nginx-docker-with-non-network-mode">Start nginx docker with non network mode</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker run --network<span class="o">=</span>none  -d nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="check-corresponding-pid">Check corresponding pid</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker ps<span class="p">|</span>grep nginx
+</span></span><span class="line"><span class="cl">docker inspect &lt;containerid&gt;<span class="p">|</span>grep -i pid
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;Pid&#34;</span>: 876884,
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;PidMode&#34;</span>: <span class="s2">&#34;&#34;</span>,
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;PidsLimit&#34;</span>: null,
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="check-network-config-for-the-container">Check network config for the container</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nsenter -t <span class="m">558754</span> -n ip a
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="m">65536</span> qdisc noqueue state UNKNOWN group default qlen <span class="m">1000</span>
+</span></span><span class="line"><span class="cl">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span></span><span class="line"><span class="cl">    inet 127.0.0.1/8 scope host lo
+</span></span><span class="line"><span class="cl">       valid_lft forever preferred_lft forever
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="link-network-namespace">Link network namespace</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">pid</span><span class="o">=</span><span class="m">558754</span>
+</span></span><span class="line"><span class="cl">ln -s /proc/<span class="nv">$pid</span>/ns/net /var/run/netns/<span class="nv">$pid</span>
+</span></span><span class="line"><span class="cl">ip netns list
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="check-docker-bridge-on-the-host">Check docker bridge on the host</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">brctl show
+</span></span><span class="line"><span class="cl">ip a
+</span></span><span class="line"><span class="cl">4: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc noqueue state UP group default
+</span></span><span class="line"><span class="cl">    link/ether 02:42:35:40:d3:8b brd ff:ff:ff:ff:ff:ff
+</span></span><span class="line"><span class="cl">    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+</span></span><span class="line"><span class="cl">       valid_lft forever preferred_lft forever
+</span></span><span class="line"><span class="cl">    inet6 fe80::42:35ff:fe40:d38b/64 scope link
+</span></span><span class="line"><span class="cl">       valid_lft forever preferred_lft forever
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="create-veth-pair">Create veth pair</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">ip link add A <span class="nb">type</span> veth peer name B
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="config-a">Config A</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">brctl addif docker0 A
+</span></span><span class="line"><span class="cl">ip link <span class="nb">set</span> A up
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="config-b">Config B</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nv">SETIP</span><span class="o">=</span>172.17.0.10
+</span></span><span class="line"><span class="cl"><span class="nv">SETMASK</span><span class="o">=</span><span class="m">16</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GATEWAY</span><span class="o">=</span>172.17.0.1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ip link <span class="nb">set</span> B netns <span class="nv">$pid</span>
+</span></span><span class="line"><span class="cl">ip netns <span class="nb">exec</span> <span class="nv">$pid</span> ip link <span class="nb">set</span> dev B name eth0
+</span></span><span class="line"><span class="cl">ip netns <span class="nb">exec</span> <span class="nv">$pid</span> ip link <span class="nb">set</span> eth0 up
+</span></span><span class="line"><span class="cl">ip netns <span class="nb">exec</span> <span class="nv">$pid</span> ip addr add <span class="nv">$SETIP</span>/<span class="nv">$SETMASK</span> dev eth0
+</span></span><span class="line"><span class="cl">ip netns <span class="nb">exec</span> <span class="nv">$pid</span> ip route add default via <span class="nv">$GATEWAY</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="check-connectivity">Check connectivity</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">curl 172.17.0.10
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="容器的多主机间通信">容器的多主机间通信</h2>
 <h3 id="underlay">Underlay</h3>
 <p><strong>为容器的预留一端 IP, 主机就清楚其 IP 的路由, 则能解决主机间容器的互通</strong></p>
 <h3 id="overlay">Overlay</h3>

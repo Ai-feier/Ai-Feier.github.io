@@ -246,27 +246,36 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ul>
+  <ol>
     <li><a href="#常用选项-找文件">常用选项 (找文件)</a>
-      <ul>
+      <ol>
         <li><a href="#语法格式">语法格式</a></li>
-        <li><a href="#选项参数表">选项参数表:</a></li>
-      </ul>
+        <li><a href="#选项参数表">选项参数表:</a>
+          <ol>
+            <li><a href="#-type-参数">-type 参数</a></li>
+            <li><a href="#-size-参数">-size 参数</a></li>
+            <li><a href="#-mtime">-mtime</a></li>
+            <li><a href="#-mmin">-mmin</a></li>
+            <li><a href="#-mindepth">-mindepth</a></li>
+            <li><a href="#-maxdepth">-maxdepth</a></li>
+          </ol>
+        </li>
+      </ol>
     </li>
     <li><a href="#find-操作-执行">find 操作 (执行)</a>
-      <ul>
+      <ol>
         <li><a href="#-exec">-exec</a></li>
         <li><a href="#逻辑运算符">逻辑运算符</a></li>
-      </ul>
+      </ol>
     </li>
     <li><a href="#其他查找命令">其他查找命令</a>
-      <ul>
+      <ol>
         <li><a href="#locate-默认部分匹配">locate: 默认部分匹配</a></li>
         <li><a href="#whereis-查找二进制文件">whereis: 查找二进制文件</a></li>
         <li><a href="#which-查找二进制程序文件">which: 查找二进制程序文件</a></li>
-      </ul>
+      </ol>
     </li>
-  </ul>
+  </ol>
 </nav>
         </div>
     </section>
@@ -518,10 +527,19 @@
 <li>查找 /etc 下 5 天内修改的文件, 并以 conf 结尾</li>
 <li>查找 /etc 10 天前修改的文件, 属主为 root</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ find /etc -mtime -5 -name <span style="color:#e6db74">&#39;*conf&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>$ find /etc -mtime +10 -user root
-</span></span></code></pre></div><h4 id="-mmin">-mmin</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find /etc -mtime -5 -name <span class="s1">&#39;*conf&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ find /etc -mtime +10 -user root
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="-mmin">-mmin</h4>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -548,8 +566,15 @@
 </blockquote>
 <h4 id="-maxdepth">-maxdepth</h4>
 <p><strong>-newer</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ find /etc -newer 123.txt  <span style="color:#75715e"># 查找比 123.txt 更新的文件</span>
-</span></span></code></pre></div><h2 id="find-操作-执行">find 操作 (执行)</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find /etc -newer 123.txt  <span class="c1"># 查找比 123.txt 更新的文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="find-操作-执行">find 操作 (执行)</h2>
 <ul>
 <li>-print</li>
 <li>-exec</li>
@@ -557,25 +582,59 @@
 </ul>
 <h3 id="-exec">-exec</h3>
 <p>删除</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ find ./etc -name <span style="color:#e6db74">&#34;*conf&#34;</span> -exec rm -rf <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span>
-</span></span></code></pre></div><p>复制</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ find ./etc -size +1M -exec cp <span style="color:#f92672">{}</span> ./test/ <span style="color:#ae81ff">\;</span>
-</span></span></code></pre></div><p>练习: 把 /var/log/ 下 7 天以上的文件删除</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ find /var/log/ -name <span style="color:#e6db74">&#34;*.log&#34;</span> -mtime +7 -exec rm -rf <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span>
-</span></span></code></pre></div><h3 id="逻辑运算符">逻辑运算符</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find ./etc -name <span class="s2">&#34;*conf&#34;</span> -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>复制</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find ./etc -size +1M -exec cp <span class="o">{}</span> ./test/ <span class="se">\;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>练习: 把 /var/log/ 下 7 天以上的文件删除</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find /var/log/ -name <span class="s2">&#34;*.log&#34;</span> -mtime +7 -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="逻辑运算符">逻辑运算符</h3>
 <ul>
 <li>-a              与</li>
 <li>-o              或</li>
 <li>-not | !       非</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ find . -not -user &lt;username&gt; 
-</span></span><span style="display:flex;"><span>$ find . ! -user &lt;username&gt; 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>$ find -type f -a -user &lt;username&gt; -a -size +300c
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 属主为 ? 或以 .yml 结尾的文件</span>
-</span></span><span style="display:flex;"><span>$ find . -type f -a <span style="color:#ae81ff">\(</span> -user &lt;username&gt; -o -name <span style="color:#e6db74">&#39;*.yml&#39;</span> <span style="color:#ae81ff">\)</span>
-</span></span></code></pre></div><h2 id="其他查找命令">其他查找命令</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find . -not -user &lt;username&gt; 
+</span></span><span class="line"><span class="cl">$ find . ! -user &lt;username&gt; 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ find -type f -a -user &lt;username&gt; -a -size +300c
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 属主为 ? 或以 .yml 结尾的文件</span>
+</span></span><span class="line"><span class="cl">$ find . -type f -a <span class="se">\(</span> -user &lt;username&gt; -o -name <span class="s1">&#39;*.yml&#39;</span> <span class="se">\)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="其他查找命令">其他查找命令</h2>
 <h3 id="locate-默认部分匹配">locate: 默认部分匹配</h3>
 <p>位于软件包 mlocate</p>
 <p>find 是直接从磁盘中查找, locate 是从数据库中查找</p>
@@ -606,8 +665,15 @@
 </tbody>
 </table></div>
 <h3 id="which-查找二进制程序文件">which: 查找二进制程序文件</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>which mysql
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">which mysql
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
     <footer class="article-footer">

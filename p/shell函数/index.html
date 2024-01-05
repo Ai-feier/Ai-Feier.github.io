@@ -246,12 +246,12 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ul>
+  <ol>
     <li><a href="#函数定义与使用">函数定义与使用</a></li>
     <li><a href="#函数返回值">函数返回值</a></li>
     <li><a href="#全局变量与局部变量">全局变量与局部变量</a></li>
     <li><a href="#函数库">函数库</a></li>
-  </ul>
+  </ol>
 </nav>
         </div>
     </section>
@@ -371,156 +371,337 @@
 	
 ></p>
 <p>nginx 守护进程</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> true
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    ps -ef | grep nginx | grep -v grep | grep -v $$ &amp;&gt; /dev/null
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $? -eq <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>        echo <span style="color:#e6db74">&#34;nginx is running&#34;</span>
-</span></span><span style="display:flex;"><span>        sleep 3s
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>        echo <span style="color:#e6db74">&#34;nginx is stop, starting&#34;</span>
-</span></span><span style="display:flex;"><span>        systemctl start nginx
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span></code></pre></div><p>简单计算函数</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> calcu
-</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> $2 in
-</span></span><span style="display:flex;"><span>        +<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>            echo <span style="color:#e6db74">`</span>expr $1 + $3<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>            ;;
-</span></span><span style="display:flex;"><span>        -<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>            echo <span style="color:#e6db74">`</span>expr $1 - $3<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>            ;;
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">\*</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>            echo <span style="color:#e6db74">`</span>expr $1 <span style="color:#ae81ff">\*</span> $3<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>            ;;
-</span></span><span style="display:flex;"><span>        /<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>            echo <span style="color:#e6db74">`</span>expr $1 / $3<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>            ;;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">esac</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>calcu $1 $2 $3
-</span></span></code></pre></div><h2 id="函数返回值">函数返回值</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    ps -ef <span class="p">|</span> grep nginx <span class="p">|</span> grep -v grep <span class="p">|</span> grep -v <span class="nv">$$</span> <span class="p">&amp;</span>&gt; /dev/null
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;nginx is running&#34;</span>
+</span></span><span class="line"><span class="cl">        sleep 3s
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;nginx is stop, starting&#34;</span>
+</span></span><span class="line"><span class="cl">        systemctl start nginx
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>简单计算函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> calcu
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="nv">$2</span> in
+</span></span><span class="line"><span class="cl">        +<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="sb">`</span>expr <span class="nv">$1</span> + <span class="nv">$3</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        -<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="sb">`</span>expr <span class="nv">$1</span> - <span class="nv">$3</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        <span class="se">\*</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="sb">`</span>expr <span class="nv">$1</span> <span class="se">\*</span> <span class="nv">$3</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        /<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="sb">`</span>expr <span class="nv">$1</span> / <span class="nv">$3</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">esac</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">calcu <span class="nv">$1</span> <span class="nv">$2</span> <span class="nv">$3</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="函数返回值">函数返回值</h2>
 <ol>
 <li>return</li>
 <li>echo</li>
 </ol>
 <p>return 返回值案例</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> is_nginx_isrunning
-</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>	ps -ef | grep nginx | grep -v grep | grep $$ &amp;&gt; /dev/null
-</span></span><span style="display:flex;"><span>	
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $? -eq <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>    	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">fi</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>is_nginx_running <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;nginx is running&#34;</span> <span style="color:#f92672">||</span> echo <span style="color:#e6db74">&#34;nginx is not running&#34;</span>
-</span></span></code></pre></div><p>echo 返回值案例</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bahs
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> get_users
-</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    users<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /etc/passwd | cut -d <span style="color:#e6db74">&#34;:&#34;</span> -f1<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    echo $users
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>userlist<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>get_users<span style="color:#e6db74">`</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>index<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> u in <span style="color:#e6db74">${</span>userlist[@]<span style="color:#e6db74">}</span>  <span style="color:#75715e"># 也可以 $userlist</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;This is </span>$index<span style="color:#e6db74"> user: </span>$u<span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>    index<span style="color:#f92672">=</span><span style="color:#66d9ef">$((</span>$index<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#66d9ef">))</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span></code></pre></div><h2 id="全局变量与局部变量">全局变量与局部变量</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> is_nginx_isrunning
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	ps -ef <span class="p">|</span> grep nginx <span class="p">|</span> grep -v grep <span class="p">|</span> grep <span class="nv">$$</span> <span class="p">&amp;</span>&gt; /dev/null
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    	<span class="k">return</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">is_nginx_running <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;nginx is running&#34;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;nginx is not running&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>echo 返回值案例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bahs
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> get_users
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">users</span><span class="o">=</span><span class="sb">`</span>cat /etc/passwd <span class="p">|</span> cut -d <span class="s2">&#34;:&#34;</span> -f1<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="nv">$users</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">userlist</span><span class="o">=</span><span class="sb">`</span>get_users<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">index</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> u in <span class="si">${</span><span class="nv">userlist</span><span class="p">[@]</span><span class="si">}</span>  <span class="c1"># 也可以 $userlist</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;This is </span><span class="nv">$index</span><span class="s2"> user: </span><span class="nv">$u</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">index</span><span class="o">=</span><span class="k">$((</span><span class="nv">$index</span><span class="o">+</span><span class="m">1</span><span class="k">))</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="全局变量与局部变量">全局变量与局部变量</h2>
 <p>Shell 中默认为全局变量</p>
 <p>局部变量使用 local 关键字</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>var1<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> set_var2
-</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    var2<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>echo $var1
-</span></span><span style="display:flex;"><span>echo $var2
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>set_var2
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>echo $var2
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> set_var3
-</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    local var3<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>set_var3
-</span></span><span style="display:flex;"><span>echo $var3
-</span></span></code></pre></div><p>输出:</p>
-<pre tabindex="0"><code>1
-
-2
-</code></pre><h2 id="函数库">函数库</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">var1</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> set_var2
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">var2</span><span class="o">=</span><span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$var1</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$var2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">set_var2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$var2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> set_var3
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">var3</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">set_var3
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$var3</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="函数库">函数库</h2>
 <p>库文件通常以 .lib 结尾</p>
 <p>base_function.lib</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/echo
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e"># 提示不可运行</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span>  add
-</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;`expr </span>$1<span style="color:#e6db74"> + </span>$2<span style="color:#e6db74">`&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> divide
-</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;`expr </span>$1<span style="color:#e6db74"> / </span>$2<span style="color:#e6db74">`&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> sys_load
-</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Memory Info&#34;</span>
-</span></span><span style="display:flex;"><span>    echo
-</span></span><span style="display:flex;"><span>    free -m
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    echo
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Disk Info&#34;</span>
-</span></span><span style="display:flex;"><span>    echo
-</span></span><span style="display:flex;"><span>    df -h
-</span></span><span style="display:flex;"><span>    echo
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>use_base_function.sh</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>. /root/shell/base_function.lib    <span style="color:#75715e"># 也可以用 source; 要用绝对路径</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>add <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>divide <span style="color:#ae81ff">7</span> <span style="color:#ae81ff">3</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>sys_load
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/echo
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># 提示不可运行</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span>  add
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;`expr </span><span class="nv">$1</span><span class="s2"> + </span><span class="nv">$2</span><span class="s2">`&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> divide
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;`expr </span><span class="nv">$1</span><span class="s2"> / </span><span class="nv">$2</span><span class="s2">`&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> sys_load
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Memory Info&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">    free -m
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Disk Info&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">    df -h
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>use_base_function.sh</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">. /root/shell/base_function.lib    <span class="c1"># 也可以用 source; 要用绝对路径</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">add <span class="m">1</span> <span class="m">2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">divide <span class="m">7</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sys_load
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
     <footer class="article-footer">

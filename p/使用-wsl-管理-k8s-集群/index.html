@@ -246,22 +246,22 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ul>
+  <ol>
     <li><a href="#k8s-集群配置">k8s 集群配置</a></li>
     <li><a href="#理解-kubeconfig">理解 kubeconfig</a></li>
     <li><a href="#思路整理">思路整理:</a></li>
     <li><a href="#在-wsl-上安装-kubectl">在 wsl 上安装 kubectl</a>
-      <ul>
+      <ol>
         <li><a href="#配置自动补全">配置自动补全</a></li>
-      </ul>
+      </ol>
     </li>
     <li><a href="#拷贝-kubeconfig">拷贝 kubeconfig</a>
-      <ul>
+      <ol>
         <li><a href="#登到-k8s-集群的-master-节点-把-kubeconfig-拷贝到-wsl">登到 k8s 集群的 master 节点, 把 kubeconfig 拷贝到 wsl</a></li>
         <li><a href="#测试-kubectl">测试 kubectl</a></li>
-      </ul>
+      </ol>
     </li>
-  </ul>
+  </ol>
 </nav>
         </div>
     </section>
@@ -337,7 +337,7 @@
 
 
                 <time class="article-time--reading">
-                    2 minute read
+                    3 minute read
                 </time>
             </div>
         
@@ -400,75 +400,164 @@
 <li>要想使用 kubectl 管理集群, 就需要集群的 kubeconfig 与 集群证书</li>
 </ol>
 <h2 id="在-wsl-上安装-kubectl">在 wsl 上安装 kubectl</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 安装依赖</span>
-</span></span><span style="display:flex;"><span>apt install apt-transport-https ca-certificates -y
-</span></span><span style="display:flex;"><span>apt install vim lsof net-tools zip unzip tree wget curl bash-completion pciutils gcc make lrzsz tcpdump bind9-utils -y 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 编辑镜像源文件，文件末尾加入阿里云k8s镜像源配置</span>
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;deb https://mirrors.aliyun.com/kubernetes/apt kubernetes-xenial main&#39;</span> &gt;&gt; /etc/apt/sources.list
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#更新证书</span>
-</span></span><span style="display:flex;"><span>curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | sudo apt-key add
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#更新源</span>
-</span></span><span style="display:flex;"><span>apt update
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看 kubeadm 版本</span>
-</span></span><span style="display:flex;"><span>apt-cache madison kubeactl | grep 1.28
-</span></span><span style="display:flex;"><span>apt-get install -y kubectl<span style="color:#f92672">=</span>1.28.1-00
-</span></span></code></pre></div><h3 id="配置自动补全">配置自动补全</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt install bash-completion -y
-</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt; EOF &gt;&gt; ~/.profile
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">alias k=&#39;kubectl&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">source &lt;(kubectl completion bash)
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">complete -F __start_kubectl k
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>source ~/.profile
-</span></span></code></pre></div><h2 id="拷贝-kubeconfig">拷贝 kubeconfig</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 安装依赖</span>
+</span></span><span class="line"><span class="cl">apt install apt-transport-https ca-certificates -y
+</span></span><span class="line"><span class="cl">apt install vim lsof net-tools zip unzip tree wget curl bash-completion pciutils gcc make lrzsz tcpdump bind9-utils -y 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 编辑镜像源文件，文件末尾加入阿里云k8s镜像源配置</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;deb https://mirrors.aliyun.com/kubernetes/apt kubernetes-xenial main&#39;</span> &gt;&gt; /etc/apt/sources.list
+</span></span><span class="line"><span class="cl"><span class="c1">#更新证书</span>
+</span></span><span class="line"><span class="cl">curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg <span class="p">|</span> sudo apt-key add
+</span></span><span class="line"><span class="cl"><span class="c1">#更新源</span>
+</span></span><span class="line"><span class="cl">apt update
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看 kubeadm 版本</span>
+</span></span><span class="line"><span class="cl">apt-cache madison kubeactl <span class="p">|</span> grep 1.28
+</span></span><span class="line"><span class="cl">apt-get install -y <span class="nv">kubectl</span><span class="o">=</span>1.28.1-00
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="配置自动补全">配置自动补全</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">apt install bash-completion -y
+</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt; EOF &gt;&gt; ~/.profile
+</span></span></span><span class="line"><span class="cl"><span class="s">alias k=&#39;kubectl&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">source &lt;(kubectl completion bash)
+</span></span></span><span class="line"><span class="cl"><span class="s">complete -F __start_kubectl k
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> ~/.profile
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="拷贝-kubeconfig">拷贝 kubeconfig</h2>
 <h3 id="登到-k8s-集群的-master-节点-把-kubeconfig-拷贝到-wsl">登到 k8s 集群的 master 节点, 把 kubeconfig 拷贝到 wsl</h3>
 <p>ssh 免密登录</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;172.28.18.117 wsl&#34;</span> &gt;&gt; /etc/hosts
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 测试链接</span>
-</span></span><span style="display:flex;"><span>ping wsl
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 拷贝公钥</span>
-</span></span><span style="display:flex;"><span>ssh-copy-id -i ~/.ssh/id_rsa.pub root@wsl
-</span></span></code></pre></div><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;172.28.18.117 wsl&#34;</span> &gt;&gt; /etc/hosts
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试链接</span>
+</span></span><span class="line"><span class="cl">ping wsl
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 拷贝公钥</span>
+</span></span><span class="line"><span class="cl">ssh-copy-id -i ~/.ssh/id_rsa.pub root@wsl
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>如果有安全需要的话, 就不要把建立 wsl 与 master 的免密登录</p>
 </blockquote>
 <p>拷贝 kubeconfig</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh root@wsl mkdir /root/.kube
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>scp /root/.kube/config root@wsl:/root/.kube/config
-</span></span></code></pre></div><h3 id="测试-kubectl">测试 kubectl</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>root@MKT:~# k get po -A
-</span></span><span style="display:flex;"><span>NAMESPACE          NAME                                      READY   STATUS    RESTARTS      AGE
-</span></span><span style="display:flex;"><span>calico-apiserver   calico-apiserver-69fc754d76-9w7p6         1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>17m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>calico-apiserver   calico-apiserver-69fc754d76-kdxt4         1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>calico-system      calico-kube-controllers-b9dcc57c4-gzlhk   1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>calico-system      calico-node-5jckf                         1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>17m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>calico-system      calico-node-gq882                         1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>calico-system      calico-node-zksvz                         1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   45h
-</span></span><span style="display:flex;"><span>calico-system      calico-typha-5cdb9d5d59-tnjzh             1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>17m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>calico-system      calico-typha-5cdb9d5d59-z7tnk             1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   45h
-</span></span><span style="display:flex;"><span>calico-system      csi-node-driver-j4648                     2/2     Running   <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>calico-system      csi-node-driver-jf548                     2/2     Running   <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   45h
-</span></span><span style="display:flex;"><span>calico-system      csi-node-driver-p9b8p                     2/2     Running   <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>17m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>kube-system        coredns-66f779496c-n4lwr                  1/1     Running   <span style="color:#ae81ff">1</span>             46h
-</span></span><span style="display:flex;"><span>kube-system        coredns-66f779496c-tmjx9                  1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>kube-system        etcd-master1                              1/1     Running   <span style="color:#ae81ff">3</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>kube-system        etcd-master2                              1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   45h
-</span></span><span style="display:flex;"><span>kube-system        kube-apiserver-master1                    1/1     Running   <span style="color:#ae81ff">3</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>kube-system        kube-apiserver-master2                    1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   45h
-</span></span><span style="display:flex;"><span>kube-system        kube-controller-manager-master1           1/1     Running   <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>kube-system        kube-controller-manager-master2           1/1     Running   <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>20m ago<span style="color:#f92672">)</span>   45h
-</span></span><span style="display:flex;"><span>kube-system        kube-proxy-9tjjg                          1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>17m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>kube-system        kube-proxy-chcc5                          1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   45h
-</span></span><span style="display:flex;"><span>kube-system        kube-proxy-mrp2v                          1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>kube-system        kube-scheduler-master1                    1/1     Running   <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   46h
-</span></span><span style="display:flex;"><span>kube-system        kube-scheduler-master2                    1/1     Running   <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>21m ago<span style="color:#f92672">)</span>   45h
-</span></span><span style="display:flex;"><span>tigera-operator    tigera-operator-55585899bf-tcdhv          1/1     Running   <span style="color:#ae81ff">4</span> <span style="color:#f92672">(</span>17m ago<span style="color:#f92672">)</span>   46h
-</span></span></code></pre></div><p>参考:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">ssh root@wsl mkdir /root/.kube
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">scp /root/.kube/config root@wsl:/root/.kube/config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="测试-kubectl">测试 kubectl</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@MKT:~# k get po -A
+</span></span><span class="line"><span class="cl">NAMESPACE          NAME                                      READY   STATUS    RESTARTS      AGE
+</span></span><span class="line"><span class="cl">calico-apiserver   calico-apiserver-69fc754d76-9w7p6         1/1     Running   <span class="m">1</span> <span class="o">(</span>17m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">calico-apiserver   calico-apiserver-69fc754d76-kdxt4         1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">calico-system      calico-kube-controllers-b9dcc57c4-gzlhk   1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">calico-system      calico-node-5jckf                         1/1     Running   <span class="m">1</span> <span class="o">(</span>17m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">calico-system      calico-node-gq882                         1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">calico-system      calico-node-zksvz                         1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   45h
+</span></span><span class="line"><span class="cl">calico-system      calico-typha-5cdb9d5d59-tnjzh             1/1     Running   <span class="m">1</span> <span class="o">(</span>17m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">calico-system      calico-typha-5cdb9d5d59-z7tnk             1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   45h
+</span></span><span class="line"><span class="cl">calico-system      csi-node-driver-j4648                     2/2     Running   <span class="m">2</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">calico-system      csi-node-driver-jf548                     2/2     Running   <span class="m">2</span> <span class="o">(</span>21m ago<span class="o">)</span>   45h
+</span></span><span class="line"><span class="cl">calico-system      csi-node-driver-p9b8p                     2/2     Running   <span class="m">2</span> <span class="o">(</span>17m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">kube-system        coredns-66f779496c-n4lwr                  1/1     Running   <span class="m">1</span>             46h
+</span></span><span class="line"><span class="cl">kube-system        coredns-66f779496c-tmjx9                  1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">kube-system        etcd-master1                              1/1     Running   <span class="m">3</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">kube-system        etcd-master2                              1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   45h
+</span></span><span class="line"><span class="cl">kube-system        kube-apiserver-master1                    1/1     Running   <span class="m">3</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">kube-system        kube-apiserver-master2                    1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   45h
+</span></span><span class="line"><span class="cl">kube-system        kube-controller-manager-master1           1/1     Running   <span class="m">5</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">kube-system        kube-controller-manager-master2           1/1     Running   <span class="m">2</span> <span class="o">(</span>20m ago<span class="o">)</span>   45h
+</span></span><span class="line"><span class="cl">kube-system        kube-proxy-9tjjg                          1/1     Running   <span class="m">1</span> <span class="o">(</span>17m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">kube-system        kube-proxy-chcc5                          1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   45h
+</span></span><span class="line"><span class="cl">kube-system        kube-proxy-mrp2v                          1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">kube-system        kube-scheduler-master1                    1/1     Running   <span class="m">5</span> <span class="o">(</span>21m ago<span class="o">)</span>   46h
+</span></span><span class="line"><span class="cl">kube-system        kube-scheduler-master2                    1/1     Running   <span class="m">1</span> <span class="o">(</span>21m ago<span class="o">)</span>   45h
+</span></span><span class="line"><span class="cl">tigera-operator    tigera-operator-55585899bf-tcdhv          1/1     Running   <span class="m">4</span> <span class="o">(</span>17m ago<span class="o">)</span>   46h
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>参考:</p>
 <blockquote>
 <ol>
 <li><a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/configuration/organize-cluster-access-kubeconfig/"  target="_blank" rel="noopener"

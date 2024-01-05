@@ -246,9 +246,9 @@
         
         <div class="widget--toc">
             <nav id="TableOfContents">
-  <ul>
+  <ol>
     <li>
-      <ul>
+      <ol>
         <li><a href="#让apt可以支持https">让apt可以支持HTTPS</a></li>
         <li><a href="#将官方docker库的gpg公钥添加到系统中">将官方Docker库的GPG公钥添加到系统中：</a></li>
         <li><a href="#将docker库添加到apt里">将Docker库添加到APT里：</a></li>
@@ -257,9 +257,9 @@
         <li><a href="#安装-docker-ce">安装 docker-ce</a></li>
         <li><a href="#配置-docker-阿里源镜像地址">配置 docker 阿里源镜像地址</a></li>
         <li><a href="#检查-docker-运行状态">检查 docker 运行状态</a></li>
-      </ul>
+      </ol>
     </li>
-  </ul>
+  </ol>
 </nav>
         </div>
     </section>
@@ -356,56 +356,146 @@
     
     
     <h3 id="让apt可以支持https">让apt可以支持HTTPS</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ apt install apt-transport-https ca-certificates curl software-properties-common -y
-</span></span></code></pre></div><h3 id="将官方docker库的gpg公钥添加到系统中">将官方Docker库的GPG公钥添加到系统中：</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - 
-</span></span></code></pre></div><h3 id="将docker库添加到apt里">将Docker库添加到APT里：</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 官方源</span>
-</span></span><span style="display:flex;"><span>$ add-apt-repository <span style="color:#e6db74">&#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 阿里源</span>
-</span></span><span style="display:flex;"><span>$ add-apt-repository <span style="color:#e6db74">&#34;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu focal stable&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># echo &#34;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu focal stable&#34; &gt;&gt; /etc/apt/source.list</span>
-</span></span></code></pre></div><h3 id="更新包列表">更新包列表</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ apt update 
-</span></span></code></pre></div><h3 id="为了确保修改生效让新的安装从docker库里获取而不是从ubuntu自己的库里获取执行">为了确保修改生效，让新的安装从Docker库里获取，而不是从Ubuntu自己的库里获取，执行：</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ apt-cache policy docker-ce
-</span></span></code></pre></div><h3 id="安装-docker-ce">安装 docker-ce</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ apt install -y docker-ce
-</span></span></code></pre></div><h3 id="配置-docker-阿里源镜像地址">配置 docker 阿里源镜像地址</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo mkdir -p /etc/docker
-</span></span><span style="display:flex;"><span>sudo tee /etc/docker/daemon.json <span style="color:#e6db74">&lt;&lt;-&#39;EOF&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">	&#34;registry-mirrors&#34;: [&#34;https://nol6uuul.mirror.aliyuncs.com&#34;]
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
-</span></span><span style="display:flex;"><span>sudo systemctl daemon-reload
-</span></span><span style="display:flex;"><span>sudo systemctl restart docker
-</span></span></code></pre></div><h3 id="检查-docker-运行状态">检查 docker 运行状态</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ systemctl status docker 
-</span></span><span style="display:flex;"><span>● docker.service - Docker Application Container Engine
-</span></span><span style="display:flex;"><span>     Loaded: loaded <span style="color:#f92672">(</span>/lib/systemd/system/docker.service; enabled; vendor preset: enabled<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>     Active: active <span style="color:#f92672">(</span>running<span style="color:#f92672">)</span> since Fri 2024-01-05 16:02:08 CST; 17min ago
-</span></span><span style="display:flex;"><span>TriggeredBy: ● docker.socket
-</span></span><span style="display:flex;"><span>       Docs: https://docs.docker.com
-</span></span><span style="display:flex;"><span>   Main PID: <span style="color:#ae81ff">241165</span> <span style="color:#f92672">(</span>dockerd<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>      Tasks: <span style="color:#ae81ff">12</span>
-</span></span><span style="display:flex;"><span>     Memory: 29.6M
-</span></span><span style="display:flex;"><span>     CGroup: /system.slice/docker.service
-</span></span><span style="display:flex;"><span>             └─241165 /usr/bin/dockerd -H fd:// --containerd<span style="color:#f92672">=</span>/run/containerd/containerd.sock
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:08 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:02:08.136300388+08:00&#34;</span> level<span style="color:#f92672">=</span>info msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Docker daemon&#34;</span> commit<span style="color:#f92672">=</span>311b9ff graphdriver<span style="color:#f92672">=</span>overla&gt;
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:08 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:02:08.136351488+08:00&#34;</span> level<span style="color:#f92672">=</span>info msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Daemon has completed initialization&#34;</span>
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:08 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:02:08.254789219+08:00&#34;</span> level<span style="color:#f92672">=</span>info msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;API listen on /run/docker.sock&#34;</span>
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:08 master1 systemd<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>: Started Docker Application Container Engine.
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:46 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:02:46.543587374+08:00&#34;</span> level<span style="color:#f92672">=</span>warning msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Error persisting manifest&#34;</span> digest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sha256:2fc&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jan 05 16:03:38 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:03:38.612170892+08:00<span style="color:#e6db74">&#34; level=info msg=&#34;</span>ignoring event<span style="color:#e6db74">&#34; container=6d8d34f0066bde04811038&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jan 05 16:04:50 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:04:50.406175352+08:00<span style="color:#e6db74">&#34; level=info msg=&#34;</span>ignoring event<span style="color:#e6db74">&#34; container=504632135d04b87b5ed83f&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jan 05 16:05:35 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:05:35.656175212+08:00<span style="color:#e6db74">&#34; level=error msg=&#34;</span>Error setting up exec command in container 5046&gt;
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:09:52 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:09:52.944844810+08:00&#34;</span> level<span style="color:#f92672">=</span>info msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Layer sha256:a87ab3c028db3c73f360b49c9dcd171e236&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jan 05 16:09:52 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:09:52.946428917+08:00<span style="color:#e6db74">&#34; level=info msg=&#34;</span>Layer sha256:82ae998286b2bba64ce571578647adcabef&gt;
-</span></span><span style="display:flex;"><span>lines 1-21/21 <span style="color:#f92672">(</span>END<span style="color:#f92672">)</span>
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ apt install apt-transport-https ca-certificates curl software-properties-common -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="将官方docker库的gpg公钥添加到系统中">将官方Docker库的GPG公钥添加到系统中：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class="p">|</span> sudo apt-key add - 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="将docker库添加到apt里">将Docker库添加到APT里：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 官方源</span>
+</span></span><span class="line"><span class="cl">$ add-apt-repository <span class="s2">&#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 阿里源</span>
+</span></span><span class="line"><span class="cl">$ add-apt-repository <span class="s2">&#34;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu focal stable&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># echo &#34;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu focal stable&#34; &gt;&gt; /etc/apt/source.list</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="更新包列表">更新包列表</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ apt update 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="为了确保修改生效让新的安装从docker库里获取而不是从ubuntu自己的库里获取执行">为了确保修改生效，让新的安装从Docker库里获取，而不是从Ubuntu自己的库里获取，执行：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ apt-cache policy docker-ce
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="安装-docker-ce">安装 docker-ce</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ apt install -y docker-ce
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="配置-docker-阿里源镜像地址">配置 docker 阿里源镜像地址</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">sudo mkdir -p /etc/docker
+</span></span><span class="line"><span class="cl">sudo tee /etc/docker/daemon.json <span class="s">&lt;&lt;-&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">{
+</span></span></span><span class="line"><span class="cl"><span class="s">	&#34;registry-mirrors&#34;: [&#34;https://nol6uuul.mirror.aliyuncs.com&#34;]
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">sudo systemctl daemon-reload
+</span></span><span class="line"><span class="cl">sudo systemctl restart docker
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="检查-docker-运行状态">检查 docker 运行状态</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ systemctl status docker 
+</span></span><span class="line"><span class="cl">● docker.service - Docker Application Container Engine
+</span></span><span class="line"><span class="cl">     Loaded: loaded <span class="o">(</span>/lib/systemd/system/docker.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">     Active: active <span class="o">(</span>running<span class="o">)</span> since Fri 2024-01-05 16:02:08 CST<span class="p">;</span> 17min ago
+</span></span><span class="line"><span class="cl">TriggeredBy: ● docker.socket
+</span></span><span class="line"><span class="cl">       Docs: https://docs.docker.com
+</span></span><span class="line"><span class="cl">   Main PID: <span class="m">241165</span> <span class="o">(</span>dockerd<span class="o">)</span>
+</span></span><span class="line"><span class="cl">      Tasks: <span class="m">12</span>
+</span></span><span class="line"><span class="cl">     Memory: 29.6M
+</span></span><span class="line"><span class="cl">     CGroup: /system.slice/docker.service
+</span></span><span class="line"><span class="cl">             └─241165 /usr/bin/dockerd -H fd:// --containerd<span class="o">=</span>/run/containerd/containerd.sock
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Jan <span class="m">05</span> 16:02:08 master1 dockerd<span class="o">[</span>241165<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2024-01-05T16:02:08.136300388+08:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Docker daemon&#34;</span> <span class="nv">commit</span><span class="o">=</span>311b9ff <span class="nv">graphdriver</span><span class="o">=</span>overla&gt;
+</span></span><span class="line"><span class="cl">Jan <span class="m">05</span> 16:02:08 master1 dockerd<span class="o">[</span>241165<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2024-01-05T16:02:08.136351488+08:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Daemon has completed initialization&#34;</span>
+</span></span><span class="line"><span class="cl">Jan <span class="m">05</span> 16:02:08 master1 dockerd<span class="o">[</span>241165<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2024-01-05T16:02:08.254789219+08:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;API listen on /run/docker.sock&#34;</span>
+</span></span><span class="line"><span class="cl">Jan <span class="m">05</span> 16:02:08 master1 systemd<span class="o">[</span>1<span class="o">]</span>: Started Docker Application Container Engine.
+</span></span><span class="line"><span class="cl">Jan <span class="m">05</span> 16:02:46 master1 dockerd<span class="o">[</span>241165<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2024-01-05T16:02:46.543587374+08:00&#34;</span> <span class="nv">level</span><span class="o">=</span>warning <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Error persisting manifest&#34;</span> <span class="nv">digest</span><span class="o">=</span><span class="s2">&#34;sha256:2fc&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">Jan 05 16:03:38 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:03:38.612170892+08:00<span class="s2">&#34; level=info msg=&#34;</span>ignoring event<span class="s2">&#34; container=6d8d34f0066bde04811038&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">Jan 05 16:04:50 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:04:50.406175352+08:00<span class="s2">&#34; level=info msg=&#34;</span>ignoring event<span class="s2">&#34; container=504632135d04b87b5ed83f&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">Jan 05 16:05:35 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:05:35.656175212+08:00<span class="s2">&#34; level=error msg=&#34;</span>Error setting up <span class="nb">exec</span> <span class="nb">command</span> in container 5046&gt;
+</span></span><span class="line"><span class="cl">Jan <span class="m">05</span> 16:09:52 master1 dockerd<span class="o">[</span>241165<span class="o">]</span>: <span class="nv">time</span><span class="o">=</span><span class="s2">&#34;2024-01-05T16:09:52.944844810+08:00&#34;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Layer sha256:a87ab3c028db3c73f360b49c9dcd171e236&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">Jan 05 16:09:52 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:09:52.946428917+08:00<span class="s2">&#34; level=info msg=&#34;</span>Layer sha256:82ae998286b2bba64ce571578647adcabef&gt;
+</span></span><span class="line"><span class="cl">lines 1-21/21 <span class="o">(</span>END<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
     <footer class="article-footer">

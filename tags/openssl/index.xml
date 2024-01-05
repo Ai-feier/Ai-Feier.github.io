@@ -27,110 +27,234 @@
 &lt;p&gt;第二个 master 节点想要加入集群, 但是在 etcd 健康检查时, 实现 vip 不在 apiserver 证书范围内&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Writing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;scheduler.conf&amp;#34;&lt;/span&gt; kubeconfig file
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Using manifest folder &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/etc/kubernetes/manifests&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kube-apiserver&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kube-controller-manager&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kube-scheduler&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;check-etcd&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Checking that the etcd cluster is healthy
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;error execution phase check-etcd: could not retrieve the list of etcd endpoints: Get &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://11.0.1.100:16443/api/v1/namespaces/kube-system/pods?labelSelector=component%3Detcd%2Ctier%3Dcontrol-plane&amp;#34;&lt;/span&gt;: tls: failed to verify certificate: x509: certificate is valid &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; 10.96.0.1, 11.0.1.150, not 11.0.1.100
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;To see the stack trace of this error execute with --v&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt; or higher
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;问题分析&#34;&gt;问题分析:&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Writing &lt;span class=&#34;s2&#34;&gt;&amp;#34;scheduler.conf&amp;#34;&lt;/span&gt; kubeconfig file
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Using manifest folder &lt;span class=&#34;s2&#34;&gt;&amp;#34;/etc/kubernetes/manifests&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;kube-apiserver&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;kube-controller-manager&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;kube-scheduler&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;check-etcd&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Checking that the etcd cluster is healthy
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;error execution phase check-etcd: could not retrieve the list of etcd endpoints: Get &lt;span class=&#34;s2&#34;&gt;&amp;#34;https://11.0.1.100:16443/api/v1/namespaces/kube-system/pods?labelSelector=component%3Detcd%2Ctier%3Dcontrol-plane&amp;#34;&lt;/span&gt;: tls: failed to verify certificate: x509: certificate is valid &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; 10.96.0.1, 11.0.1.150, not 11.0.1.100
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;To see the stack trace of this error execute with --v&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt; or higher
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;问题分析&#34;&gt;问题分析:&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;说明 api-server 的证书没有添加 11.0.1.100&lt;/strong&gt;&lt;/p&gt;
 &lt;h2 id=&#34;问题解决&#34;&gt;问题解决:&lt;/h2&gt;
 &lt;h3 id=&#34;查看-apiserver-证书支持的-ip-或-host&#34;&gt;查看 apiserver 证书支持的 ip 或 host&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;openssl x509 -noout -text -in /etc/kubernetes/pki/apiserver.crt
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;输出: 
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X509v3 Subject Alternative Name:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                DNS:kubernetes, DNS:kubernetes.default, DNS:kubernetes.default.svc, DNS:kubernetes.default.svc.cluster.local, DNS:master1, IP Address:10.96.0.1, IP Address:11.0.1.150
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;说明当前 apiserver 不支持 vip 11.0.1.100 的连接&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;openssl x509 -noout -text -in /etc/kubernetes/pki/apiserver.crt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;输出: 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;X509v3 Subject Alternative Name:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                DNS:kubernetes, DNS:kubernetes.default, DNS:kubernetes.default.svc, DNS:kubernetes.default.svc.cluster.local, DNS:master1, IP Address:10.96.0.1, IP Address:11.0.1.150
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;说明当前 apiserver 不支持 vip 11.0.1.100 的连接&lt;/p&gt;
 &lt;h3 id=&#34;使用-openssl-生成证书&#34;&gt;使用 openssl 生成证书:&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir /tmp/bak
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cp /etc/kubernetes/pki/ /tmp/bak/ -r
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 生成密钥对&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd /etc/kubernetes/pki/
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;openssl genrsa -out apiserver.key 2048	
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 新增 apiserver.ext文件，包含所有的地址列表，以及新增地址&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;subjectAltName &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; DNS:wudang,DNS:kubernetes,DNS:kubernetes.default,DNS:kubernetes.default.svc, DNS:kubernetes.default.svc.cluster.local, IP:10.96.0.1, IP:11.0.1.150, IP:11.0.1.100
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 生成&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;openssl req -new -key apiserver.key -subj &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/CN=kube-apiserver,&amp;#34;&lt;/span&gt; -out apiserver.csr
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;再次查看-apiserver-证书支持的-ip-或-host&#34;&gt;再次查看 apiserver 证书支持的 ip 或 host&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;openssl x509 -noout -text -in apiserver.crt
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;输出:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X509v3 extensions:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            X509v3 Subject Alternative Name:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                DNS:wudang, DNS:kubernetes, DNS:kubernetes.default, DNS:kubernetes.default.svc, DNS:kubernetes.default.svc.cluster.local, IP Address:10.96.0.1, IP Address:11.0.1.150, IP Address:11.0.1.100
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以看到 11.0.1.100 已经成功加上去了&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir /tmp/bak
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cp /etc/kubernetes/pki/ /tmp/bak/ -r
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 生成密钥对&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /etc/kubernetes/pki/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;openssl genrsa -out apiserver.key 2048	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 新增 apiserver.ext文件，包含所有的地址列表，以及新增地址&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;subjectAltName&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; DNS:wudang,DNS:kubernetes,DNS:kubernetes.default,DNS:kubernetes.default.svc, DNS:kubernetes.default.svc.cluster.local, IP:10.96.0.1, IP:11.0.1.150, IP:11.0.1.100
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 生成&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;openssl req -new -key apiserver.key -subj &lt;span class=&#34;s2&#34;&gt;&amp;#34;/CN=kube-apiserver,&amp;#34;&lt;/span&gt; -out apiserver.csr
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;再次查看-apiserver-证书支持的-ip-或-host&#34;&gt;再次查看 apiserver 证书支持的 ip 或 host&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;openssl x509 -noout -text -in apiserver.crt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;输出:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;X509v3 extensions:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            X509v3 Subject Alternative Name:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                DNS:wudang, DNS:kubernetes, DNS:kubernetes.default, DNS:kubernetes.default.svc, DNS:kubernetes.default.svc.cluster.local, IP Address:10.96.0.1, IP Address:11.0.1.150, IP Address:11.0.1.100
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;可以看到 11.0.1.100 已经成功加上去了&lt;/p&gt;
 &lt;h2 id=&#34;再次尝试将-master-加点加入&#34;&gt;再次尝试将 master 加点加入&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;root@ubuntu:/etc/kubernetes/pki# kubeadm join 11.0.1.150:6443 --token iwqftg.rs9wydqac98ecqbv --discovery-token-ca-cert-hash sha256:698fef4be22b563ce3ae350971e8ca1302488eda76148df5c210a03ce29c0b1a --control-plane --certificate-key c994991c3445a3dc03fbe4f0d8794e8e51946a2b44c920c9a74fa5941b03261d
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;preflight&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Running pre-flight checks
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;preflight&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Reading configuration from the cluster...
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;preflight&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; FYI: You can look at this config file with &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;kubectl -n kube-system get cm kubeadm-config -o yaml&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;preflight&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Running pre-flight checks before initializing the new control plane instance
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;preflight&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Pulling images required &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; setting up a Kubernetes cluster
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;preflight&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; This might take a minute or two, depending on the speed of your internet connection
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;preflight&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; You can also perform this action in beforehand using &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;kubeadm config images pull&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;W1230 19:00:20.797222   &lt;span style=&#34;color:#ae81ff&#34;&gt;23382&lt;/span&gt; checks.go:835&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; detected that the sandbox image &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;registry.aliyuncs.com/google_containers/pause:3.8&amp;#34;&lt;/span&gt; of the container runtime is inconsistent with that used by kubeadm. It is recommended that using &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;registry.aliyuncs.com/google_containers/pause:3.9&amp;#34;&lt;/span&gt; as the CRI sandbox image.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;download-certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Downloading the certificates in Secret &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kubeadm-certs&amp;#34;&lt;/span&gt; in the &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kube-system&amp;#34;&lt;/span&gt; Namespace
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;download-certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Saving the certificates to the folder: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/etc/kubernetes/pki&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Using certificateDir folder &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/etc/kubernetes/pki&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Generating &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiserver&amp;#34;&lt;/span&gt; certificate and key
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; apiserver serving cert is signed &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; DNS names &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local master2&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; and IPs &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;10.96.0.1 11.0.1.151 11.0.1.100&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Generating &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiserver-kubelet-client&amp;#34;&lt;/span&gt; certificate and key
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Generating &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;front-proxy-client&amp;#34;&lt;/span&gt; certificate and key
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Generating &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;etcd/server&amp;#34;&lt;/span&gt; certificate and key
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; etcd/server serving cert is signed &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; DNS names &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;localhost master2&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; and IPs &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;11.0.1.151 127.0.0.1 ::1&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Generating &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiserver-etcd-client&amp;#34;&lt;/span&gt; certificate and key
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Generating &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;etcd/peer&amp;#34;&lt;/span&gt; certificate and key
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; etcd/peer serving cert is signed &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; DNS names &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;localhost master2&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; and IPs &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;11.0.1.151 127.0.0.1 ::1&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Generating &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;etcd/healthcheck-client&amp;#34;&lt;/span&gt; certificate and key
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Valid certificates and keys now exist in &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/etc/kubernetes/pki&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;certs&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Using the existing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sa&amp;#34;&lt;/span&gt; key
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Generating kubeconfig files
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Using kubeconfig folder &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/etc/kubernetes&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;W1230 19:00:21.802963   &lt;span style=&#34;color:#ae81ff&#34;&gt;23382&lt;/span&gt; endpoint.go:57&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;endpoint&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; WARNING: port specified in controlPlaneEndpoint overrides bindPort in the controlplane address
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Writing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;admin.conf&amp;#34;&lt;/span&gt; kubeconfig file
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;W1230 19:00:22.105107   &lt;span style=&#34;color:#ae81ff&#34;&gt;23382&lt;/span&gt; endpoint.go:57&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;endpoint&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; WARNING: port specified in controlPlaneEndpoint overrides bindPort in the controlplane address
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Writing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;controller-manager.conf&amp;#34;&lt;/span&gt; kubeconfig file
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;W1230 19:00:22.181303   &lt;span style=&#34;color:#ae81ff&#34;&gt;23382&lt;/span&gt; endpoint.go:57&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;endpoint&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; WARNING: port specified in controlPlaneEndpoint overrides bindPort in the controlplane address
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Writing &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;scheduler.conf&amp;#34;&lt;/span&gt; kubeconfig file
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Using manifest folder &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/etc/kubernetes/manifests&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kube-apiserver&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kube-controller-manager&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kube-scheduler&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;check-etcd&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Checking that the etcd cluster is healthy
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubelet-start&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Writing kubelet configuration to file &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/var/lib/kubelet/config.yaml&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubelet-start&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Writing kubelet environment file with flags to file &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/var/lib/kubelet/kubeadm-flags.env&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubelet-start&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Starting the kubelet
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;kubelet-start&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Waiting &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; the kubelet to perform the TLS Bootstrap...
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;etcd&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Announced new etcd member joining to the existing etcd cluster
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;etcd&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;etcd&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;etcd&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Waiting &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; the new etcd member to join the cluster. This can take up to 40s
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;The &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;update-status&amp;#39;&lt;/span&gt; phase is deprecated and will be removed in a future release. Currently it performs no operation
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;mark-control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Marking the node master2 as control-plane by adding the labels: &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;mark-control-plane&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Marking the node master2 as control-plane by adding the taints &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;node-role.kubernetes.io/control-plane:NoSchedule&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;This node has joined the cluster and a new control plane instance was created:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;* Certificate signing request was sent to apiserver and approval was received.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;* The Kubelet was informed of the new secure connection details.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;* Control plane label and taint were applied to the new node.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;* The Kubernetes control plane instances scaled up.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;* A new etcd member was added to the local/stacked etcd cluster.
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;To start administering your cluster from this node, you need to run the following as a regular user:
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        mkdir -p $HOME/.kube
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sudo chown &lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;id -u&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;:&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;id -g&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt; $HOME/.kube/config
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Run &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;kubectl get nodes&amp;#39;&lt;/span&gt; to see this node join the cluster.
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;新增的 master 节点成功加入集群&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;61
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;62
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;63
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;root@ubuntu:/etc/kubernetes/pki# kubeadm join 11.0.1.150:6443 --token iwqftg.rs9wydqac98ecqbv --discovery-token-ca-cert-hash sha256:698fef4be22b563ce3ae350971e8ca1302488eda76148df5c210a03ce29c0b1a --control-plane --certificate-key c994991c3445a3dc03fbe4f0d8794e8e51946a2b44c920c9a74fa5941b03261d
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;preflight&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Running pre-flight checks
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;preflight&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Reading configuration from the cluster...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;preflight&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; FYI: You can look at this config file with &lt;span class=&#34;s1&#34;&gt;&amp;#39;kubectl -n kube-system get cm kubeadm-config -o yaml&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;preflight&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Running pre-flight checks before initializing the new control plane instance
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;preflight&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Pulling images required &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; setting up a Kubernetes cluster
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;preflight&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; This might take a minute or two, depending on the speed of your internet connection
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;preflight&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; You can also perform this action in beforehand using &lt;span class=&#34;s1&#34;&gt;&amp;#39;kubeadm config images pull&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W1230 19:00:20.797222   &lt;span class=&#34;m&#34;&gt;23382&lt;/span&gt; checks.go:835&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; detected that the sandbox image &lt;span class=&#34;s2&#34;&gt;&amp;#34;registry.aliyuncs.com/google_containers/pause:3.8&amp;#34;&lt;/span&gt; of the container runtime is inconsistent with that used by kubeadm. It is recommended that using &lt;span class=&#34;s2&#34;&gt;&amp;#34;registry.aliyuncs.com/google_containers/pause:3.9&amp;#34;&lt;/span&gt; as the CRI sandbox image.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;download-certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Downloading the certificates in Secret &lt;span class=&#34;s2&#34;&gt;&amp;#34;kubeadm-certs&amp;#34;&lt;/span&gt; in the &lt;span class=&#34;s2&#34;&gt;&amp;#34;kube-system&amp;#34;&lt;/span&gt; Namespace
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;download-certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Saving the certificates to the folder: &lt;span class=&#34;s2&#34;&gt;&amp;#34;/etc/kubernetes/pki&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Using certificateDir folder &lt;span class=&#34;s2&#34;&gt;&amp;#34;/etc/kubernetes/pki&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Generating &lt;span class=&#34;s2&#34;&gt;&amp;#34;apiserver&amp;#34;&lt;/span&gt; certificate and key
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; apiserver serving cert is signed &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; DNS names &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local master2&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; and IPs &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;10.96.0.1 11.0.1.151 11.0.1.100&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Generating &lt;span class=&#34;s2&#34;&gt;&amp;#34;apiserver-kubelet-client&amp;#34;&lt;/span&gt; certificate and key
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Generating &lt;span class=&#34;s2&#34;&gt;&amp;#34;front-proxy-client&amp;#34;&lt;/span&gt; certificate and key
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Generating &lt;span class=&#34;s2&#34;&gt;&amp;#34;etcd/server&amp;#34;&lt;/span&gt; certificate and key
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; etcd/server serving cert is signed &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; DNS names &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;localhost master2&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; and IPs &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;11.0.1.151 127.0.0.1 ::1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Generating &lt;span class=&#34;s2&#34;&gt;&amp;#34;apiserver-etcd-client&amp;#34;&lt;/span&gt; certificate and key
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Generating &lt;span class=&#34;s2&#34;&gt;&amp;#34;etcd/peer&amp;#34;&lt;/span&gt; certificate and key
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; etcd/peer serving cert is signed &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; DNS names &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;localhost master2&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; and IPs &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;11.0.1.151 127.0.0.1 ::1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Generating &lt;span class=&#34;s2&#34;&gt;&amp;#34;etcd/healthcheck-client&amp;#34;&lt;/span&gt; certificate and key
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Valid certificates and keys now exist in &lt;span class=&#34;s2&#34;&gt;&amp;#34;/etc/kubernetes/pki&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;certs&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Using the existing &lt;span class=&#34;s2&#34;&gt;&amp;#34;sa&amp;#34;&lt;/span&gt; key
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Generating kubeconfig files
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Using kubeconfig folder &lt;span class=&#34;s2&#34;&gt;&amp;#34;/etc/kubernetes&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W1230 19:00:21.802963   &lt;span class=&#34;m&#34;&gt;23382&lt;/span&gt; endpoint.go:57&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;endpoint&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; WARNING: port specified in controlPlaneEndpoint overrides bindPort in the controlplane address
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Writing &lt;span class=&#34;s2&#34;&gt;&amp;#34;admin.conf&amp;#34;&lt;/span&gt; kubeconfig file
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W1230 19:00:22.105107   &lt;span class=&#34;m&#34;&gt;23382&lt;/span&gt; endpoint.go:57&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;endpoint&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; WARNING: port specified in controlPlaneEndpoint overrides bindPort in the controlplane address
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Writing &lt;span class=&#34;s2&#34;&gt;&amp;#34;controller-manager.conf&amp;#34;&lt;/span&gt; kubeconfig file
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W1230 19:00:22.181303   &lt;span class=&#34;m&#34;&gt;23382&lt;/span&gt; endpoint.go:57&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;endpoint&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; WARNING: port specified in controlPlaneEndpoint overrides bindPort in the controlplane address
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubeconfig&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Writing &lt;span class=&#34;s2&#34;&gt;&amp;#34;scheduler.conf&amp;#34;&lt;/span&gt; kubeconfig file
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Using manifest folder &lt;span class=&#34;s2&#34;&gt;&amp;#34;/etc/kubernetes/manifests&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;kube-apiserver&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;kube-controller-manager&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;kube-scheduler&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;check-etcd&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Checking that the etcd cluster is healthy
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubelet-start&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Writing kubelet configuration to file &lt;span class=&#34;s2&#34;&gt;&amp;#34;/var/lib/kubelet/config.yaml&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubelet-start&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Writing kubelet environment file with flags to file &lt;span class=&#34;s2&#34;&gt;&amp;#34;/var/lib/kubelet/kubeadm-flags.env&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubelet-start&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Starting the kubelet
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;kubelet-start&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Waiting &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; the kubelet to perform the TLS Bootstrap...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;etcd&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Announced new etcd member joining to the existing etcd cluster
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;etcd&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Creating static Pod manifest &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;etcd&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;etcd&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Waiting &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; the new etcd member to join the cluster. This can take up to 40s
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;The &lt;span class=&#34;s1&#34;&gt;&amp;#39;update-status&amp;#39;&lt;/span&gt; phase is deprecated and will be removed in a future release. Currently it performs no operation
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;mark-control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Marking the node master2 as control-plane by adding the labels: &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;mark-control-plane&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Marking the node master2 as control-plane by adding the taints &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;node-role.kubernetes.io/control-plane:NoSchedule&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;This node has joined the cluster and a new control plane instance was created:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* Certificate signing request was sent to apiserver and approval was received.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* The Kubelet was informed of the new secure connection details.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* Control plane label and taint were applied to the new node.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* The Kubernetes control plane instances scaled up.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* A new etcd member was added to the local/stacked etcd cluster.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;To start administering your cluster from this node, you need to run the following as a regular user:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        mkdir -p &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.kube
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        sudo cp -i /etc/kubernetes/admin.conf &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.kube/config
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        sudo chown &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;id -u&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;:&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;id -g&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.kube/config
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Run &lt;span class=&#34;s1&#34;&gt;&amp;#39;kubectl get nodes&amp;#39;&lt;/span&gt; to see this node join the cluster.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;新增的 master 节点成功加入集群&lt;/p&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;ol&gt;
