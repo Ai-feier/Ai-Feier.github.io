@@ -3,12 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>/</loc>
-    <lastmod>2024-01-03T17:22:24+08:00</lastmod>
-  </url><url>
-    <loc>/tags/apiserver/</loc>
-    <lastmod>2024-01-03T17:22:24+08:00</lastmod>
+    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
   </url><url>
     <loc>/categories/</loc>
+    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
+  </url><url>
+    <loc>/tags/docker/</loc>
+    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
+  </url><url>
+    <loc>/categories/docker/</loc>
+    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
+  </url><url>
+    <loc>/p/docker-ce-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9B%BD%E5%86%85%E6%BA%90%E9%85%8D%E7%BD%AE-ubuntu-20.04/</loc>
+    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
+  </url><url>
+    <loc>/tags/apiserver/</loc>
     <lastmod>2024-01-03T17:22:24+08:00</lastmod>
   </url><url>
     <loc>/tags/kubernetes/</loc>
@@ -20,13 +35,7 @@
     <loc>/p/kubernetes-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-apiserver-%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4%E7%94%A8%E6%88%B7/</loc>
     <lastmod>2024-01-03T17:22:24+08:00</lastmod>
   </url><url>
-    <loc>/post/</loc>
-    <lastmod>2024-01-03T17:22:24+08:00</lastmod>
-  </url><url>
     <loc>/tags/security/</loc>
-    <lastmod>2024-01-03T17:22:24+08:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2024-01-03T17:22:24+08:00</lastmod>
   </url><url>
     <loc>/p/2024-cka-%E9%A2%98%E5%BA%93/</loc>
@@ -50,9 +59,6 @@
     <loc>/tags/kubenetes/</loc>
     <lastmod>2024-01-01T17:31:05+08:00</lastmod>
   </url><url>
-    <loc>/categories/kubenetes/</loc>
-    <lastmod>2024-01-01T17:31:05+08:00</lastmod>
-  </url><url>
     <loc>/p/%E4%BD%BF%E7%94%A8-kubeconfig-%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/</loc>
     <lastmod>2024-01-01T17:31:05+08:00</lastmod>
   </url><url>
@@ -64,12 +70,6 @@
   </url><url>
     <loc>/p/%E4%BD%BF%E7%94%A8-wsl-%E7%AE%A1%E7%90%86-k8s-%E9%9B%86%E7%BE%A4/</loc>
     <lastmod>2024-01-01T16:10:25+08:00</lastmod>
-  </url><url>
-    <loc>/tags/docker/</loc>
-    <lastmod>2024-01-01T15:01:35+08:00</lastmod>
-  </url><url>
-    <loc>/categories/docker/</loc>
-    <lastmod>2024-01-01T15:01:35+08:00</lastmod>
   </url><url>
     <loc>/tags/dockerfile/</loc>
     <lastmod>2024-01-01T15:01:35+08:00</lastmod>
