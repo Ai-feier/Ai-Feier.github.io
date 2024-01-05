@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Docker是一個開放原始碼的開放平臺軟體，用於開發應用、交付（shipping）應用和執行應用。Docker允許使用者將基礎設施（Infrastructure）中的應用單獨分割出來，形成更小的顆粒（容器），從而提高交付軟體的速度。'>
-<meta name="keywords" content="docker-ce, 安装"><title>docker-ce 安装与国内源配置 | Ubuntu 20.04 </title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='在 Golang 中，交叉编译指的是在同一台机器上生成针对不同操作系统或硬件架构的二进制文件。这在开发跨平台应用或构建特定平台的发布版本时非常有用。'>
+<meta name="keywords" content="golang, 编译, 交叉编译"><title>Golang 交叉编译详解</title>
 
-<link rel='canonical' href='/p/docker-ce-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9B%BD%E5%86%85%E6%BA%90%E9%85%8D%E7%BD%AE-ubuntu-20.04/'>
+<link rel='canonical' href='/p/golang-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E8%AF%A6%E8%A7%A3/'>
 
-<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='docker-ce 安装与国内源配置 | Ubuntu 20.04 '>
-<meta property='og:description' content='Docker是一個開放原始碼的開放平臺軟體，用於開發應用、交付（shipping）應用和執行應用。Docker允許使用者將基礎設施（Infrastructure）中的應用單獨分割出來，形成更小的顆粒（容器），從而提高交付軟體的速度。'>
-<meta property='og:url' content='/p/docker-ce-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9B%BD%E5%86%85%E6%BA%90%E9%85%8D%E7%BD%AE-ubuntu-20.04/'>
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Golang 交叉编译详解'>
+<meta property='og:description' content='在 Golang 中，交叉编译指的是在同一台机器上生成针对不同操作系统或硬件架构的二进制文件。这在开发跨平台应用或构建特定平台的发布版本时非常有用。'>
+<meta property='og:url' content='/p/golang-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E8%AF%A6%E8%A7%A3/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='docker' /><meta property='article:published_time' content='2024-01-05T16:48:49&#43;08:00'/><meta property='article:modified_time' content='2024-01-05T16:48:49&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/docker%e7%bd%91%e7%bb%9c/cover.png' />
-<meta name="twitter:title" content="docker-ce 安装与国内源配置 | Ubuntu 20.04 ">
-<meta name="twitter:description" content="Docker是一個開放原始碼的開放平臺軟體，用於開發應用、交付（shipping）應用和執行應用。Docker允許使用者將基礎設施（Infrastructure）中的應用單獨分割出來，形成更小的顆粒（容器），從而提高交付軟體的速度。"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/docker%e7%bd%91%e7%bb%9c/cover.png' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='golang' /><meta property='article:tag' content='编译' /><meta property='article:published_time' content='2024-01-05T18:20:08&#43;08:00'/><meta property='article:modified_time' content='2024-01-05T18:20:08&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/public/golang/cover.png' />
+<meta name="twitter:title" content="Golang 交叉编译详解">
+<meta name="twitter:description" content="在 Golang 中，交叉编译指的是在同一台机器上生成针对不同操作系统或硬件架构的二进制文件。这在开发跨平台应用或构建特定平台的发布版本时非常有用。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/public/golang/cover.png' />
     <link rel="shortcut icon" href="/favicon.png" />
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <meta name="referrer" content="no-referrer-when-downgrade">
@@ -247,18 +247,21 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#golang-中的交叉编译">Golang 中的交叉编译</a></li>
+    <li><a href="#不同操作系统间的编译">不同操作系统间的编译</a>
       <ul>
-        <li><a href="#让apt可以支持https">让apt可以支持HTTPS</a></li>
-        <li><a href="#将官方docker库的gpg公钥添加到系统中">将官方Docker库的GPG公钥添加到系统中：</a></li>
-        <li><a href="#将docker库添加到apt里">将Docker库添加到APT里：</a></li>
-        <li><a href="#更新包列表">更新包列表</a></li>
-        <li><a href="#为了确保修改生效让新的安装从docker库里获取而不是从ubuntu自己的库里获取执行">为了确保修改生效，让新的安装从Docker库里获取，而不是从Ubuntu自己的库里获取，执行：</a></li>
-        <li><a href="#安装-docker-ce">安装 docker-ce</a></li>
-        <li><a href="#配置-docker-阿里源镜像地址">配置 docker 阿里源镜像地址</a></li>
-        <li><a href="#检查-docker-运行状态">检查 docker 运行状态</a></li>
+        <li><a href="#linux-下编译">Linux 下编译</a></li>
+        <li><a href="#windows-下编译">windows 下编译</a></li>
+        <li><a href="#macos-下编译">macos 下编译</a></li>
       </ul>
     </li>
+    <li><a href="#不同下的编译">不同下的编译</a>
+      <ul>
+        <li><a href="#amd64">amd64</a></li>
+        <li><a href="#x86">x86</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
   </ul>
 </nav>
         </div>
@@ -273,9 +276,9 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/docker-ce-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9B%BD%E5%86%85%E6%BA%90%E9%85%8D%E7%BD%AE-ubuntu-20.04/">
+            <a href="/p/golang-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E8%AF%A6%E8%A7%A3/">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/docker%e7%bd%91%e7%bb%9c/cover.png" loading="lazy" alt="Featured image of post docker-ce 安装与国内源配置 | Ubuntu 20.04 " />
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/public/golang/cover.png" loading="lazy" alt="Featured image of post Golang 交叉编译详解" />
                 
             </a>
         </div>
@@ -285,8 +288,8 @@
     
     <header class="article-category">
         
-            <a href="/categories/docker/" >
-                docker
+            <a href="/categories/golang/" >
+                golang
             </a>
         
     </header>
@@ -294,12 +297,12 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/docker-ce-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9B%BD%E5%86%85%E6%BA%90%E9%85%8D%E7%BD%AE-ubuntu-20.04/">docker-ce 安装与国内源配置 | Ubuntu 20.04 </a>
+            <a href="/p/golang-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E8%AF%A6%E8%A7%A3/">Golang 交叉编译详解</a>
         </h2>
     
         
         <h3 class="article-subtitle">
-            Docker是一個開放原始碼的開放平臺軟體，用於開發應用、交付（shipping）應用和執行應用。Docker允許使用者將基礎設施（Infrastructure）中的應用單獨分割出來，形成更小的顆粒（容器），從而提高交付軟體的速度。
+            在 Golang 中，交叉编译指的是在同一台机器上生成针对不同操作系统或硬件架构的二进制文件。这在开发跨平台应用或构建特定平台的发布版本时非常有用。
         </h3>
         
     </div>
@@ -335,7 +338,7 @@
 
 
                 <time class="article-time--reading">
-                    2 minute read
+                    1 minute read
                 </time>
             </div>
         
@@ -355,64 +358,69 @@
 
     
     
-    <h3 id="让apt可以支持https">让apt可以支持HTTPS</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ apt install apt-transport-https ca-certificates curl software-properties-common -y
-</span></span></code></pre></div><h3 id="将官方docker库的gpg公钥添加到系统中">将官方Docker库的GPG公钥添加到系统中：</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - 
-</span></span></code></pre></div><h3 id="将docker库添加到apt里">将Docker库添加到APT里：</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 官方源</span>
-</span></span><span style="display:flex;"><span>$ add-apt-repository <span style="color:#e6db74">&#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 阿里源</span>
-</span></span><span style="display:flex;"><span>$ add-apt-repository <span style="color:#e6db74">&#34;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu focal stable&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># echo &#34;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu focal stable&#34; &gt;&gt; /etc/apt/source.list</span>
-</span></span></code></pre></div><h3 id="更新包列表">更新包列表</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ apt update 
-</span></span></code></pre></div><h3 id="为了确保修改生效让新的安装从docker库里获取而不是从ubuntu自己的库里获取执行">为了确保修改生效，让新的安装从Docker库里获取，而不是从Ubuntu自己的库里获取，执行：</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ apt-cache policy docker-ce
-</span></span></code></pre></div><h3 id="安装-docker-ce">安装 docker-ce</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ apt install -y docker-ce
-</span></span></code></pre></div><h3 id="配置-docker-阿里源镜像地址">配置 docker 阿里源镜像地址</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo mkdir -p /etc/docker
-</span></span><span style="display:flex;"><span>sudo tee /etc/docker/daemon.json <span style="color:#e6db74">&lt;&lt;-&#39;EOF&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">	&#34;registry-mirrors&#34;: [&#34;https://nol6uuul.mirror.aliyuncs.com&#34;]
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
-</span></span><span style="display:flex;"><span>sudo systemctl daemon-reload
-</span></span><span style="display:flex;"><span>sudo systemctl restart docker
-</span></span></code></pre></div><h3 id="检查-docker-运行状态">检查 docker 运行状态</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ systemctl status docker 
-</span></span><span style="display:flex;"><span>● docker.service - Docker Application Container Engine
-</span></span><span style="display:flex;"><span>     Loaded: loaded <span style="color:#f92672">(</span>/lib/systemd/system/docker.service; enabled; vendor preset: enabled<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>     Active: active <span style="color:#f92672">(</span>running<span style="color:#f92672">)</span> since Fri 2024-01-05 16:02:08 CST; 17min ago
-</span></span><span style="display:flex;"><span>TriggeredBy: ● docker.socket
-</span></span><span style="display:flex;"><span>       Docs: https://docs.docker.com
-</span></span><span style="display:flex;"><span>   Main PID: <span style="color:#ae81ff">241165</span> <span style="color:#f92672">(</span>dockerd<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>      Tasks: <span style="color:#ae81ff">12</span>
-</span></span><span style="display:flex;"><span>     Memory: 29.6M
-</span></span><span style="display:flex;"><span>     CGroup: /system.slice/docker.service
-</span></span><span style="display:flex;"><span>             └─241165 /usr/bin/dockerd -H fd:// --containerd<span style="color:#f92672">=</span>/run/containerd/containerd.sock
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:08 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:02:08.136300388+08:00&#34;</span> level<span style="color:#f92672">=</span>info msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Docker daemon&#34;</span> commit<span style="color:#f92672">=</span>311b9ff graphdriver<span style="color:#f92672">=</span>overla&gt;
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:08 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:02:08.136351488+08:00&#34;</span> level<span style="color:#f92672">=</span>info msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Daemon has completed initialization&#34;</span>
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:08 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:02:08.254789219+08:00&#34;</span> level<span style="color:#f92672">=</span>info msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;API listen on /run/docker.sock&#34;</span>
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:08 master1 systemd<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>: Started Docker Application Container Engine.
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:02:46 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:02:46.543587374+08:00&#34;</span> level<span style="color:#f92672">=</span>warning msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Error persisting manifest&#34;</span> digest<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sha256:2fc&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jan 05 16:03:38 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:03:38.612170892+08:00<span style="color:#e6db74">&#34; level=info msg=&#34;</span>ignoring event<span style="color:#e6db74">&#34; container=6d8d34f0066bde04811038&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jan 05 16:04:50 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:04:50.406175352+08:00<span style="color:#e6db74">&#34; level=info msg=&#34;</span>ignoring event<span style="color:#e6db74">&#34; container=504632135d04b87b5ed83f&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jan 05 16:05:35 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:05:35.656175212+08:00<span style="color:#e6db74">&#34; level=error msg=&#34;</span>Error setting up exec command in container 5046&gt;
-</span></span><span style="display:flex;"><span>Jan <span style="color:#ae81ff">05</span> 16:09:52 master1 dockerd<span style="color:#f92672">[</span>241165<span style="color:#f92672">]</span>: time<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2024-01-05T16:09:52.944844810+08:00&#34;</span> level<span style="color:#f92672">=</span>info msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Layer sha256:a87ab3c028db3c73f360b49c9dcd171e236&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jan 05 16:09:52 master1 dockerd[241165]: time=&#34;</span>2024-01-05T16:09:52.946428917+08:00<span style="color:#e6db74">&#34; level=info msg=&#34;</span>Layer sha256:82ae998286b2bba64ce571578647adcabef&gt;
-</span></span><span style="display:flex;"><span>lines 1-21/21 <span style="color:#f92672">(</span>END<span style="color:#f92672">)</span>
-</span></span></code></pre></div>
+    <h2 id="golang-中的交叉编译">Golang 中的交叉编译</h2>
+<p>在 Golang 中，交叉编译指的是在同一台机器上生成针对不同操作系统或硬件架构的二进制文件。这在开发跨平台应用或构建特定平台的发布版本时非常有用。</p>
+<h2 id="不同操作系统间的编译">不同操作系统间的编译</h2>
+<h3 id="linux-下编译">Linux 下编译</h3>
+<h4 id="windows">windows</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> GOOS<span style="color:#f92672">=</span>windows GOARCH<span style="color:#f92672">=</span>amd64 go build main.go
+</span></span></code></pre></div><h4 id="macos">macos</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> GOOS<span style="color:#f92672">=</span>darwin GOARCH<span style="color:#f92672">=</span>amd64 go build main.go
+</span></span></code></pre></div><h3 id="windows-下编译">windows 下编译</h3>
+<h4 id="linux">Linux</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>SET CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>SET GOOS<span style="color:#f92672">=</span>linux
+</span></span><span style="display:flex;"><span>SET GOARCH<span style="color:#f92672">=</span>amd64
+</span></span><span style="display:flex;"><span>go build main.go
+</span></span></code></pre></div><blockquote>
+<p>推荐 git 终端:  <code>CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build main.go</code></p>
+</blockquote>
+<h4 id="macos-1">macos</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>SET CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>SET GOOS<span style="color:#f92672">=</span>darwin
+</span></span><span style="display:flex;"><span>SET GOARCH<span style="color:#f92672">=</span>amd64
+</span></span><span style="display:flex;"><span>go build main.go
+</span></span></code></pre></div><blockquote>
+<p>git 终端:  <code>CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build main.go</code></p>
+</blockquote>
+<h3 id="macos-下编译">macos 下编译</h3>
+<h4 id="linux-1">Linux</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> GOOS<span style="color:#f92672">=</span>linux GOARCH<span style="color:#f92672">=</span>amd64 go build main.go
+</span></span></code></pre></div><h4 id="windows-1">windows</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> GOOS<span style="color:#f92672">=</span>windows GOARCH<span style="color:#f92672">=</span>amd64 go build main.go
+</span></span></code></pre></div><h2 id="不同下的编译">不同下的编译</h2>
+<h3 id="amd64">amd64</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> GOOS<span style="color:#f92672">=</span>linux GOARCH<span style="color:#f92672">=</span>amd64 go build main.go
+</span></span></code></pre></div><h3 id="x86">x86</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> GOOS<span style="color:#f92672">=</span>linux GOARCH<span style="color:#f92672">=</span><span style="color:#ae81ff">386</span> go build main.go
+</span></span></code></pre></div><blockquote>
+<p>注意不是 x86</p>
+</blockquote>
+<p>上面几个示例中各环境变量的意思如下：</p>
+<ul>
+<li>CGO_ENABLED：CGO_ENABLED=0 意思是禁用 CGO，因为交叉编译不能启用 CGO。</li>
+<li>GOOS：表示目标平台，例如 mac 系统对应 darwin，linux 系统对应 linux，windows 系统对应 windows等。</li>
+<li>GOARCH：目标平台的架构，例如 amd64，arm等。</li>
+</ul>
+<h2 id="参考">参考</h2>
+<blockquote>
+<ol>
+<li>[Golang 中的交叉编译详解 - 知乎 (zhihu.com)](<a class="link" href="https://zhuanlan.zhihu.com/p/649520911#:~:text=Golang"  target="_blank" rel="noopener"
+    >https://zhuanlan.zhihu.com/p/649520911#:~:text=Golang</a> 中的交叉编译在,Golang 中，交叉编译指的是在同一台机器上生成针对不同操作系统或硬件架构的二进制文件。 这在开发跨平台应用或构建特定平台的发布版本时非常有用。)</li>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/98215258"  target="_blank" rel="noopener"
+    >Go 交叉编译 (跨平台编译) - 知乎 (zhihu.com)</a></li>
+</ol>
+</blockquote>
+
 </section>
 
     <footer class="article-footer">
     
     <section class="article-tags">
         
-            <a href="/tags/docker/">docker</a>
+            <a href="/tags/golang/">golang</a>
+        
+            <a href="/tags/%E7%BC%96%E8%AF%91/">编译</a>
         
     </section>
 
@@ -446,18 +454,18 @@
             
                 
 <article class="has-image">
-    <a href="/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/">
+    <a href="/p/%E4%BC%98%E9%9B%85%E7%BB%88%E6%AD%A2-%E5%9F%BA%E4%BA%8E-go-%E7%9A%84-http-%E5%BA%93%E5%AE%9E%E7%8E%B0/">
         
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/cover.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/cover.jpg"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BC%98%E9%9B%85%E7%BB%88%E6%AD%A2.http/image-20240102163454049.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BC%98%E9%9B%85%E7%BB%88%E6%AD%A2.http/image-20240102163454049.png"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Dockerfile: 制作精简镜像</h2>
+            <h2 class="article-title">优雅终止 | 基于 go 的 http 库实现</h2>
         </div>
     </a>
 </article>

@@ -6,7 +6,23 @@
         <description>Recent content in Tags on Ai-feier&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Fri, 05 Jan 2024 16:48:49 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 05 Jan 2024 18:20:08 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>golang</title>
+        <link>/tags/golang/</link>
+        <pubDate>Fri, 05 Jan 2024 18:20:08 +0800</pubDate>
+        
+        <guid>/tags/golang/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>编译</title>
+        <link>/tags/%E7%BC%96%E8%AF%91/</link>
+        <pubDate>Fri, 05 Jan 2024 18:20:08 +0800</pubDate>
+        
+        <guid>/tags/%E7%BC%96%E8%AF%91/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>docker</title>
         <link>/tags/docker/</link>
         <pubDate>Fri, 05 Jan 2024 16:48:49 +0800</pubDate>
@@ -36,14 +52,6 @@
         <pubDate>Wed, 03 Jan 2024 17:22:24 +0800</pubDate>
         
         <guid>/tags/security/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>golang</title>
-        <link>/tags/golang/</link>
-        <pubDate>Tue, 02 Jan 2024 16:57:31 +0800</pubDate>
-        
-        <guid>/tags/golang/</guid>
         <description></description>
         </item>
         <item>

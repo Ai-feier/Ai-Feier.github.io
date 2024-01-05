@@ -3,10 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>/</loc>
-    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
+    <lastmod>2024-01-05T18:20:08+08:00</lastmod>
   </url><url>
     <loc>/categories/</loc>
-    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
+    <lastmod>2024-01-05T18:20:08+08:00</lastmod>
+  </url><url>
+    <loc>/tags/golang/</loc>
+    <lastmod>2024-01-05T18:20:08+08:00</lastmod>
+  </url><url>
+    <loc>/categories/golang/</loc>
+    <lastmod>2024-01-05T18:20:08+08:00</lastmod>
+  </url><url>
+    <loc>/p/golang-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E8%AF%A6%E8%A7%A3/</loc>
+    <lastmod>2024-01-05T18:20:08+08:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2024-01-05T18:20:08+08:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2024-01-05T18:20:08+08:00</lastmod>
+  </url><url>
+    <loc>/tags/%E7%BC%96%E8%AF%91/</loc>
+    <lastmod>2024-01-05T18:20:08+08:00</lastmod>
   </url><url>
     <loc>/tags/docker/</loc>
     <lastmod>2024-01-05T16:48:49+08:00</lastmod>
@@ -15,12 +33,6 @@
     <lastmod>2024-01-05T16:48:49+08:00</lastmod>
   </url><url>
     <loc>/p/docker-ce-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9B%BD%E5%86%85%E6%BA%90%E9%85%8D%E7%BD%AE-ubuntu-20.04/</loc>
-    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
-  </url><url>
-    <loc>/post/</loc>
-    <lastmod>2024-01-05T16:48:49+08:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2024-01-05T16:48:49+08:00</lastmod>
   </url><url>
     <loc>/tags/apiserver/</loc>
@@ -40,12 +52,6 @@
   </url><url>
     <loc>/p/2024-cka-%E9%A2%98%E5%BA%93/</loc>
     <lastmod>2024-01-02T17:50:40+08:00</lastmod>
-  </url><url>
-    <loc>/tags/golang/</loc>
-    <lastmod>2024-01-02T16:57:31+08:00</lastmod>
-  </url><url>
-    <loc>/categories/golang/</loc>
-    <lastmod>2024-01-02T16:57:31+08:00</lastmod>
   </url><url>
     <loc>/p/%E4%BC%98%E9%9B%85%E7%BB%88%E6%AD%A2-%E5%9F%BA%E4%BA%8E-go-%E7%9A%84-http-%E5%BA%93%E5%AE%9E%E7%8E%B0/</loc>
     <lastmod>2024-01-02T16:57:31+08:00</lastmod>
