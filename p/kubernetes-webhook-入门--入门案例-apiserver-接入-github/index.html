@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Kubernetes API 服务器验证并配置 API 对象的数据， 这些对象包括 pods、services、replicationcontrollers 等。 API 服务器为 REST 操作提供服务，并为集群的共享状态提供前端， 所有其他组件都通过该前端进行交互。'>
+<meta name="keywords" content="github, mutatingwebhook, 认证, 授权, oauth2"><title>Kubernetes WebHook 入门 -- 入门案例: apiserver 接入 github </title>
+
+<link rel='canonical' href='/p/kubernetes-webhook-%E5%85%A5%E9%97%A8--%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B-apiserver-%E6%8E%A5%E5%85%A5-github/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Kubernetes WebHook 入门 -- 入门案例: apiserver 接入 github '>
+<meta property='og:description' content='Kubernetes API 服务器验证并配置 API 对象的数据， 这些对象包括 pods、services、replicationcontrollers 等。 API 服务器为 REST 操作提供服务，并为集群的共享状态提供前端， 所有其他组件都通过该前端进行交互。'>
+<meta property='og:url' content='/p/kubernetes-webhook-%E5%85%A5%E9%97%A8--%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B-apiserver-%E6%8E%A5%E5%85%A5-github/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='k8s' /><meta property='article:tag' content='oath2' /><meta property='article:tag' content='k8s webhook' /><meta property='article:tag' content='kubeconfig' /><meta property='article:published_time' content='2024-01-08T15:54:02&#43;08:00'/><meta property='article:modified_time' content='2024-01-08T15:54:02&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/maxresdefault.jpg' />
+<meta name="twitter:title" content="Kubernetes WebHook 入门 -- 入门案例: apiserver 接入 github ">
+<meta name="twitter:description" content="Kubernetes API 服务器验证并配置 API 对象的数据， 这些对象包括 pods、services、replicationcontrollers 等。 API 服务器为 REST 操作提供服务，并为集群的共享状态提供前端， 所有其他组件都通过该前端进行交互。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/maxresdefault.jpg' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#介绍">介绍</a></li>
+    <li><a href="#admission-webhook">Admission Webhook</a></li>
+    <li><a href="#webhook-入门实践-github-认证接入">WebHook 入门实践: github 认证接入</a>
+      <ol>
+        <li><a href="#web-服务器">web 服务器</a></li>
+        <li><a href="#dockerfile-镜像制作">Dockerfile 镜像制作</a>
+          <ol>
+            <li><a href="#amd64">amd64</a></li>
+            <li><a href="#x86_64">x86_64</a></li>
+            <li><a href="#构造镜像">构造镜像</a></li>
+            <li><a href="#检验镜像">检验镜像</a></li>
+          </ol>
+        </li>
+        <li><a href="#makefile">Makefile</a></li>
+        <li><a href="#webhook-接入-apiserver">webhook 接入 apiserver</a>
+          <ol>
+            <li><a href="#webhookyaml">webhook.yaml</a></li>
+            <li><a href="#apiserver-挂载-webconfig">apiserver 挂载 webconfig</a></li>
+            <li><a href="#在-github-中创建认证-token">在 github 中创建认证 token</a></li>
+            <li><a href="#将-token-添加到-kubeconfig">将 token 添加到 kubeconfig</a></li>
+          </ol>
+        </li>
+        <li><a href="#验证">验证</a>
+          <ol>
+            <li><a href="#授权验证">授权验证</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/kubernetes-webhook-%E5%85%A5%E9%97%A8--%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B-apiserver-%E6%8E%A5%E5%85%A5-github/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/maxresdefault.jpg" loading="lazy" alt="Featured image of post Kubernetes WebHook 入门 -- 入门案例: apiserver 接入 github " />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/kubernetes/" >
+                Kubernetes
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/kubernetes-webhook-%E5%85%A5%E9%97%A8--%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B-apiserver-%E6%8E%A5%E5%85%A5-github/">Kubernetes WebHook 入门 -- 入门案例: apiserver 接入 github </a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Kubernetes API 服务器验证并配置 API 对象的数据， 这些对象包括 pods、services、replicationcontrollers 等。 API 服务器为 REST 操作提供服务，并为集群的共享状态提供前端， 所有其他组件都通过该前端进行交互。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 08, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <h2 id="介绍">介绍</h2>
+<p>Webhook就是一种HTTP回调，用于在某种情况下执行某些动作，Webhook不是K8S独有的，很多场景下都可以进行Webhook，比如在提交完代码后调用一个Webhook自动构建docker镜像</p>
+<p>K8S中提供了<strong>自定义资源类型</strong>和<strong>自定义控制器</strong>来扩展功能，还提供了<strong>动态准入控制</strong>，其实就是通过Webhook来实现准入控制，分为两种：验证性质的准入 Webhook （Validating Admission Webhook） 和 修改性质的准入 Webhook （Mutating Admission Webhook）</p>
+<p>Admission Webhook有哪些使用场景？如下</p>
+<ul>
+<li>在资源持久化到ETCD之前进行<strong>修改</strong>（Mutating Webhook），比如增加init Container或者sidecar Container</li>
+<li>在资源持久化到ETCD之前进行<strong>校验</strong>（Validating Webhook），不满足条件的资源直接拒绝并给出相应信息</li>
+</ul>
+<p>现在非常火热的的 Service Mesh 应用istio就是通过 mutating webhooks 来自动将Envoy这个 sidecar 容器注入到 Pod 中去的：<br />
+<a class="link" href="https://istio.io/docs/setup/kubernetes/sidecar-injection/"  target="_blank" rel="noopener"
+    >https://istio.io/docs/setup/kubernetes/sidecar-injection/</a>。</p>
+<p>更多详情介绍可参考：<br />
+<a class="link" href="https://kubernetes.io/zh/docs/reference/access-authn-authz/extensible-admission-controllers/"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/reference/access-authn-authz/extensible-admission-controllers/</a></p>
+<h2 id="admission-webhook">Admission Webhook</h2>
+<p>上面提到K8S的<strong>动态准入控制</strong>是通过Webhook来实现的，那么它到底是在哪个环节执行的？请看下图</p>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/image-20240105145949543.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240105145949543"
+	
+	
+></p>
+<p>综上, k8s webhook 可分为两类:</p>
+<ol>
+<li>Mutating Webhook: 这类 webhook 可以更改请求对象</li>
+<li>Validating Webhook: 这类 webhook 不能去更改请求对象, 就算更改也会被忽略, 用于写入 etcd 前的验证逻辑</li>
+</ol>
+<h2 id="webhook-入门实践-github-认证接入">WebHook 入门实践: github 认证接入</h2>
+<p>写一个用于认证校验的 mutating webhook</p>
+<p>请求流程:</p>
+<ol>
+<li>拦截 apiserver 请求</li>
+<li>将请求(TokenReview)中的 token 发送给 github 用于验证</li>
+<li>将 github 返回的用户信息填入 TokenReview</li>
+</ol>
+<h3 id="web-服务器">web 服务器</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;context&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;encoding/json&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/google/go-github/github&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;golang.org/x/oauth2&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">authentication</span> <span class="s">&#34;k8s.io/api/authentication/v1beta1&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;log&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;net/http&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/authenticate&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">writer</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">request</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">// 获取请求中的 TokonReview
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">decoder</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">NewDecoder</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="kd">var</span> <span class="nx">tokenReview</span> <span class="nx">authentication</span><span class="p">.</span><span class="nx">TokenReview</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">decoder</span><span class="p">.</span><span class="nf">Decode</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tokenReview</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;decode error: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="c1">// 响应返回错误
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="nx">writer</span><span class="p">.</span><span class="nf">WriteHeader</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">_</span> <span class="p">=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">NewEncoder</span><span class="p">(</span><span class="nx">writer</span><span class="p">).</span><span class="nf">Encode</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{</span>
+</span></span><span class="line"><span class="cl">				<span class="s">&#34;apiVersion&#34;</span><span class="p">:</span> <span class="s">&#34;authentication.k8s.io/v1beta1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">				<span class="s">&#34;kind&#34;</span><span class="p">:</span>       <span class="s">&#34;TokenReview&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">				<span class="s">&#34;status&#34;</span><span class="p">:</span> <span class="nx">authentication</span><span class="p">.</span><span class="nx">TokenReviewStatus</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">					<span class="nx">Authenticated</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">				<span class="p">},</span>
+</span></span><span class="line"><span class="cl">			<span class="p">})</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;receive request&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// 检查用户
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// 创建 oauth2 对象, 发送给 github
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">oauthToken</span> <span class="o">:=</span> <span class="nx">oauth2</span><span class="p">.</span><span class="nf">StaticTokenSource</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">Token</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">AccessToken</span><span class="p">:</span> <span class="nx">tokenReview</span><span class="p">.</span><span class="nx">Spec</span><span class="p">.</span><span class="nx">Token</span><span class="p">,</span> <span class="c1">// tokenReview 的 token
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="p">})</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">oauthClient</span> <span class="o">:=</span> <span class="nx">oauth2</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="nx">oauthToken</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">client</span> <span class="o">:=</span> <span class="nx">github</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="nx">oauthClient</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">user</span><span class="p">,</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">client</span><span class="p">.</span><span class="nx">Users</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="s">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;github auth error: &#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">writer</span><span class="p">.</span><span class="nf">WriteHeader</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusUnauthorized</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">_</span> <span class="p">=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">NewEncoder</span><span class="p">(</span><span class="nx">writer</span><span class="p">).</span><span class="nf">Encode</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">any</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="s">&#34;apiVersion&#34;</span><span class="p">:</span> <span class="s">&#34;authentication.k8s.io/v1beta1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">				<span class="s">&#34;kind&#34;</span><span class="p">:</span>       <span class="s">&#34;TokenReview&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">				<span class="s">&#34;status&#34;</span><span class="p">:</span> <span class="nx">authentication</span><span class="p">.</span><span class="nx">TokenReviewStatus</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">					<span class="nx">Authenticated</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="c1">// 返回认证失败
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>				<span class="p">},</span>
+</span></span><span class="line"><span class="cl">			<span class="p">})</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// 认证成功
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;github login success, as: &#34;</span><span class="p">,</span> <span class="o">*</span><span class="nx">user</span><span class="p">.</span><span class="nx">Login</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">status</span> <span class="o">:=</span> <span class="nx">authentication</span><span class="p">.</span><span class="nx">TokenReviewStatus</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">Authenticated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">User</span><span class="p">:</span> <span class="nx">authentication</span><span class="p">.</span><span class="nx">UserInfo</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nx">Username</span><span class="p">:</span> <span class="o">*</span><span class="nx">user</span><span class="p">.</span><span class="nx">Login</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">				<span class="nx">UID</span><span class="p">:</span> <span class="o">*</span><span class="nx">user</span><span class="p">.</span><span class="nx">Login</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="p">},</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">json</span><span class="p">.</span><span class="nf">NewEncoder</span><span class="p">(</span><span class="nx">writer</span><span class="p">).</span><span class="nf">Encode</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">any</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;apiVersion&#34;</span><span class="p">:</span> <span class="s">&#34;authentication.k8s.io/v1beta1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;kind&#34;</span><span class="p">:</span>       <span class="s">&#34;TokenReview&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="s">&#34;status&#34;</span><span class="p">:</span> <span class="nx">status</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:3000&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="dockerfile-镜像制作">Dockerfile 镜像制作</h3>
+<blockquote>
+<p>本项目是使用 go 作为 web 服务器, go 提供一种非常好用的编译特性 &ndash; 交叉编译</p>
+<blockquote>
+<p>在 dockerfile 中我们选择的 busybox 作为基础镜像, 但默认 busybox 架构为 x86_64(<code>uname -m</code>查看), 所以可以使用 amd64/busybox 或交叉编译 go 代码</p>
+<p>当出现这类问题 <code>exec /usr/bin/sh: exec format error</code> 多半是架构问题</p>
+<p>推荐: <a class="link" href="https://ai-feier.github.io/p/golang-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E8%AF%A6%E8%A7%A3/"  target="_blank" rel="noopener"
+    >Golang交叉编译详解</a> &ndash; <a class="link" href="https://blog.csdn.net/m0_51964671/article/details/135415850?csdn_share_tail=%7b%22type%22%3A%22blog%22%2C%22rType%22%3A%22article%22%2C%22rId%22%3A%22135415850%22%2C%22source%22%3A%22m0_51964671%22%7d"  target="_blank" rel="noopener"
+    >CSDN</a></p>
+</blockquote>
+</blockquote>
+<h4 id="amd64">amd64</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> golang:1.20 as builder</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /app</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> . .<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># go 交叉编译: amd64</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> go env -w  <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct <span class="o">&amp;&amp;</span> go mod tidy <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span> <span class="nv">GOOS</span><span class="o">=</span>linux <span class="nv">GOARCH</span><span class="o">=</span>amd64 go build -o main main.go <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> chmod +x /app/main<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> amd64/busybox</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>builder /app/main .<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 3000/tcp</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/main&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="x86_64">x86_64</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> golang:1.20 as builder</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /app</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> . .<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># go 交叉编译: x86</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> go env -w  <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct <span class="o">&amp;&amp;</span> go mod tidy <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span> <span class="nv">GOOS</span><span class="o">=</span>linux <span class="nv">GOARCH</span><span class="o">=</span><span class="m">386</span> go build -o main main.go <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> chmod +x /app/main<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> busybox</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>builder /app/main .<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 3000/tcp</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/main&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="构造镜像">构造镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ docker build -t aifeierwithinmkt/auth-github-webhook:amd64 -f Dockerfile_amd64 .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ docker build -t aifeierwithinmkt/auth-github-webhook:x86 -f Dockerfile_x86 .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ docker tag aifeierwithinmkt/auth-github-webhook:amd64 aifeierwithinmkt/auth-github-webhook
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="检验镜像">检验镜像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ docker run --rm -p 3000:3000 -d aifeierwithinmkt/auth-github-webhook:amd64
+</span></span><span class="line"><span class="cl">$ docker run --rm -p 3001:3000 -d aifeierwithinmkt/auth-github-webhook:x86
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ curl 127.0.0.1:3000/authenticate
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;apiVersion&#34;</span>:<span class="s2">&#34;authentication.k8s.io/v1beta1&#34;</span>,<span class="s2">&#34;kind&#34;</span>:<span class="s2">&#34;TokenReview&#34;</span>,<span class="s2">&#34;status&#34;</span>:<span class="o">{</span><span class="s2">&#34;user&#34;</span>:<span class="o">{}}}</span>
+</span></span><span class="line"><span class="cl">$ curl 127.0.0.1:3001/authenticate
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;apiVersion&#34;</span>:<span class="s2">&#34;authentication.k8s.io/v1beta1&#34;</span>,<span class="s2">&#34;kind&#34;</span>:<span class="s2">&#34;TokenReview&#34;</span>,<span class="s2">&#34;status&#34;</span>:<span class="o">{</span><span class="s2">&#34;user&#34;</span>:<span class="o">{}}}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>镜像服务正常</p>
+<h3 id="makefile">Makefile</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="nf">build_amd64</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	mkdir -p bin/amd64
+</span></span><span class="line"><span class="cl">	<span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span> <span class="nv">GOOS</span><span class="o">=</span>linux <span class="nv">GOARCH</span><span class="o">=</span>amd64 go build -o bin/amd64/main .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">build_x86</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	mkdir -p bin/x86
+</span></span><span class="line"><span class="cl">	<span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span> <span class="nv">GOOS</span><span class="o">=</span>linux <span class="nv">GOARCH</span><span class="o">=</span><span class="m">386</span> go build -o bin/x86/main .	
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="webhook-接入-apiserver">webhook 接入 apiserver</h3>
+<h4 id="webhookyaml">webhook.yaml</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">clusters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">cluster</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="l">http://192.168.1.7:3000/authenticate</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">github-authn</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">contexts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">context</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="l">github-authn</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">authn-apiserver</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">webhook</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">current-context</span><span class="p">:</span><span class="w"> </span><span class="l">webhook</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">preferences</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">users</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">authn-apiserver</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">client-certificate-data</span><span class="p">:</span><span class="w"> </span><span class="l">LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURJVENDQWdtZ0F3SUJBZ0lJRlYrSjRRNm1heUF3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TXpFeU16QXdPVE16TVRkYUZ3MHlOREV5TWprd09UTTRNVGxhTURReApGekFWQmdOVkJBb1REbk41YzNSbGJUcHRZWE4wWlhKek1Sa3dGd1lEVlFRREV4QnJkV0psY201bGRHVnpMV0ZrCmJXbHVNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDQVFFQTQ2NTQzOWp6cVpqcldXd3EKMkloeWtQcjREb3MySnNTM0JrUlhJTzY2UnhhbmxqVGszWlBka21oaUFvRldHTHI5VitwTUdwTytVYzhmbHhDKwoyZVc3QmVwelhzVjd2Y1RRZ25RMVlnVGh2bldRdkxVVFJuUXhoUHhYS2RGNzBEL2RISkxjMGxyVHhjZ2JNUUVTCmdPZWZZQm03dWdBdEJ0RDg3MitrdWVuV3RIc201a09nd0l0N3EzbjVvQ1huZWd4VHBFTHFtcmhtQTYrUXcrNXkKbEg1bG5LdzlFdUJmYmVqY0ZOaEd2UVNFSmFNZ2s0Z2h4bUNQWHJUcFZ0bmRkMHJQMGc4dzkvQ0NKU1owdDV6TApHMk5idFlqQzRRK2tyQXZoSllIUGRzVkRtWTFpMkZsSmsyZGgyU0RzbzJLMGNldmMvRGpUaTdhbGNpTlQwU05ICjFoVXpsd0lEQVFBQm8xWXdWREFPQmdOVkhROEJBZjhFQkFNQ0JhQXdFd1lEVlIwbEJBd3dDZ1lJS3dZQkJRVUgKQXdJd0RBWURWUjBUQVFIL0JBSXdBREFmQmdOVkhTTUVHREFXZ0JRU1oxaVlWKzlQNTRiNHB3UU9QVkI0TklXYgp3REFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBV3pmWXJMWUd5ZGJoM0hpRmxVMWhuR2ZYeGxDMGk3VDBNMmZ1CnZMUkJBM1lYelRMQmNJeFhjT3J2R2Z1OGp3ZE1qY1VmZ2tuQ0JOL2VrN2lqSDF6ZmxmRkVwK0JiWHE2WFpUQWQKTkh1aGdKVG5SRUV4OURHNldtLy9wNnpZOExEVU1ZekZwZGYyYkt2ZWdkQ0NaT3R5OTJ2eFZmbUJ5THJnUHYwRQpGSEZhR1ZCQ083Z012VnFCN05rMGxVN3Axdjg3YzVBTmJxUHI2YjYyZmMzbE9XcGQ2bUN0bDFjdms1QWROczJlCnBRVlFBRnhGR1o3WGFDaU9waFM3L2M1Vm1MUk9lWERHZ1BjUnNjdEtZL0VybXNqQ2JrYnpobnUydk85dnJPRVQKZEh0QlBYRlBYV29PWTVsZWlQa29WRUs4S1FFMmhPWVBpZDhIVHNhZzl1ZGc2Zkwvenc9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">client-key-data</span><span class="p">:</span><span class="w"> </span><span class="l">LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBNDY1NDM5anpxWmpyV1d3cTJJaHlrUHI0RG9zMkpzUzNCa1JYSU82NlJ4YW5salRrCjNaUGRrbWhpQW9GV0dMcjlWK3BNR3BPK1VjOGZseEMrMmVXN0JlcHpYc1Y3dmNUUWduUTFZZ1Rodm5XUXZMVVQKUm5ReGhQeFhLZEY3MEQvZEhKTGMwbHJUeGNnYk1RRVNnT2VmWUJtN3VnQXRCdEQ4NzIra3Vlbld0SHNtNWtPZwp3SXQ3cTNuNW9DWG5lZ3hUcEVMcW1yaG1BNitRdys1eWxINWxuS3c5RXVCZmJlamNGTmhHdlFTRUphTWdrNGdoCnhtQ1BYclRwVnRuZGQwclAwZzh3OS9DQ0pTWjB0NXpMRzJOYnRZakM0UStrckF2aEpZSFBkc1ZEbVkxaTJGbEoKazJkaDJTRHNvMkswY2V2Yy9EalRpN2FsY2lOVDBTTkgxaFV6bHdJREFRQUJBb0lCQUJIaWRxUSt5b1ViK2dEQQpPbTFmNm4vdzl1Tk5sQ2RmZEhFTmxUcUZCaVRuWnFxcDVRQnl5UWpqSWkvSU1SY29PUlphMVRlUk8zWDVxeVdXCnJ5YzJvSVpLY0YyVmJhN3VjdUtNZGxVSXhTTE00VjJ4YTU0eEttS2ozOFR0SzZpa0c1NU8rd0diR04rRVpINW8KOHljbENxUGw0WlV1eGxxdXQrK20rVzJSTE1ob2JoOG1mb1RDNGExczJlMEdpM3lkdE16SjNXZnczcUUvUlRGbQoyYm0rMHd6bFlUaXB2cmo4OEJ0aHBQUDlrTmJyVEs4WFNROXUzMnNjS3VWVllpcUJpeStMVUhMek5GY09ZbkpPCjBtdUFsTTFhTmh2WXJQMnI4QThkLzZtays5eDN6THVlM1NVYm1BdTJFUFdMKzZneUxiRHIrV1RJeHYxRVNQS0EKZW5TcWRRRUNnWUVBNVZZMGloY3I2Y0pGbkZZUnBJTjRSUjVrejBhdE12RUZmQWhIbERoUVQrUmpCTXRkVHlFSApNQVFqdXlZaDhReEh0TmxEQzBJTFJTdWpPSWdhZHFsMlBmbzNwR1RmM0xlbExkbGx4amRsVTZJc0lLYVVDdWw5CndPcTBmbkVTbUVUdGdxZS9nazFMS01ZMXUyOXg2S2FkZ25RSlBybFlQT21idW1SY3pydHc3N2NDZ1lFQS9pY0EKcnhDODcvc3VDQS9HUXpRdWlvVWphd0NXSEgyVnE2eUlSNDRVWXJaNWMwRXl1OU5jOFhoQVhTbGJxNzF6NkNDMgpFQVE4cm8weWFWTFB2TDFWeDB2aDVKUjVnaHVkMkcvMFdPbzFVR0l1SFhPaGpSeWR3UDlzZ2NZRGpUaitHYlJNCjlkSWJrWi9YcWx3Uzh2aVJHQ1BaN3hjVm5pTlJ5RzJ5N3BxeUd5RUNnWUIxNDdlRVdONzQvaVc4ZEw0Qy9KWWgKcWJzV2xmVkluMzg3UUNKVGZoTkN6bHRjUnBJRHNDMjZzQllTQ1VzZlZ6bXhMSkg3UW9yNmxyRUR5V3NaSG9tcQoyR29yOXJMaENnSStMR2ZWMmZvYllOMGdONkVZYnVoMjkrK3FvOE4wUk5KMi9IWkVyQ2o3bjlCVk5yZXVhWi9FClJKUFFDNFRoWXhEcll0WVdhMkpseHdLQmdRRFh3SjU0LzNtVk5DTkFucnVOZzNmYkNla21SZ29veDRmT2hCbncKdkxHYmx4S0ZBQjBraStyRDVuU2xZWjI3cm9uOXpmOGdtNmd6K2hPSWk4OWtoMHFSZEY2Z29GYUNXQlZvanFuYwo3WDR5N2hYOTFKS1phMmlVVllGMHJYZUlaSkI1bTdFVm9iYmJxZGo0ZTA5dXlncktkbXprNWpEbzNVenBIQThoCk5WdnJZUUtCZ1FDNDRreXNsRlBUVkNlbkp5SDFHLy82VmQ0aXRFaFlYQVllYWJUdU15eVlkZFlxcnJYTTFUS1QKL24wRHQrQXFIa0dmU2pvUExCa3NITkNDZWZnZSt0dDRxVmFPNjJyWkhRRTQ0TXVueHhxRXBNdmxFeUNEVUM4cApTaUF6bW9XaDR4R2tUdkpLUlBLWGlPNEdjbk5wZVNuUVY5RjJSY01ocllCUVZjTzJLb2N1Umc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>该配置与 <a class="link" href="https://blog.csdn.net/m0_51964671/article/details/135327070"  target="_blank" rel="noopener"
+    >kubeconfig</a> 配置相同, 直接在 kubeconfig 的基础上修改就行, 重要的是 cluster 的 server (即提供服务的地址</p>
+</blockquote>
+<h4 id="apiserver-挂载-webconfig">apiserver 挂载 webconfig</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 修改 apiserver 配置参数, 增加:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- --<span class="l">authentication-token-webhook-config-file=/etc/config/webhook.yaml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 相应增加挂载卷</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">DirectoryOrCreate</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">auth-webhook</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">auth-webhook</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<ol>
+<li>修改 manifest 后 apiserver 理论上会自动重启, 如果没有则 <code>systemctl restart kubelet</code></li>
+<li>本文实验主题为认证 webhook 可直接使用 <code>--authentication-token-webhook-config-file</code>, 如需自定义 mutatingwebhook 请参考: <a class="link" href="https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/extensible-admission-controllers/"  target="_blank" rel="noopener"
+    >mutatingwebhook</a></li>
+</ol>
+</blockquote>
+<h4 id="在-github-中创建认证-token">在 github 中创建认证 token</h4>
+<blockquote>
+<p>setting -&gt; <a class="link" href="https://github.com/settings/apps"  target="_blank" rel="noopener"
+    >Developer Settings</a> -&gt; Personal access tokens (classic)</p>
+</blockquote>
+<h4 id="将-token-添加到-kubeconfig">将 token 添加到 kubeconfig</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 在 kubeconfig 下增加一个 user</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">githubuser</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l">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</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="验证">验证</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k get po --user githubuser
+</span></span><span class="line"><span class="cl">Error from server <span class="o">(</span>Forbidden<span class="o">)</span>: pods is forbidden: User <span class="s2">&#34;Ai-feier&#34;</span> cannot list resource <span class="s2">&#34;pods&#34;</span> in API group <span class="s2">&#34;&#34;</span> in the namespace <span class="s2">&#34;default&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="授权验证">授权验证</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k create clusterrolebinding testview --clusterrole view --user Ai-feier
+</span></span><span class="line"><span class="cl">$ k get po --user githubuser
+</span></span><span class="line"><span class="cl">NAME                         READY   STATUS    RESTARTS      AGE
+</span></span><span class="line"><span class="cl">nginx-kusc00401              0/1     Pending   <span class="m">0</span>             4d23h
+</span></span><span class="line"><span class="cl">testnginx-5cdb847cd9-7nm4k   1/1     Running   <span class="m">1</span> <span class="o">(</span>29h ago<span class="o">)</span>   43h
+</span></span><span class="line"><span class="cl">testnginx-5cdb847cd9-llmxf   1/1     Running   <span class="m">1</span> <span class="o">(</span>29h ago<span class="o">)</span>   43h
+</span></span><span class="line"><span class="cl">testnginx-5cdb847cd9-qfsdn   1/1     Running   <span class="m">1</span> <span class="o">(</span>29h ago<span class="o">)</span>   43h
+</span></span><span class="line"><span class="cl">web-server                   0/1     Pending   <span class="m">0</span>             4d22h
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="参考">参考</h2>
+<blockquote>
+<ol>
+<li><a class="link" href="https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/extensible-admission-controllers/"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/extensible-admission-controllers/</a></li>
+</ol>
+</blockquote>
+
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/k8s/">k8s</a>
+        
+            <a href="/tags/oath2/">oath2</a>
+        
+            <a href="/tags/k8s-webhook/">k8s webhook</a>
+        
+            <a href="/tags/kubeconfig/">kubeconfig</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/%E4%BD%BF%E7%94%A8-kubeconfig-%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8kubeconfig%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/cover1.webp" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8kubeconfig%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/cover1.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">使用 kubeconfig 管理集群</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/kubernetes-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-apiserver-%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4%E7%94%A8%E6%88%B7/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/ApiServer%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/ApiServer%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes 用户管理, ApiServer 新增集群用户</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/2024-cka-%E9%A2%98%E5%BA%93/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cka%20%26%20cks/cert.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cka%20%26%20cks/cert.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">2024 CKA 题库</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E4%BD%BF%E7%94%A8-wsl-%E7%AE%A1%E7%90%86-k8s-%E9%9B%86%E7%BE%A4/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8wsl%E7%AE%A1%E7%90%86k8s%E9%9B%86%E7%BE%A4/cover.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8wsl%E7%AE%A1%E7%90%86k8s%E9%9B%86%E7%BE%A4/cover.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">使用 wsl 管理 k8s 集群</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E6%89%A9%E5%B1%95-apiserver-%E8%BF%9E%E6%8E%A5%E8%AE%A4%E8%AF%81-ip-%E8%AF%81%E4%B9%A6%E6%9B%B4%E6%96%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E6%89%A9%E5%B1%95%20apiserver%20%E8%BF%9E%E6%8E%A5%E8%AE%A4%E8%AF%81%20ip/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E6%89%A9%E5%B1%95%20apiserver%20%E8%BF%9E%E6%8E%A5%E8%AE%A4%E8%AF%81%20ip/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">扩展 apiserver 连接认证 ip, 证书更新</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 -  2024 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
