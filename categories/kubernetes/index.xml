@@ -12,7 +12,35 @@
         <pubDate>Mon, 08 Jan 2024 15:54:02 +0800</pubDate>
         
         <guid>/p/kubernetes-webhook-%E5%85%A5%E9%97%A8--%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B-apiserver-%E6%8E%A5%E5%85%A5-github/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/maxresdefault.jpg" alt="Featured image of post Kubernetes WebHook 入门 -- 入门案例: apiserver 接入 github " /&gt;&lt;h2 id=&#34;介绍&#34;&gt;介绍&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/maxresdefault.jpg" alt="Featured image of post Kubernetes WebHook 入门 -- 入门案例: apiserver 接入 github " /&gt;&lt;h2 id=&#34;k8s-集群配置&#34;&gt;k8s 集群配置&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;IP&lt;/th&gt;
+&lt;th&gt;Host&lt;/th&gt;
+&lt;th&gt;配置&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;11.0.1.150&lt;/td&gt;
+&lt;td&gt;master1 (keepalived+haproxy)&lt;/td&gt;
+&lt;td&gt;2C 4G 30G&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;11.0.1.151&lt;/td&gt;
+&lt;td&gt;master2 (keepalived+haproxy)&lt;/td&gt;
+&lt;td&gt;2C 4G 30G&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;11.0.1.152&lt;/td&gt;
+&lt;td&gt;node1&lt;/td&gt;
+&lt;td&gt;2C 4G 30G&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;vip 地址: https://11.0.1.100:16443&lt;/p&gt;
+&lt;h2 id=&#34;介绍&#34;&gt;介绍&lt;/h2&gt;
 &lt;p&gt;Webhook就是一种HTTP回调，用于在某种情况下执行某些动作，Webhook不是K8S独有的，很多场景下都可以进行Webhook，比如在提交完代码后调用一个Webhook自动构建docker镜像&lt;/p&gt;
 &lt;p&gt;K8S中提供了&lt;strong&gt;自定义资源类型&lt;/strong&gt;和&lt;strong&gt;自定义控制器&lt;/strong&gt;来扩展功能，还提供了&lt;strong&gt;动态准入控制&lt;/strong&gt;，其实就是通过Webhook来实现准入控制，分为两种：验证性质的准入 Webhook （Validating Admission Webhook） 和 修改性质的准入 Webhook （Mutating Admission Webhook）&lt;/p&gt;
 &lt;p&gt;Admission Webhook有哪些使用场景？如下&lt;/p&gt;
@@ -44,6 +72,10 @@
 &lt;li&gt;Validating Webhook: 这类 webhook 不能去更改请求对象, 就算更改也会被忽略, 用于写入 etcd 前的验证逻辑&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2 id=&#34;webhook-入门实践-github-认证接入&#34;&gt;WebHook 入门实践: github 认证接入&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;源码地址: &lt;a class=&#34;link&#34; href=&#34;https://github.com/Ai-feier/k8s-webhook/tree/main/auth-github&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/Ai-feier/k8s-webhook/tree/main/auth-github&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;写一个用于认证校验的 mutating webhook&lt;/p&gt;
 &lt;p&gt;请求流程:&lt;/p&gt;
 &lt;ol&gt;
@@ -2710,7 +2742,7 @@ kubectl -h&lt;br /&gt;
 &lt;p&gt;vip 地址: https://11.0.1.100:16443&lt;/p&gt;
 &lt;h2 id=&#34;认识-kubeconfig&#34;&gt;认识 kubeconfig&lt;/h2&gt;
 &lt;p&gt;kubeconfig 即为 kubectl 用于管理 k8s 集群的配置文件&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8kubeconfig%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/image-20240101163134772.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8kubeconfig%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/image-20240101163134772.png&#34;
 	
 	
 	
@@ -2721,7 +2753,7 @@ kubectl -h&lt;br /&gt;
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;关系图解&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8kubeconfig%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/image-20240101164357203.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8kubeconfig%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/image-20240101164357203.png&#34;
 	
 	
 	

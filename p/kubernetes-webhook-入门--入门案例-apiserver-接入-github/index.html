@@ -247,6 +247,7 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
+    <li><a href="#k8s-集群配置">k8s 集群配置</a></li>
     <li><a href="#介绍">介绍</a></li>
     <li><a href="#admission-webhook">Admission Webhook</a></li>
     <li><a href="#webhook-入门实践-github-认证接入">WebHook 入门实践: github 认证接入</a>
@@ -373,7 +374,35 @@
 
     
     
-    <h2 id="介绍">介绍</h2>
+    <h2 id="k8s-集群配置">k8s 集群配置</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>IP</th>
+<th>Host</th>
+<th>配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11.0.1.150</td>
+<td>master1 (keepalived+haproxy)</td>
+<td>2C 4G 30G</td>
+</tr>
+<tr>
+<td>11.0.1.151</td>
+<td>master2 (keepalived+haproxy)</td>
+<td>2C 4G 30G</td>
+</tr>
+<tr>
+<td>11.0.1.152</td>
+<td>node1</td>
+<td>2C 4G 30G</td>
+</tr>
+</tbody>
+</table></div>
+<p>vip 地址: https://11.0.1.100:16443</p>
+<h2 id="介绍">介绍</h2>
 <p>Webhook就是一种HTTP回调，用于在某种情况下执行某些动作，Webhook不是K8S独有的，很多场景下都可以进行Webhook，比如在提交完代码后调用一个Webhook自动构建docker镜像</p>
 <p>K8S中提供了<strong>自定义资源类型</strong>和<strong>自定义控制器</strong>来扩展功能，还提供了<strong>动态准入控制</strong>，其实就是通过Webhook来实现准入控制，分为两种：验证性质的准入 Webhook （Validating Admission Webhook） 和 修改性质的准入 Webhook （Mutating Admission Webhook）</p>
 <p>Admission Webhook有哪些使用场景？如下</p>
@@ -405,6 +434,10 @@
 <li>Validating Webhook: 这类 webhook 不能去更改请求对象, 就算更改也会被忽略, 用于写入 etcd 前的验证逻辑</li>
 </ol>
 <h2 id="webhook-入门实践-github-认证接入">WebHook 入门实践: github 认证接入</h2>
+<blockquote>
+<p>源码地址: <a class="link" href="https://github.com/Ai-feier/k8s-webhook/tree/main/auth-github"  target="_blank" rel="noopener"
+    >https://github.com/Ai-feier/k8s-webhook/tree/main/auth-github</a></p>
+</blockquote>
 <p>写一个用于认证校验的 mutating webhook</p>
 <p>请求流程:</p>
 <ol>
