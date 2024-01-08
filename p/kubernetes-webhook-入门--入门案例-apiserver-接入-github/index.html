@@ -633,7 +633,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /app</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> . .<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> .. .<span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># go 交叉编译: amd64</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> go env -w  <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct <span class="o">&amp;&amp;</span> go mod tidy <span class="o">&amp;&amp;</span> <span class="se">\
