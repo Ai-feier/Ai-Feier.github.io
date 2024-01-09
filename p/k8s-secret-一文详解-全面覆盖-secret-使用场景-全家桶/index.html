@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Kubernetes secrets用于存储和管理一些敏感数据，比如密码，token，密钥等敏感信息。它把 Pod 想要访问的加密数据存放到 Etcd 中。'>
+<meta name="keywords" content="secret, k8s, security"><title>K8S Secret 一文详解, 全面覆盖 Secret 使用场景, 全家桶</title>
+
+<link rel='canonical' href='/p/k8s-secret-%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-%E5%85%A8%E9%9D%A2%E8%A6%86%E7%9B%96-secret-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-%E5%85%A8%E5%AE%B6%E6%A1%B6/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='K8S Secret 一文详解, 全面覆盖 Secret 使用场景, 全家桶'>
+<meta property='og:description' content='Kubernetes secrets用于存储和管理一些敏感数据，比如密码，token，密钥等敏感信息。它把 Pod 想要访问的加密数据存放到 Etcd 中。'>
+<meta property='og:url' content='/p/k8s-secret-%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-%E5%85%A8%E9%9D%A2%E8%A6%86%E7%9B%96-secret-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-%E5%85%A8%E5%AE%B6%E6%A1%B6/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='secret' /><meta property='article:tag' content='k8s' /><meta property='article:tag' content='security' /><meta property='article:published_time' content='2024-01-09T17:10:08&#43;08:00'/><meta property='article:modified_time' content='2024-01-09T17:10:08&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/d7e980452cf8c7f8195c3de1f6a36cb7.svg' />
+<meta name="twitter:title" content="K8S Secret 一文详解, 全面覆盖 Secret 使用场景, 全家桶">
+<meta name="twitter:description" content="Kubernetes secrets用于存储和管理一些敏感数据，比如密码，token，密钥等敏感信息。它把 Pod 想要访问的加密数据存放到 Etcd 中。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/d7e980452cf8c7f8195c3de1f6a36cb7.svg' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#secret介绍">Secret介绍</a></li>
+    <li><a href="#secret-类型">Secret 类型</a>
+      <ol>
+        <li><a href="#kubectl-创建类型">kubectl 创建类型</a></li>
+      </ol>
+    </li>
+    <li><a href="#secret-使用">Secret 使用</a>
+      <ol>
+        <li><a href="#opaque-类型-secret-的使用">Opaque 类型 Secret 的使用</a>
+          <ol>
+            <li><a href="#创建">创建</a></li>
+            <li><a href="#挂载">挂载</a></li>
+          </ol>
+        </li>
+        <li><a href="#secret-绑定-serviceaccount">Secret 绑定 serviceAccount</a>
+          <ol>
+            <li><a href="#查看-secret">查看 secret</a></li>
+          </ol>
+        </li>
+        <li><a href="#tls-secret">TLS Secret</a>
+          <ol>
+            <li><a href="#yaml-方式创建">yaml 方式创建</a></li>
+            <li><a href="#kubectl-创建">kubectl 创建</a></li>
+          </ol>
+        </li>
+        <li><a href="#docker-镜像仓库-secret">Docker 镜像仓库 Secret</a>
+          <ol>
+            <li><a href="#yaml-方式创建-1">yaml 方式创建</a></li>
+            <li><a href="#kubectl-方式创建">kubectl 方式创建</a></li>
+          </ol>
+        </li>
+        <li><a href="#ssh-类型-secret">ssh 类型 secret</a>
+          <ol>
+            <li><a href="#通过文件创建">通过文件创建</a></li>
+            <li><a href="#pod-挂载-ssh-secret">pod 挂载 ssh secret</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/k8s-secret-%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-%E5%85%A8%E9%9D%A2%E8%A6%86%E7%9B%96-secret-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-%E5%85%A8%E5%AE%B6%E6%A1%B6/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/d7e980452cf8c7f8195c3de1f6a36cb7.svg" loading="lazy" alt="Featured image of post K8S Secret 一文详解, 全面覆盖 Secret 使用场景, 全家桶" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/kubernetes/" >
+                Kubernetes
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/k8s-secret-%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-%E5%85%A8%E9%9D%A2%E8%A6%86%E7%9B%96-secret-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-%E5%85%A8%E5%AE%B6%E6%A1%B6/">K8S Secret 一文详解, 全面覆盖 Secret 使用场景, 全家桶</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Kubernetes secrets用于存储和管理一些敏感数据，比如密码，token，密钥等敏感信息。它把 Pod 想要访问的加密数据存放到 Etcd 中。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 09, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <h2 id="secret介绍">Secret介绍</h2>
+<p>k8s secrets用于存储和管理一些敏感数据，比如密码，token，密钥等敏感信息。它把 Pod 想要访问的加密数据存放到 Etcd 中。然后用户就可以通过在 Pod 的容器里挂载 Volume 的方式或者环境变量的方式访问到这些 Secret 里保存的信息了。</p>
+<p>Secret 类似于 <a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-pod-configmap/"  target="_blank" rel="noopener"
+    >ConfigMap</a> 但专门用于保存机密数据。</p>
+<h2 id="secret-类型">Secret 类型</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>内置类型</th>
+<th>用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Opaque</td>
+<td>用户定义的任意数据</td>
+</tr>
+<tr>
+<td>kubernetes.io/service-account-tokensymotion</td>
+<td>服务账号令牌</td>
+</tr>
+<tr>
+<td>kubernetes.io/dockercfg</td>
+<td>~/.dockercfg 文件的序列化形式</td>
+</tr>
+<tr>
+<td>kubernetes.io/dockerconfigjson</td>
+<td>~/.docker/config.json 文件的序列化形式</td>
+</tr>
+<tr>
+<td>kubernetes.io/basic-auth</td>
+<td>用于基本身份认证的凭据</td>
+</tr>
+<tr>
+<td>kubernetes.io/ssh-auth</td>
+<td>用于 SSH 身份认证的凭据</td>
+</tr>
+<tr>
+<td>kubernetes.io/tls</td>
+<td>用于 TLS 客户端或者服务器端的数据</td>
+</tr>
+<tr>
+<td>bootstrap.kubernetes.io/token</td>
+<td>启动引导令牌数据</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="kubectl-创建类型">kubectl 创建类型</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl create secret dotfile -h
+</span></span><span class="line"><span class="cl">Create a secret with specified type.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> A docker-registry <span class="nb">type</span> secret is <span class="k">for</span> accessing a container registry.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> A generic <span class="nb">type</span> secret indicate an Opaque secret type.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> A tls <span class="nb">type</span> secret holds TLS certificate and its associated key.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Available Commands:
+</span></span><span class="line"><span class="cl">  docker-registry   Create a secret <span class="k">for</span> use with a Docker registry
+</span></span><span class="line"><span class="cl">  generic           Create a secret from a <span class="nb">local</span> file, directory, or literal value
+</span></span><span class="line"><span class="cl">  tls               Create a TLS secret
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>docker-registry</code>: 连接私有镜像仓库的凭证</li>
+<li><code>generic</code>: 常见 secret, 该类型 secret 与 <a class="link" href="https://ai-feier.github.io/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/"  target="_blank" rel="noopener"
+    >configmap</a> 使用相同</li>
+<li><code>tls</code>: 提供 tls 证书, 在 service mesh 中自动挂载</li>
+</ul>
+<h2 id="secret-使用">Secret 使用</h2>
+<p>使用场景:</p>
+<ul>
+<li><a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/inject-data-application/distribute-credentials-secure/#define-container-environment-variables-using-secret-data"  target="_blank" rel="noopener"
+    >设置容器的环境变量</a>。</li>
+<li><a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/inject-data-application/distribute-credentials-secure/#provide-prod-test-creds"  target="_blank" rel="noopener"
+    >向 Pod 提供 SSH 密钥或密码等凭据</a>。</li>
+<li><a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/pull-image-private-registry/"  target="_blank" rel="noopener"
+    >允许 kubelet 从私有镜像仓库中拉取镜像</a>。</li>
+</ul>
+<h3 id="opaque-类型-secret-的使用">Opaque 类型 Secret 的使用</h3>
+<h4 id="创建">创建</h4>
+<h5 id="1-kubectl-create">1. kubectl create</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl create secret generic dotfile --from-literal<span class="o">=</span><span class="nv">username</span><span class="o">=</span>admin --from-literal<span class="o">=</span><span class="nv">password</span><span class="o">=</span><span class="m">123456</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ kubectl get secret dotfile -oyaml
+</span></span><span class="line"><span class="cl">apiVersion: v1
+</span></span><span class="line"><span class="cl">data:
+</span></span><span class="line"><span class="cl">  password: MTIzNDU2
+</span></span><span class="line"><span class="cl">  username: <span class="nv">YWRtaW4</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl">kind: Secret
+</span></span><span class="line"><span class="cl">metadata:
+</span></span><span class="line"><span class="cl">  creationTimestamp: <span class="s2">&#34;2024-01-09T07:45:19Z&#34;</span>
+</span></span><span class="line"><span class="cl">  name: dotfile
+</span></span><span class="line"><span class="cl">  namespace: default
+</span></span><span class="line"><span class="cl">  resourceVersion: <span class="s2">&#34;621858&#34;</span>
+</span></span><span class="line"><span class="cl">  uid: ce3a3332-5b97-4af0-8312-ced355786e64
+</span></span><span class="line"><span class="cl">type: Opaque
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> -n <span class="s2">&#34;YWRtaW4=&#34;</span> <span class="p">|</span> base64 -d
+</span></span><span class="line"><span class="cl">admin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="2-yaml">2. yaml</h5>
+<p>以 yaml 方式创建需要你提前进行 base64</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">echo</span> -n <span class="s2">&#34;admin&#34;</span> <span class="p">|</span> base64
+</span></span><span class="line"><span class="cl"><span class="nv">YWRtaW4</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> -n <span class="s2">&#34;123456&#34;</span> <span class="p">|</span> base64
+</span></span><span class="line"><span class="cl">MTIzNDU2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dotfile</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Opaque</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l">MTIzNDU2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l">YWRtaW4=</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">immutable</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>你可以通过将 Secret 的 <code>immutable</code> 字段设置为 <code>true</code> 创建不可更改的 Secret。</p>
+</blockquote>
+<p>创建</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl create -f dotfile-secret.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="挂载">挂载</h4>
+<h5 id="1-作为环境变量">1. 作为环境变量</h5>
+<p>创建 pod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pod1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">,</span><span class="s2">&#34;-c&#34;</span><span class="p">,</span><span class="s2">&#34;echo $username &amp;&amp; env&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">env</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">username</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">username</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dotfile   </span><span class="w"> </span><span class="c"># secret 名称</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取容器日志</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 创建</span>
+</span></span><span class="line"><span class="cl">$ kubectl create -f pod1.yaml
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ kubectl logs pod1
+</span></span><span class="line"><span class="cl">admin
+</span></span><span class="line"><span class="cl"><span class="nv">KUBERNETES_SERVICE_PORT</span><span class="o">=</span><span class="m">443</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KUBERNETES_PORT</span><span class="o">=</span>tcp://10.96.0.1:443
+</span></span><span class="line"><span class="cl"><span class="nv">HOSTNAME</span><span class="o">=</span>pod1
+</span></span><span class="line"><span class="cl"><span class="nv">SHLVL</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="nv">username</span><span class="o">=</span>admin
+</span></span><span class="line"><span class="cl"><span class="nv">HOME</span><span class="o">=</span>/root
+</span></span><span class="line"><span class="cl"><span class="nv">KUBERNETES_PORT_443_TCP_ADDR</span><span class="o">=</span>10.96.0.1
+</span></span><span class="line"><span class="cl"><span class="nv">PATH</span><span class="o">=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+</span></span><span class="line"><span class="cl"><span class="nv">KUBERNETES_PORT_443_TCP_PORT</span><span class="o">=</span><span class="m">443</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KUBERNETES_PORT_443_TCP_PROTO</span><span class="o">=</span>tcp
+</span></span><span class="line"><span class="cl"><span class="nv">KUBERNETES_SERVICE_PORT_HTTPS</span><span class="o">=</span><span class="m">443</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KUBERNETES_PORT_443_TCP</span><span class="o">=</span>tcp://10.96.0.1:443
+</span></span><span class="line"><span class="cl"><span class="nv">KUBERNETES_SERVICE_HOST</span><span class="o">=</span>10.96.0.1
+</span></span><span class="line"><span class="cl"><span class="nv">PWD</span><span class="o">=</span>/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="2-作为文件挂载及设置-posix-权限">2. 作为文件挂载及设置 POSIX 权限</h5>
+<p>对于 volume 挂载, 推荐 <a class="link" href="https://ai-feier.github.io/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/"  target="_blank" rel="noopener"
+    >configmap</a> 总结 k8s 中 volume 挂载的种种情况, 及最佳实践</p>
+<p>创建 pod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pod2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">sec</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">secret</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l">dotfile</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">defaultMode</span><span class="p">:</span><span class="w"> </span><span class="m">0400</span><span class="w">  </span><span class="c"># 设置文件权限</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;sleep&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;24h&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">sec</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意: secret 挂载到容器后自动 base64 解码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl <span class="nb">exec</span> pod2 -- ls -l /etc/config/
+</span></span><span class="line"><span class="cl">total <span class="m">0</span>
+</span></span><span class="line"><span class="cl">lrwxrwxrwx    <span class="m">1</span> root     root            <span class="m">15</span> Jan  <span class="m">9</span> 08:00 password -&gt; ..data/password
+</span></span><span class="line"><span class="cl">lrwxrwxrwx    <span class="m">1</span> root     root            <span class="m">15</span> Jan  <span class="m">9</span> 08:00 username -&gt; ..data/username
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ kubectl <span class="nb">exec</span> pod2 -- cat /etc/config/username
+</span></span><span class="line"><span class="cl">admin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="secret-绑定-serviceaccount">Secret 绑定 serviceAccount</h3>
+<blockquote>
+<p>k8s 中 pod 会挂载 serviceAccount</p>
+<ul>
+<li>挂载路径: /var/run/secrets/kubernetes.io/serviceaccount</li>
+<li>挂载内容该 serviceAccount 的:  <code>ca.crt </code>, <code>namespace</code> , <code>token</code></li>
+</ul>
+</blockquote>
+<p>secret:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">sa-secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">kubernetes.io/service-account.name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;tdd&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/service-account-token</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l">MTIzNDU2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l">YWRtaW4=</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>我们为 secret 添加了 <code>kubernetes.io/service-account.name</code>字段, 为其指定的 serviceAccount, 创建了 Secret 之后，等待 Kubernetes 在 <code>data</code> 字段中填充 <code>token</code> 主键。</p>
+<h4 id="查看-secret">查看 secret</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl get secrets sa-secret -oyaml
+</span></span><span class="line"><span class="cl">apiVersion: v1
+</span></span><span class="line"><span class="cl">data:
+</span></span><span class="line"><span class="cl">  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJWVB2VXI2cG02NFF3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TXpFeU16QXdPVE16TVRkYUZ3MHpNekV5TWpjd09UTTRNVGRhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUUM0M1JFazZPZ0VFMGVWN1JHbmc1YnRONEdHaE5uUFNjbUZuYy9LKzhlSEZESVlPRkRKblZlZ0tOUmQKblVOSEFUL2h3T3RaWFZUTHhieWRGTVNqd0xSeDVPNTg5bUlVM3M2SlVZZjFvajFCUjFsWlkreXA5eVRGdXFYYQphbzc3WTVPbkVpT3BOQXUxek1WWUFRK0V2bzJtbmY2b0p6WDd3SFc2TkxZd0V0TVA2cklhclNaaU11MTllRnBWCnpmNU5RMGFGUU4vbkJyQUpHQm15eHF1cGhNRFpYOXlyK1c3emY4Q296NkxuTHRCMCtIaEtHYm9kUGVyaWk0bjgKczJlc2tLdmZ6NmdJK0dhR3ROYWtNU3gwbVZXV0MycTBDbndrOVJEOTNhd1JWRHd2VnZRczljR1B0R0I3WVdIcApDOXBLeTdaOEgybjdDZndza2FqZTMzWnhuUzJaQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJRU1oxaVlWKzlQNTRiNHB3UU9QVkI0TklXYndEQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQkdNRzMvN3dSZwp0ZkxDMkNHTGtRcUdaQmNtTlBzR0lwbmRqSnpTSzVjMXJMSVUrNjNHN3ZnWEJENHVuZ3B5RDFRVE5VSWp1ZVRXCkMxM1lZb1ZjK09zZkIvWFlVRkFvZ1JiWWtvZjV2TTBUeFVzdXN1VVUvT0Q2NDc0cE5xajlzQStrejRiMUliMzAKOVFmUG5mM2ZieVZyVmh0dlYxQmxsNVMwMmVDa2xaazM1SjAzczFLdytOWHovSjQzTDF6UlJjNytCa3M1UVpvbAp2ZnhJYW1BaXdqWGFUMDBhVVB3WjZ4S215KzcvUkZuRjB4aExlanhKRTBrOUU0YWR3NGhWSkNWMUp2aWdzcEpDCmNQL3BJMC9hSlVKeHVKNWZVeENuRVRVOXRpNi9aTGloeDg4Uk1vdmRFS0R4RDZJYlpKSWkxYVJwajhVeGdnL0UKcm1ONU5YTnN3Sk9XCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+</span></span><span class="line"><span class="cl">  namespace: <span class="nv">ZGVmYXVsdA</span><span class="o">==</span>
+</span></span><span class="line"><span class="cl">  password: MTIzNDU2
+</span></span><span class="line"><span class="cl">  token: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNkluZHBiR05VZVVwd1pUbEpRbEJpV0ZReGFFeHFaamh5WlROWE4wOHdXRXBtU1Y4eGJtODRWblp0UlVFaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUprWldaaGRXeDBJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpXTnlaWFF1Ym1GdFpTSTZJbk5oTFhObFkzSmxkQ0lzSW10MVltVnlibVYwWlhNdWFXOHZjMlZ5ZG1salpXRmpZMjkxYm5RdmMyVnlkbWxqWlMxaFkyTnZkVzUwTG01aGJXVWlPaUowWkdRaUxDSnJkV0psY201bGRHVnpMbWx2TDNObGNuWnBZMlZoWTJOdmRXNTBMM05sY25acFkyVXRZV05qYjNWdWRDNTFhV1FpT2lKbVpEWTRZelkwTVMwMU1qSXpMVFJsTUdRdFlqRXlaQzFpWkdKbE5ETXlOMlpsT0dZaUxDSnpkV0lpT2lKemVYTjBaVzA2YzJWeWRtbGpaV0ZqWTI5MWJuUTZaR1ZtWVhWc2REcDBaR1FpZlEuY09UZXoyM2w3VFl2TjFFN1FYcW4xVkN4dUxhbEJCN0JOMTVyU05IWFZndk5waEY4ZTd3ZkY4R3VheXFaSmZtdXB3ZE5HVzV2SFVRbE8yQVQtX3pGZkEta0hSbEN6OVZzZUVnTV82S0lrZ3FiZlNKNGw2WDRQOWFwaEdvYUhBaEdJUGdibTVGU1UwTWR6NlhzNW9fSnVvVjZfWkxxN3BZRVlGU0Y3REF1U0VyZHljSjdBZFFidWl6cHhuOE5lb3JhZ3Y5OWNDWjFlQjVJS0lGQW05SjBld1dlZEJBOUJhM0haN2RXQWozNE9uLW9mTWVKOWtQcmhvZWlUb2dtSkk5SE9NYWd4Ynh4YmF5cVpYdW9TQWJBSkNqVkRoUVZxdUJZRnJ5T09lWFowSnlXaWkyeVdVQWVvdVNDSEtRWUFXd2pmU2dwaGtKdzFQUkE4M3pFQWFmc3hn
+</span></span><span class="line"><span class="cl">  username: <span class="nv">YWRtaW4</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl">kind: Secret
+</span></span><span class="line"><span class="cl">metadata:
+</span></span><span class="line"><span class="cl">  annotations:
+</span></span><span class="line"><span class="cl">    kubernetes.io/service-account.name: tdd
+</span></span><span class="line"><span class="cl">    kubernetes.io/service-account.uid: fd68c641-5223-4e0d-b12d-bdbe4327fe8f
+</span></span><span class="line"><span class="cl">  creationTimestamp: <span class="s2">&#34;2024-01-09T08:49:30Z&#34;</span>
+</span></span><span class="line"><span class="cl">  name: sa-secret
+</span></span><span class="line"><span class="cl">  namespace: default
+</span></span><span class="line"><span class="cl">  resourceVersion: <span class="s2">&#34;630499&#34;</span>
+</span></span><span class="line"><span class="cl">  uid: c41bc253-c2c4-4d2f-a5d9-0a4fe8b0d8da
+</span></span><span class="line"><span class="cl">type: kubernetes.io/service-account-token
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>可以看到 kubernetes 控制器自动为其填充了 namespace, token, ca</p>
+</blockquote>
+<h3 id="tls-secret">TLS Secret</h3>
+<p>创建方式</p>
+<h4 id="yaml-方式创建">yaml 方式创建</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-tls</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/tls</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 值为 base64 编码，这样会掩盖它们，但不会提供任何有用的机密性级别</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tls.crt</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNVakNDQWJzQ0FnMytNQTBHQ1NxR1NJYjNE
+</span></span></span><span class="line"><span class="cl"><span class="sd">    UUVCQlFVQU1JR2JNUXN3Q1FZRFZRUUdFd0pLVURFT01Bd0cKQTFVRUNCTUZWRzlyZVc4eEVEQU9C
+</span></span></span><span class="line"><span class="cl"><span class="sd">    ......</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 在这个例子中，密钥数据不是真正的 PEM 编码的私钥</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tls.key</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    RXhhbXBsZSBkYXRhIGZvciB0aGUgVExTIGNydCBmaWVsZA==    </span><span class="w">    
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="kubectl-创建">kubectl 创建</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl create secret tls my-tls-secret <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --cert<span class="o">=</span>path/to/cert/file <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --key<span class="o">=</span>path/to/key/file
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="docker-镜像仓库-secret">Docker 镜像仓库 Secret</h3>
+<h4 id="yaml-方式创建-1">yaml 方式创建</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-dockercfg</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/dockercfg</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">.dockercfg</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    eyJhdXRocyI6eyJodHRwczovL2V4YW1wbGUvdjEvIjp7ImF1dGgiOiJvcGVuc2VzYW1lIn19fQo=    </span><span class="w">    
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="kubectl-方式创建">kubectl 方式创建</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl create secret docker-registry secret-tiger-docker <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --docker-email<span class="o">=</span>tiger@acme.example <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --docker-username<span class="o">=</span>tiger <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --docker-password<span class="o">=</span>pass1234 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --docker-server<span class="o">=</span>my-registry.example:5000
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ kubectl get secret secret-tiger-docker -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.*}&#39;</span> <span class="p">|</span> base64 -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出等价于以下 JSON 文档（这也是一个有效的 Docker 配置文件）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;auths&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;my-registry.example:5000&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;username&#34;</span><span class="p">:</span> <span class="s2">&#34;tiger&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;password&#34;</span><span class="p">:</span> <span class="s2">&#34;pass1234&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;email&#34;</span><span class="p">:</span> <span class="s2">&#34;tiger@acme.example&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;auth&#34;</span><span class="p">:</span> <span class="s2">&#34;dGlnZXI6cGFzczEyMzQ=&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ssh-类型-secret">ssh 类型 secret</h3>
+<h4 id="通过文件创建">通过文件创建</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl create secret generic ssh-key-secret --from-file<span class="o">=</span>ssh-privatekey<span class="o">=</span>/path/to/.ssh/id_rsa --from-file<span class="o">=</span>ssh-publickey<span class="o">=</span>/path/to/.ssh/id_rsa.pub
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="pod-挂载-ssh-secret">pod 挂载 ssh secret</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-test-pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-volume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">secret</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l">ssh-key-secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ssh-test-container</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mySshImage</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-volume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/etc/secret-volume&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>容器命令执行时，秘钥的数据可以在下面的位置访问到：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/etc/secret-volume/ssh-publickey
+</span></span><span class="line"><span class="cl">/etc/secret-volume/ssh-privatekey
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>容器就可以随便使用 Secret 数据来建立 SSH 连接。</p>
+<h2 id="参考">参考</h2>
+<blockquote>
+<ol>
+<li><a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#service-account-token-secrets"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/#service-account-token-secrets</a></li>
+<li><a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/inject-data-application/distribute-credentials-secure/#provide-prod-test-creds"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/tasks/inject-data-application/distribute-credentials-secure/#provide-prod-test-creds</a></li>
+<li><a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/pull-image-private-registry/"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/pull-image-private-registry/</a></li>
+</ol>
+</blockquote>
+
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/secret/">secret</a>
+        
+            <a href="/tags/k8s/">k8s</a>
+        
+            <a href="/tags/security/">security</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">k8s configmap 详解, 从理解 k8s volumes 挂载方式, 带你解决挂载 configmap 的种种疑难杂症, 以及 k8s 中如何创建 configmap</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/kubernetes-webhook-%E5%85%A5%E9%97%A8--%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B-apiserver-%E6%8E%A5%E5%85%A5-github/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/overview-of-webhook.avif" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/overview-of-webhook.avif"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes WebHook 入门 -- 入门案例: apiserver 接入 github </h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/kubernetes-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-apiserver-%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4%E7%94%A8%E6%88%B7/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/ApiServer%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/ApiServer%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/cover.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes 用户管理, ApiServer 新增集群用户</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/2024-cka-%E9%A2%98%E5%BA%93/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cka%20%26%20cks/cert.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cka%20%26%20cks/cert.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">2024 CKA 题库</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E4%BD%BF%E7%94%A8-kubeconfig-%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8kubeconfig%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/cover1.webp" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E4%BD%BF%E7%94%A8kubeconfig%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4/cover1.webp"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">使用 kubeconfig 管理集群</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 -  2024 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
