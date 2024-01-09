@@ -6,12 +6,28 @@
         <description>Recent content in Tags on Ai-feier&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Mon, 08 Jan 2024 15:54:02 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 09 Jan 2024 14:42:57 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>configmap</title>
+        <link>/tags/configmap/</link>
+        <pubDate>Tue, 09 Jan 2024 14:42:57 +0800</pubDate>
+        
+        <guid>/tags/configmap/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>k8s</title>
         <link>/tags/k8s/</link>
-        <pubDate>Mon, 08 Jan 2024 15:54:02 +0800</pubDate>
+        <pubDate>Tue, 09 Jan 2024 14:42:57 +0800</pubDate>
         
         <guid>/tags/k8s/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>volumes</title>
+        <link>/tags/volumes/</link>
+        <pubDate>Tue, 09 Jan 2024 14:42:57 +0800</pubDate>
+        
+        <guid>/tags/volumes/</guid>
         <description></description>
         </item>
         <item>
@@ -252,6 +268,14 @@
         <pubDate>Sun, 17 Dec 2023 15:16:34 +0800</pubDate>
         
         <guid>/tags/sed/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>awk</title>
+        <link>/tags/awk/</link>
+        <pubDate>Sun, 17 Dec 2023 15:16:07 +0800</pubDate>
+        
+        <guid>/tags/awk/</guid>
         <description></description>
         </item>
         <item>
