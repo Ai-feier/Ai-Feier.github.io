@@ -12,7 +12,7 @@
         <pubDate>Sat, 30 Dec 2023 20:10:27 +0800</pubDate>
         
         <guid>/p/%E6%89%A9%E5%B1%95-apiserver-%E8%BF%9E%E6%8E%A5%E8%AE%A4%E8%AF%81-ip-%E8%AF%81%E4%B9%A6%E6%9B%B4%E6%96%B0/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E6%89%A9%E5%B1%95%20apiserver%20%E8%BF%9E%E6%8E%A5%E8%AE%A4%E8%AF%81%20ip/cover.png" alt="Featured image of post 扩展 apiserver 连接认证 ip, 证书更新" /&gt;&lt;h2 id=&#34;问题场景&#34;&gt;问题场景:&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/2t5ys00st6.png" alt="Featured image of post 扩展 apiserver 连接认证 ip, 证书更新" /&gt;&lt;h2 id=&#34;问题场景&#34;&gt;问题场景:&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;k8s 1.28.1&lt;/p&gt;

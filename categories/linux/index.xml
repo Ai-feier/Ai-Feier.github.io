@@ -12,7 +12,7 @@
         <pubDate>Sun, 17 Dec 2023 15:17:00 +0800</pubDate>
         
         <guid>/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之grep/cover.png" alt="Featured image of post 文本处理三剑客之grep" /&gt;&lt;h2 id=&#34;grep&#34;&gt;grep&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/grep%20command%20example%20in%20Linux%20%281%29.png" alt="Featured image of post 文本处理三剑客之grep" /&gt;&lt;h2 id=&#34;grep&#34;&gt;grep&lt;/h2&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;&lt;em&gt;语法格式&lt;/em&gt;:&lt;/p&gt;
 &lt;ol&gt;
@@ -118,7 +118,7 @@
         <pubDate>Sun, 17 Dec 2023 15:16:34 +0800</pubDate>
         
         <guid>/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bsed/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之sed/cover.webp" alt="Featured image of post 文本处理三剑客之sed" /&gt;&lt;h2 id=&#34;sed-工作模式&#34;&gt;sed 工作模式&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/sed.webp" alt="Featured image of post 文本处理三剑客之sed" /&gt;&lt;h2 id=&#34;sed-工作模式&#34;&gt;sed 工作模式&lt;/h2&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;&lt;strong&gt;sed 是流编辑器, 对标准输出文件逐行处理&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;匹配 + 执行 : 默认会打印原始信息, 还会打印执行后的结果&lt;/p&gt;
@@ -696,7 +696,7 @@
         <pubDate>Sun, 17 Dec 2023 15:16:07 +0800</pubDate>
         
         <guid>/p/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bawk/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/文本处理三剑客之awk/cover.jpg" alt="Featured image of post 文本处理三剑客之awk" /&gt;&lt;h2 id=&#34;awk-工作模式&#34;&gt;awk 工作模式&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/awk-conditional-statements.jpg" alt="Featured image of post 文本处理三剑客之awk" /&gt;&lt;h2 id=&#34;awk-工作模式&#34;&gt;awk 工作模式&lt;/h2&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;与 sed 相同, 都是逐行处理&lt;/p&gt;
 &lt;h2 id=&#34;语法格式&#34;&gt;语法格式&lt;/h2&gt;
@@ -1855,7 +1855,7 @@
         <pubDate>Sun, 17 Dec 2023 15:13:03 +0800</pubDate>
         
         <guid>/p/find%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/find文件查找/cover.png" alt="Featured image of post Find文件查找" /&gt;&lt;h2 id=&#34;常用选项-找文件&#34;&gt;常用选项 (找文件)&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/hero.png" alt="Featured image of post Find文件查找" /&gt;&lt;h2 id=&#34;常用选项-找文件&#34;&gt;常用选项 (找文件)&lt;/h2&gt;
 &lt;!-- more --&gt; 
 &lt;h3 id=&#34;语法格式&#34;&gt;语法格式&lt;/h3&gt;
 &lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/find%e6%96%87%e4%bb%b6%e6%9f%a5%e6%89%be/image-20231210194845588.png&#34;

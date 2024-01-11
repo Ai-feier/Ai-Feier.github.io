@@ -12,7 +12,7 @@
         <pubDate>Sun, 24 Dec 2023 15:08:15 +0800</pubDate>
         
         <guid>/p/%E5%9F%BA%E4%BA%8E-containerd-%E9%83%A8%E7%BD%B2k8s-1.28.1-ubuntu-20.04/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/基于 containerd 部署k8s 1.28.1 (Ubuntu 20.04)/cover.png" alt="Featured image of post 基于 Containerd 部署k8s 1.28.1 (Ubuntu 20.04)" /&gt;&lt;h2 id=&#34;集群配置&#34;&gt;集群配置&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/Kubernetes-Scheduling.png" alt="Featured image of post 基于 Containerd 部署k8s 1.28.1 (Ubuntu 20.04)" /&gt;&lt;h2 id=&#34;集群配置&#34;&gt;集群配置&lt;/h2&gt;
 &lt;h3 id=&#34;配置清单&#34;&gt;配置清单&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;OS： ubuntu 20.04&lt;/li&gt;

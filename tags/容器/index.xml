@@ -12,7 +12,7 @@
         <pubDate>Mon, 18 Dec 2023 02:12:07 +0800</pubDate>
         
         <guid>/p/dockerfile/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Dockerfile/cover.png" alt="Featured image of post Dockerfile" /&gt;&lt;h2 id=&#34;dockerfile-目标易管理少漏洞镜像小层级少利用缓存&#34;&gt;Dockerfile 目标：易管理、少漏洞、镜像小、层级少、利用缓存。&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/270-docker_-build_image_thumbnail.png" alt="Featured image of post Dockerfile" /&gt;&lt;h2 id=&#34;dockerfile-目标易管理少漏洞镜像小层级少利用缓存&#34;&gt;Dockerfile 目标：易管理、少漏洞、镜像小、层级少、利用缓存。&lt;/h2&gt;
 &lt;h2 id=&#34;dockerfile-最佳实践&#34;&gt;Dockerfile 最佳实践&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -459,7 +459,7 @@ Dockerfile中只允许有一个ENTRYPOINT命令，多指定时会覆盖前面的
         <pubDate>Mon, 18 Dec 2023 02:11:39 +0800</pubDate>
         
         <guid>/p/docker%E7%BD%91%E7%BB%9C/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/docker网络/cover.png" alt="Featured image of post Docker网络" /&gt;&lt;h2 id=&#34;docker-网络模式&#34;&gt;docker 网络模式&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/203.docker-networking-1.png" alt="Featured image of post Docker网络" /&gt;&lt;h2 id=&#34;docker-网络模式&#34;&gt;docker 网络模式&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;

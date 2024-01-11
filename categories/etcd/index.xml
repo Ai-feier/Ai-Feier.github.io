@@ -12,7 +12,7 @@
         <pubDate>Wed, 20 Dec 2023 18:25:32 +0800</pubDate>
         
         <guid>/p/etcd%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/etcd高可用集群部署/cover.png" alt="Featured image of post Etcd高可用集群部署" /&gt;&lt;h2 id=&#34;主机规划&#34;&gt;主机规划&lt;/h2&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/etcd-v3-confusion.png" alt="Featured image of post Etcd高可用集群部署" /&gt;&lt;h2 id=&#34;主机规划&#34;&gt;主机规划&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;

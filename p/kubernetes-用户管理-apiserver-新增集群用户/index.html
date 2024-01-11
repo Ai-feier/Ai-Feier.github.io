@@ -10,10 +10,10 @@
 <meta property='og:description' content='Kubernetes 主要通过 API Server 对外提供服务，对于这样的系统来说，如果不加以安全限制，那么可能导致请求被滥用，甚至导致整个集群崩塌。'>
 <meta property='og:url' content='/p/kubernetes-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-apiserver-%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4%E7%94%A8%E6%88%B7/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kubernetes' /><meta property='article:tag' content='apiserver' /><meta property='article:tag' content='security' /><meta property='article:published_time' content='2024-01-03T17:22:24&#43;08:00'/><meta property='article:modified_time' content='2024-01-03T17:22:24&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/ApiServer%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/cover.png' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kubernetes' /><meta property='article:tag' content='apiserver' /><meta property='article:tag' content='security' /><meta property='article:published_time' content='2024-01-03T17:22:24&#43;08:00'/><meta property='article:modified_time' content='2024-01-03T17:22:24&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_RAHmolC--zbpMi7JiTH3Gg.png' />
 <meta name="twitter:title" content="Kubernetes 用户管理, ApiServer 新增集群用户">
 <meta name="twitter:description" content="Kubernetes 主要通过 API Server 对外提供服务，对于这样的系统来说，如果不加以安全限制，那么可能导致请求被滥用，甚至导致整个集群崩塌。"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/ApiServer%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/cover.png' />
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_RAHmolC--zbpMi7JiTH3Gg.png' />
     <link rel="shortcut icon" href="/favicon.png" />
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <meta name="referrer" content="no-referrer-when-downgrade">
@@ -25,7 +25,7 @@
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
+                localStorage.setItem(colorSchemeKey, "light");
             }
         })();
     </script><script>
@@ -272,7 +272,7 @@
         <div class="article-image">
             <a href="/p/kubernetes-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-apiserver-%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4%E7%94%A8%E6%88%B7/">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/ApiServer%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/cover.png" loading="lazy" alt="Featured image of post Kubernetes 用户管理, ApiServer 新增集群用户" />
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_RAHmolC--zbpMi7JiTH3Gg.png" loading="lazy" alt="Featured image of post Kubernetes 用户管理, ApiServer 新增集群用户" />
                 
             </a>
         </div>
@@ -774,7 +774,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/keepalived%2Bnginx%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8apiserver/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/keepalived%2Bnginx%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8apiserver/cover.png"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1c9798a03347452295e1b66af9606f57.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1c9798a03347452295e1b66af9606f57.png"/>
                 
             </div>
         
@@ -831,7 +831,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cka%20%26%20cks/cert.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cka%20%26%20cks/cert.png"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/cka%20%26%20cks/cert.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/cka%20%26%20cks/cert.png"/>
                 
             </div>
         
@@ -850,7 +850,7 @@
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E6%89%A9%E5%B1%95%20apiserver%20%E8%BF%9E%E6%8E%A5%E8%AE%A4%E8%AF%81%20ip/cover.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E6%89%A9%E5%B1%95%20apiserver%20%E8%BF%9E%E6%8E%A5%E8%AE%A4%E8%AF%81%20ip/cover.png"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/2t5ys00st6.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/2t5ys00st6.png"/>
                 
             </div>
         

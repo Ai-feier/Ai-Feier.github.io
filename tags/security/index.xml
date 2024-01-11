@@ -646,7 +646,7 @@
         <pubDate>Wed, 03 Jan 2024 17:22:24 +0800</pubDate>
         
         <guid>/p/kubernetes-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-apiserver-%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4%E7%94%A8%E6%88%B7/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/ApiServer%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/cover.png" alt="Featured image of post Kubernetes 用户管理, ApiServer 新增集群用户" /&gt;&lt;h3 id=&#34;生成-key&#34;&gt;生成 key&lt;/h3&gt;
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_RAHmolC--zbpMi7JiTH3Gg.png" alt="Featured image of post Kubernetes 用户管理, ApiServer 新增集群用户" /&gt;&lt;h3 id=&#34;生成-key&#34;&gt;生成 key&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
