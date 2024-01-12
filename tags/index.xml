@@ -6,20 +6,44 @@
         <description>Recent content in Tags on Ai-feier&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Tue, 09 Jan 2024 18:15:53 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>configmap</title>
-        <link>/tags/configmap/</link>
-        <pubDate>Tue, 09 Jan 2024 18:15:53 +0800</pubDate>
+        <lastBuildDate>Fri, 12 Jan 2024 21:11:27 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>docker</title>
+        <link>/tags/docker/</link>
+        <pubDate>Fri, 12 Jan 2024 21:11:27 +0800</pubDate>
         
-        <guid>/tags/configmap/</guid>
+        <guid>/tags/docker/</guid>
         <description></description>
         </item>
         <item>
         <title>k8s</title>
         <link>/tags/k8s/</link>
-        <pubDate>Tue, 09 Jan 2024 18:15:53 +0800</pubDate>
+        <pubDate>Fri, 12 Jan 2024 21:11:27 +0800</pubDate>
         
         <guid>/tags/k8s/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>kind</title>
+        <link>/tags/kind/</link>
+        <pubDate>Fri, 12 Jan 2024 21:11:27 +0800</pubDate>
+        
+        <guid>/tags/kind/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>高可用</title>
+        <link>/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</link>
+        <pubDate>Fri, 12 Jan 2024 21:11:27 +0800</pubDate>
+        
+        <guid>/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>configmap</title>
+        <link>/tags/configmap/</link>
+        <pubDate>Tue, 09 Jan 2024 18:15:53 +0800</pubDate>
+        
+        <guid>/tags/configmap/</guid>
         <description></description>
         </item>
         <item>
@@ -103,14 +127,6 @@
         <description></description>
         </item>
         <item>
-        <title>docker</title>
-        <link>/tags/docker/</link>
-        <pubDate>Fri, 05 Jan 2024 16:48:49 +0800</pubDate>
-        
-        <guid>/tags/docker/</guid>
-        <description></description>
-        </item>
-        <item>
         <title>apiserver</title>
         <link>/tags/apiserver/</link>
         <pubDate>Wed, 03 Jan 2024 17:22:24 +0800</pubDate>
@@ -180,14 +196,6 @@
         <pubDate>Sun, 24 Dec 2023 20:48:26 +0800</pubDate>
         
         <guid>/tags/nginx/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>高可用</title>
-        <link>/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</link>
-        <pubDate>Sun, 24 Dec 2023 20:48:26 +0800</pubDate>
-        
-        <guid>/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</guid>
         <description></description>
         </item>
         <item>
