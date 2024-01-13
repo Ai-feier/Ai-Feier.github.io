@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Kind（Kubernetes in Docker） 是一个 Kubernetes 孵化项目，Kind 是一套开箱即用的 Kubernetes 环境搭建方案。顾名思义，就是将 Kubernetes 所需要的所有组件，全部部署在一个 Docker 容器中，可以很方便的搭建 Kubernetes 集群。'>
-<meta name="keywords" content="kind, service, 高可用, docker, k8s"><title>全平台通用使用 kind 快速搭建 k8s 开发环境</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='【摘要】 完成镜像制作之后，需要通过渠道将镜像分发出去 公有仓库：除了Docker官方的DockerHub之外，国内也有很多的公有镜像仓库可以用于镜像分发：docker中国官方库、阿里云镜像仓库等等。'>
+<meta name="keywords" content="docker, registry"><title>使用 docker 搭建搭建私有仓库 ~ Registry</title>
 
-<link rel='canonical' href='/p/%E5%85%A8%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E4%BD%BF%E7%94%A8-kind-%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-k8s-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/'>
+<link rel='canonical' href='/p/%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93-~-registry/'>
 
-<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='全平台通用使用 kind 快速搭建 k8s 开发环境'>
-<meta property='og:description' content='Kind（Kubernetes in Docker） 是一个 Kubernetes 孵化项目，Kind 是一套开箱即用的 Kubernetes 环境搭建方案。顾名思义，就是将 Kubernetes 所需要的所有组件，全部部署在一个 Docker 容器中，可以很方便的搭建 Kubernetes 集群。'>
-<meta property='og:url' content='/p/%E5%85%A8%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E4%BD%BF%E7%94%A8-kind-%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-k8s-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/'>
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='使用 docker 搭建搭建私有仓库 ~ Registry'>
+<meta property='og:description' content='【摘要】 完成镜像制作之后，需要通过渠道将镜像分发出去 公有仓库：除了Docker官方的DockerHub之外，国内也有很多的公有镜像仓库可以用于镜像分发：docker中国官方库、阿里云镜像仓库等等。'>
+<meta property='og:url' content='/p/%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93-~-registry/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kind' /><meta property='article:tag' content='高可用' /><meta property='article:tag' content='docker' /><meta property='article:tag' content='k8s' /><meta property='article:published_time' content='2024-01-12T21:11:27&#43;08:00'/><meta property='article:modified_time' content='2024-01-12T21:11:27&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/blogimage-kubernetes.png' />
-<meta name="twitter:title" content="全平台通用使用 kind 快速搭建 k8s 开发环境">
-<meta name="twitter:description" content="Kind（Kubernetes in Docker） 是一个 Kubernetes 孵化项目，Kind 是一套开箱即用的 Kubernetes 环境搭建方案。顾名思义，就是将 Kubernetes 所需要的所有组件，全部部署在一个 Docker 容器中，可以很方便的搭建 Kubernetes 集群。"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/blogimage-kubernetes.png' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='docker' /><meta property='article:tag' content='registry' /><meta property='article:published_time' content='2024-01-13T17:48:12&#43;08:00'/><meta property='article:modified_time' content='2024-01-13T17:48:12&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/Private%20Docker%20Registry.jpg' />
+<meta name="twitter:title" content="使用 docker 搭建搭建私有仓库 ~ Registry">
+<meta name="twitter:description" content="【摘要】 完成镜像制作之后，需要通过渠道将镜像分发出去 公有仓库：除了Docker官方的DockerHub之外，国内也有很多的公有镜像仓库可以用于镜像分发：docker中国官方库、阿里云镜像仓库等等。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/Private%20Docker%20Registry.jpg' />
     <link rel="shortcut icon" href="/favicon.png" />
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <meta name="referrer" content="no-referrer-when-downgrade">
@@ -247,7 +247,7 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#什么是-kind">什么是 Kind</a></li>
+    <li><a href="#前言">前言</a></li>
     <li><a href="#安装-docker">安装 docker</a>
       <ol>
         <li><a href="#让apt可以支持https">让apt可以支持HTTPS</a></li>
@@ -260,19 +260,13 @@
         <li><a href="#检查-docker-运行状态">检查 docker 运行状态</a></li>
       </ol>
     </li>
-    <li><a href="#安装-kubectl">安装 kubectl</a>
+    <li><a href="#安装-registry2">安装 registry:2</a></li>
+    <li><a href="#启动-registry">启动 registry</a></li>
+    <li><a href="#推送镜像">推送镜像</a>
       <ol>
-        <li><a href="#apt-安装">apt 安装</a></li>
-        <li><a href="#二进制安装">二进制安装</a></li>
-        <li><a href="#配置命令行自动补全可选">配置命令行自动补全(可选)</a></li>
-      </ol>
-    </li>
-    <li><a href="#安装-kind">安装 Kind</a></li>
-    <li><a href="#使用-kind-创建集群">使用 kind 创建集群</a>
-      <ol>
-        <li><a href="#搭建一主三从集群-1c3w">搭建一主三从集群 1c3w</a></li>
-        <li><a href="#创建-service">创建 service</a></li>
-        <li><a href="#验证服务">验证服务</a></li>
+        <li><a href="#修改-docker-config">修改 docker config</a></li>
+        <li><a href="#推送-nginx-到-registry">推送 nginx 到 registry</a></li>
+        <li><a href="#查看-registry-的所有镜像">查看 registry 的所有镜像</a></li>
       </ol>
     </li>
   </ol>
@@ -289,9 +283,9 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/%E5%85%A8%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E4%BD%BF%E7%94%A8-kind-%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-k8s-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+            <a href="/p/%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93-~-registry/">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/blogimage-kubernetes.png" loading="lazy" alt="Featured image of post 全平台通用使用 kind 快速搭建 k8s 开发环境" />
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/Private%20Docker%20Registry.jpg" loading="lazy" alt="Featured image of post 使用 docker 搭建搭建私有仓库 ~ Registry" />
                 
             </a>
         </div>
@@ -305,21 +299,17 @@
                 docker
             </a>
         
-            <a href="/categories/kubernetes/" >
-                Kubernetes
-            </a>
-        
     </header>
     
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/%E5%85%A8%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E4%BD%BF%E7%94%A8-kind-%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-k8s-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">全平台通用使用 kind 快速搭建 k8s 开发环境</a>
+            <a href="/p/%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93-~-registry/">使用 docker 搭建搭建私有仓库 ~ Registry</a>
         </h2>
     
         
         <h3 class="article-subtitle">
-            Kind（Kubernetes in Docker） 是一个 Kubernetes 孵化项目，Kind 是一套开箱即用的 Kubernetes 环境搭建方案。顾名思义，就是将 Kubernetes 所需要的所有组件，全部部署在一个 Docker 容器中，可以很方便的搭建 Kubernetes 集群。
+            【摘要】 完成镜像制作之后，需要通过渠道将镜像分发出去 公有仓库：除了Docker官方的DockerHub之外，国内也有很多的公有镜像仓库可以用于镜像分发：docker中国官方库、阿里云镜像仓库等等。
         </h3>
         
     </div>
@@ -340,7 +330,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Jan 12, 2024</time>
+                <time class="article-time--published">Jan 13, 2024</time>
             </div>
         
 
@@ -355,7 +345,7 @@
 
 
                 <time class="article-time--reading">
-                    5 minute read
+                    3 minute read
                 </time>
             </div>
         
@@ -375,28 +365,13 @@
 
     
     
-    <h2 id="什么是-kind">什么是 Kind</h2>
-<p><code>Kind</code>（Kubernetes in Docker） 是一个 <code>Kubernetes</code> 孵化项目，<code>Kind</code> 是一套开箱即用的 <code>Kubernetes</code> 环境搭建方案。顾名思义，就是将 <code>Kubernetes</code> 所需要的所有组件，全部部署在一个 <code>Docker</code> 容器中，可以很方便的搭建 <code>Kubernetes</code> 集群。</p>
-<p><code>Kind</code> 已经广泛的应用于 <code>Kubernetes</code> 上游及相关项目的 <code>CI</code> 环境中，官方文档中也把 <code>Kind</code> 作为一种本地集群搭建的工具推荐给大家。</p>
-<blockquote>
-<p>项目地址：https://github.com/kubernetes-sigs/kind</p>
-</blockquote>
-<p><strong>Kind 可以做什么？</strong></p>
-<ol>
-<li>快速创建一个或多个 <code>Kubernetes</code> 集群</li>
-<li>支持部署高可用的 <code>Kubernetes</code> 集群</li>
-<li>支持从源码构建并部署一个 <code>Kubernetes</code> 集群</li>
-<li>可以快速低成本体验一个最新的 <code>Kubernetes</code> 集群，并支持 <code>Kubernetes</code> 的绝大部分功能</li>
-<li>支持本地离线运行一个多节点集群</li>
-</ol>
-<p><strong>Kind 有哪些优势？</strong></p>
-<ol>
-<li>最小的安装依赖，仅需要安装 <code>Docker</code> 即可</li>
-<li>使用方法简单，只需 <code>Kind Cli</code> 工具即可快速创建集群</li>
-<li>使用容器来模似 <code>Kubernetes</code> 节点</li>
-<li>内部使用 <code>Kubeadm</code> 的官方主流部署工具</li>
-<li>通过了 <code>CNCF</code> 官方的 <code>K8S Conformance</code> 测试</li>
-</ol>
+    <h2 id="前言">前言</h2>
+<p>完成镜像制作之后，需要通过渠道将镜像分发出去</p>
+<ul>
+<li>公有仓库：除了Docker官方的DockerHub之外，国内也有很多的公有镜像仓库可以用于镜像分发：docker中国官方库、阿里云镜像仓库等等。</li>
+<li>私有仓库：如果制作的镜像只是在企业内为各个项目组服务，就不可能上传到公有仓库，而是需要企业内部搭建私有仓库。</li>
+</ul>
+<p>目前广泛应用的Docker 官方提供的私有仓库是Docker Registry V2，下面我们就来学习一下如何搭建及使用它。</p>
 <h2 id="安装-docker">安装 docker</h2>
 <h3 id="让apt可以支持https">让apt可以支持HTTPS</h3>
 <div class="highlight"><div class="chroma">
@@ -547,50 +522,33 @@
 </span></span><span class="line"><span class="cl">lines 1-21/21 <span class="o">(</span>END<span class="o">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="安装-kubectl">安装 kubectl</h2>
-<h3 id="apt-安装">apt 安装</h3>
+</div><h2 id="安装-registry2">安装 registry:2</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 安装依赖</span>
-</span></span><span class="line"><span class="cl">apt install apt-transport-https ca-certificates -y
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 编辑镜像源文件，文件末尾加入阿里云k8s镜像源配置</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;deb https://mirrors.aliyun.com/kubernetes/apt kubernetes-xenial main&#39;</span> &gt;&gt; /etc/apt/sources.list
-</span></span><span class="line"><span class="cl"><span class="c1">#更新证书</span>
-</span></span><span class="line"><span class="cl">curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg <span class="p">|</span> sudo apt-key add
-</span></span><span class="line"><span class="cl"><span class="c1">#更新源</span>
-</span></span><span class="line"><span class="cl">apt update
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">apt-get install -y kubectl
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ docker pull registry:2
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="二进制安装">二进制安装</h3>
+</div><h2 id="启动-registry">启动 registry</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">curl -LO <span class="s2">&#34;https://dl.k8s.io/release/</span><span class="k">$(</span>curl -L -s https://dl.k8s.io/release/stable.txt<span class="k">)</span><span class="s2">/bin/linux/amd64/kubectl&#34;</span>
-</span></span><span class="line"><span class="cl">chmod +x kubectl
-</span></span><span class="line"><span class="cl">mv kubectl /usr/bin/
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ docker run -d -v /opt/registry:/var/lib/registry --restart always -p 5000:5000 --name registry registry:2
+</span></span><span class="line"><span class="cl"><span class="c1"># -v  让镜像存在本机, 而非容器</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -p  暴露端口</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># --restart  运行失败, 总是尝试重启容器</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="配置命令行自动补全可选">配置命令行自动补全(可选)</h3>
+</div><h2 id="推送镜像">推送镜像</h2>
+<h3 id="修改-docker-config">修改 docker config</h3>
+<p>由于 docker push 只接受 https 协议, 我们需要修改 docker 配置文件, 使其非安全访问</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -603,245 +561,72 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">apt install bash-completion -y
-</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt; EOF &gt;&gt; ~/.profile
-</span></span></span><span class="line"><span class="cl"><span class="s">alias k=&#39;kubectl&#39;
-</span></span></span><span class="line"><span class="cl"><span class="s">source &lt;(kubectl completion bash)
-</span></span></span><span class="line"><span class="cl"><span class="s">complete -F __start_kubectl k
-</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nb">source</span> ~/.profile
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">sudo</span> <span class="err">tee</span> <span class="err">/etc/docker/daemon.json</span> <span class="err">&lt;&lt;-&#39;EOF&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nt">&#34;registry-mirrors&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;https://nol6uuul.mirror.aliyuncs.com&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">	<span class="nt">&#34;insecure-registries&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;11.0.1.157:5000&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="err">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="err">sudo</span> <span class="err">systemctl</span> <span class="err">daemon-reload</span>
+</span></span><span class="line"><span class="cl"><span class="err">sudo</span> <span class="err">systemctl</span> <span class="err">restart</span> <span class="err">docker</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="安装-kind">安装 Kind</h2>
-<p>首先进到 <a class="link" href="https://kind.sigs.k8s.io/docs/user/quick-start/"  target="_blank" rel="noopener"
-    >官网</a>, 获取你操作系统的 kind 版本</p>
-<p>本教程提供 Linux 下的二进制安装</p>
-<p>来自官网的最新安装脚本:</p>
+</div><h3 id="推送-nginx-到-registry">推送 nginx 到 registry</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ docker pull nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 修改 tag为: registry地址/username/projectname:version</span>
+</span></span><span class="line"><span class="cl">$ docker tag nginx 11.0.1.157:5000/mkt/nginx:v1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 推送镜像</span>
+</span></span><span class="line"><span class="cl">$ docker push 11.0.1.157:5000/mkt/nginx:v1
+</span></span><span class="line"><span class="cl">d874fd2bc83b: Pushed
+</span></span><span class="line"><span class="cl">32ce5f6a5106: Pushed
+</span></span><span class="line"><span class="cl">f1db227348d0: Pushed
+</span></span><span class="line"><span class="cl">b8d6e692a25e: Pushed
+</span></span><span class="line"><span class="cl">e379e8aedd4d: Pushed
+</span></span><span class="line"><span class="cl">2edcec3590a4: Pushed
+</span></span><span class="line"><span class="cl">v1: digest: sha256:ee89b00528ff4f02f2405e4ee221743ebc3f8e8dd0bfd5c4c20a2fa2aaa7ede3 size: <span class="m">1570</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="查看-registry-的所有镜像">查看 registry 的所有镜像</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># For AMD64 / x86_64</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="k">$(</span>uname -m<span class="k">)</span> <span class="o">=</span> x86_64 <span class="o">]</span> <span class="o">&amp;&amp;</span> curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-</span></span><span class="line"><span class="cl"><span class="c1"># For ARM64</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="k">$(</span>uname -m<span class="k">)</span> <span class="o">=</span> aarch64 <span class="o">]</span> <span class="o">&amp;&amp;</span> curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
-</span></span><span class="line"><span class="cl">chmod +x ./kind
-</span></span><span class="line"><span class="cl">sudo mv ./kind /usr/local/bin/kind
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ curl http://11.0.1.157:5000/v2/_catalog
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;repositories&#34;</span>:<span class="o">[</span><span class="s2">&#34;mkt/nginx&#34;</span><span class="o">]}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="使用-kind-创建集群">使用 kind 创建集群</h2>
-<h3 id="搭建一主三从集群-1c3w">搭建一主三从集群 1c3w</h3>
-<blockquote>
-<p>1 control plane and 3 worker</p>
-</blockquote>
-<p>cluster.yaml:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Cluster</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">kind.x-k8s.io/v1alpha4</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">nodes</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l">control-plane</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">extraPortMappings</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">31000</span><span class="w">  </span><span class="c"># 将主机 31000 端口映射到容器的 31000 端口</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">hostPort</span><span class="p">:</span><span class="w"> </span><span class="m">31000</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">listenAddress</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;0.0.0.0&#34;</span><span class="w"> </span><span class="c"># Optional, defaults to &#34;0.0.0.0&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w"> </span><span class="c"># Optional, defaults to tcp</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l">worker</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l">worker</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l">worker</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
 </div>
-</div><blockquote>
-<p>**注意: ** 因为 kind 搭建的集群也是容器, 我们要访问容器的服务, 我们需要把集群的 Service 暴露为 NodePort 类型进行访问, (NodePort 范围30000~32767)</p>
-</blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kind create cluster --config cluster.yaml --name 1c3w
-</span></span><span class="line"><span class="cl">Creating cluster <span class="s2">&#34;1c3w&#34;</span> ...
-</span></span><span class="line"><span class="cl"> ✓ Ensuring node image <span class="o">(</span>kindest/node:v1.27.3<span class="o">)</span> 🖼
-</span></span><span class="line"><span class="cl"> ✓ Preparing nodes 📦 📦 📦 📦
-</span></span><span class="line"><span class="cl"> ✓ Writing configuration 📜
-</span></span><span class="line"><span class="cl"> ✓ Starting control-plane 🕹️
-</span></span><span class="line"><span class="cl"> ✓ Installing CNI 🔌
-</span></span><span class="line"><span class="cl"> ✓ Installing StorageClass 💾
-</span></span><span class="line"><span class="cl"> ✓ Joining worker nodes 🚜
-</span></span><span class="line"><span class="cl">Set kubectl context to <span class="s2">&#34;kind-1c3w&#34;</span>
-</span></span><span class="line"><span class="cl">You can now use your cluster with:
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">kubectl cluster-info --context kind-1c3w
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Thanks <span class="k">for</span> using kind! 😊
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="创建-service">创建 service</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 更换 context</span>
-</span></span><span class="line"><span class="cl">$ kubectl cluster-info --context kind-1c3w
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 创建一个 nginx 的 deploy 测试服务</span>
-</span></span><span class="line"><span class="cl">$ k create deploy nginx --image<span class="o">=</span>nginx
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 冗余部署实现高可用</span>
-</span></span><span class="line"><span class="cl">$ k scale deployment nginx --replicas <span class="m">3</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 暴露服务</span>
-</span></span><span class="line"><span class="cl">$ k expose deployment nginx --name nginx --port<span class="o">=</span><span class="m">80</span> --target-port<span class="o">=</span><span class="m">80</span> --type<span class="o">=</span>NodePort
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 修改 NodePort 端口为 31000 让主机能够访问</span>
-</span></span><span class="line"><span class="cl">$ k edit deployment nginx
-</span></span><span class="line"><span class="cl">......
-</span></span><span class="line"><span class="cl">  ports:
-</span></span><span class="line"><span class="cl">  - nodePort: <span class="m">31000</span>  <span class="c1"># 修改</span>
-</span></span><span class="line"><span class="cl">    port: <span class="m">80</span>
-</span></span><span class="line"><span class="cl">    protocol: TCP
-</span></span><span class="line"><span class="cl">    targetPort: <span class="m">80</span>
-</span></span><span class="line"><span class="cl">....
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ k get svc
-</span></span><span class="line"><span class="cl">NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>        AGE
-</span></span><span class="line"><span class="cl">kubernetes   ClusterIP   10.96.0.1    &lt;none&gt;        443/TCP        6m5s
-</span></span><span class="line"><span class="cl">nginx        NodePort    10.96.91.4   &lt;none&gt;        80:31000/TCP   3m7s
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="验证服务">验证服务</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ curl localhost:31000
-</span></span><span class="line"><span class="cl">&lt;!DOCTYPE html&gt;
-</span></span><span class="line"><span class="cl">&lt;html&gt;
-</span></span><span class="line"><span class="cl">&lt;head&gt;
-</span></span><span class="line"><span class="cl">&lt;title&gt;Welcome to nginx!&lt;/title&gt;
-</span></span><span class="line"><span class="cl">&lt;style&gt;
-</span></span><span class="line"><span class="cl">html <span class="o">{</span> color-scheme: light dark<span class="p">;</span> <span class="o">}</span>
-</span></span><span class="line"><span class="cl">body <span class="o">{</span> width: 35em<span class="p">;</span> margin: <span class="m">0</span> auto<span class="p">;</span>
-</span></span><span class="line"><span class="cl">font-family: Tahoma, Verdana, Arial, sans-serif<span class="p">;</span> <span class="o">}</span>
-</span></span><span class="line"><span class="cl">&lt;/style&gt;
-</span></span><span class="line"><span class="cl">&lt;/head&gt;
-</span></span><span class="line"><span class="cl">&lt;body&gt;
-</span></span><span class="line"><span class="cl">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
-</span></span><span class="line"><span class="cl">&lt;p&gt;If you see this page, the nginx web server is successfully installed and
-</span></span><span class="line"><span class="cl">working. Further configuration is required.&lt;/p&gt;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">&lt;p&gt;For online documentation and support please refer to
-</span></span><span class="line"><span class="cl">&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&#34;http://nginx.org/&#34;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
-</span></span><span class="line"><span class="cl">Commercial support is available at
-</span></span><span class="line"><span class="cl">&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&#34;http://nginx.com/&#34;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">&lt;p&gt;&lt;em&gt;Thank you <span class="k">for</span> using nginx.&lt;/em&gt;&lt;/p&gt;
-</span></span><span class="line"><span class="cl">&lt;/body&gt;
-</span></span><span class="line"><span class="cl">&lt;/html&gt;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
-<p>也可在浏览器输入&lt;虚拟机 ip&gt;:31000</p>
-</blockquote>
-
 </section>
 
     <footer class="article-footer">
     
     <section class="article-tags">
         
-            <a href="/tags/kind/">kind</a>
-        
-            <a href="/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/">高可用</a>
-        
             <a href="/tags/docker/">docker</a>
         
-            <a href="/tags/k8s/">k8s</a>
+            <a href="/tags/registry/">registry</a>
         
     </section>
 
@@ -875,18 +660,18 @@
             
                 
 <article class="has-image">
-    <a href="/p/%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93-~-registry/">
+    <a href="/p/%E5%85%A8%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E4%BD%BF%E7%94%A8-kind-%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-k8s-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
         
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/Private%20Docker%20Registry.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/Private%20Docker%20Registry.jpg"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/blogimage-kubernetes.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/blogimage-kubernetes.png"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">使用 docker 搭建搭建私有仓库 ~ Registry</h2>
+            <h2 class="article-title">全平台通用使用 kind 快速搭建 k8s 开发环境</h2>
         </div>
     </a>
 </article>
@@ -894,18 +679,18 @@
             
                 
 <article class="has-image">
-    <a href="/p/%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E6%A1%88%E4%BE%8B%E4%BD%BF%E7%94%A8-configmap-%E6%9D%A5%E9%85%8D%E7%BD%AE-redis/">
+    <a href="/p/docker-ce-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9B%BD%E5%86%85%E6%BA%90%E9%85%8D%E7%BD%AE-ubuntu-20.04/">
         
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/redis/1_cKRFZsFXbyrOyKNB5MLn9A.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/redis/1_cKRFZsFXbyrOyKNB5MLn9A.png"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/0_85-DDF3zAO5nAsNh.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/0_85-DDF3zAO5nAsNh.jpg"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">真实世界的案例：使用 ConfigMap 来配置 Redis</h2>
+            <h2 class="article-title">docker-ce 安装与国内源配置 | Ubuntu 20.04 </h2>
         </div>
     </a>
 </article>
@@ -913,18 +698,18 @@
             
                 
 <article class="has-image">
-    <a href="/p/k8s-secret-%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-%E5%85%A8%E9%9D%A2%E8%A6%86%E7%9B%96-secret-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-%E5%85%A8%E5%AE%B6%E6%A1%B6/">
+    <a href="/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/">
         
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/d7e980452cf8c7f8195c3de1f6a36cb7.svg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/d7e980452cf8c7f8195c3de1f6a36cb7.svg"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/15839387687383.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/15839387687383.jpg"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">K8S Secret 一文详解, 全面覆盖 Secret 使用场景, 全家桶</h2>
+            <h2 class="article-title">Dockerfile: 制作精简镜像</h2>
         </div>
     </a>
 </article>
@@ -932,18 +717,18 @@
             
                 
 <article class="has-image">
-    <a href="/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/">
+    <a href="/p/dockerfile/">
         
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/270-docker_-build_image_thumbnail.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/270-docker_-build_image_thumbnail.png"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">k8s configmap 详解, 从理解 k8s volumes 挂载方式, 带你解决挂载 configmap 的种种疑难杂症, 以及 k8s 中如何创建 configmap</h2>
+            <h2 class="article-title">Dockerfile</h2>
         </div>
     </a>
 </article>
@@ -951,18 +736,18 @@
             
                 
 <article class="has-image">
-    <a href="/p/kubernetes-webhook-%E5%85%A5%E9%97%A8--%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B-apiserver-%E6%8E%A5%E5%85%A5-github/">
+    <a href="/p/docker%E7%BD%91%E7%BB%9C/">
         
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/overview-of-webhook.avif" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/overview-of-webhook.avif"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/203.docker-networking-1.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/203.docker-networking-1.png"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">Kubernetes WebHook 入门 -- 入门案例: apiserver 接入 github </h2>
+            <h2 class="article-title">Docker网络</h2>
         </div>
     </a>
 </article>
