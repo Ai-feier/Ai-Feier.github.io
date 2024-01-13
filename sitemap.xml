@@ -3,10 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>/</loc>
-    <lastmod>2024-01-13T17:48:12+08:00</lastmod>
+    <lastmod>2024-01-13T19:54:38+08:00</lastmod>
   </url><url>
     <loc>/categories/</loc>
-    <lastmod>2024-01-13T17:48:12+08:00</lastmod>
+    <lastmod>2024-01-13T19:54:38+08:00</lastmod>
+  </url><url>
+    <loc>/categories/linux%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2024-01-13T19:54:38+08:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2024-01-13T19:54:38+08:00</lastmod>
+  </url><url>
+    <loc>/tags/redis/</loc>
+    <lastmod>2024-01-13T19:54:38+08:00</lastmod>
+  </url><url>
+    <loc>/p/redis-%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8C%85%E7%AE%A1%E7%90%86%E5%AE%89%E8%A3%85-%E5%85%A8%E5%8F%91%E8%A1%8C%E7%89%88-linux-%E9%80%9A%E7%94%A8/</loc>
+    <lastmod>2024-01-13T19:54:38+08:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2024-01-13T19:54:38+08:00</lastmod>
+  </url><url>
+    <loc>/tags/ubuntu/</loc>
+    <lastmod>2024-01-13T19:54:38+08:00</lastmod>
   </url><url>
     <loc>/tags/docker/</loc>
     <lastmod>2024-01-13T17:48:12+08:00</lastmod>
@@ -14,13 +32,7 @@
     <loc>/categories/docker/</loc>
     <lastmod>2024-01-13T17:48:12+08:00</lastmod>
   </url><url>
-    <loc>/post/</loc>
-    <lastmod>2024-01-13T17:48:12+08:00</lastmod>
-  </url><url>
     <loc>/tags/registry/</loc>
-    <lastmod>2024-01-13T17:48:12+08:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2024-01-13T17:48:12+08:00</lastmod>
   </url><url>
     <loc>/p/%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93-~-registry/</loc>
@@ -45,9 +57,6 @@
     <lastmod>2024-01-09T18:15:53+08:00</lastmod>
   </url><url>
     <loc>/tags/kubernetes/</loc>
-    <lastmod>2024-01-09T18:15:53+08:00</lastmod>
-  </url><url>
-    <loc>/tags/redis/</loc>
     <lastmod>2024-01-09T18:15:53+08:00</lastmod>
   </url><url>
     <loc>/p/%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E6%A1%88%E4%BE%8B%E4%BD%BF%E7%94%A8-configmap-%E6%9D%A5%E9%85%8D%E7%BD%AE-redis/</loc>
