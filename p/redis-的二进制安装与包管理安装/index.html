@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Redis（全称为Remote Dictionary Server）是一个开源的高性能键值对存储系统，具有快速、灵活和可扩展的特性。它是一个基于内存的数据结构存储系统，可以用作数据库、缓存和消息代理。'>
+<meta name="keywords" content="redis, redis安装, 编译, 二进制, ubuntu"><title>Redis 的二进制安装与包管理安装</title>
+
+<link rel='canonical' href='/p/redis-%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8C%85%E7%AE%A1%E7%90%86%E5%AE%89%E8%A3%85/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Redis 的二进制安装与包管理安装'>
+<meta property='og:description' content='Redis（全称为Remote Dictionary Server）是一个开源的高性能键值对存储系统，具有快速、灵活和可扩展的特性。它是一个基于内存的数据结构存储系统，可以用作数据库、缓存和消息代理。'>
+<meta property='og:url' content='/p/redis-%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8C%85%E7%AE%A1%E7%90%86%E5%AE%89%E8%A3%85/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ubuntu' /><meta property='article:tag' content='redis' /><meta property='article:published_time' content='2024-01-13T19:54:38&#43;08:00'/><meta property='article:modified_time' content='2024-01-13T19:54:38&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/redis/Blog-How-to-monitor-Redis-with-Prometheus.jpg' />
+<meta name="twitter:title" content="Redis 的二进制安装与包管理安装">
+<meta name="twitter:description" content="Redis（全称为Remote Dictionary Server）是一个开源的高性能键值对存储系统，具有快速、灵活和可扩展的特性。它是一个基于内存的数据结构存储系统，可以用作数据库、缓存和消息代理。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/redis/Blog-How-to-monitor-Redis-with-Prometheus.jpg' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "light");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#redis-简介">Redis 简介</a></li>
+    <li><a href="#二进制编译安装">二进制编译安装</a>
+      <ol>
+        <li><a href="#获取源码包">获取源码包</a></li>
+        <li><a href="#编译安装">编译安装</a></li>
+        <li><a href="#移动配置文件到安装目录下">移动配置文件到安装目录下</a></li>
+        <li><a href="#配置-redis-为后台启动">配置 redis 为后台启动</a></li>
+        <li><a href="#将-redis-加入到开机启动">将 redis 加入到开机启动</a></li>
+        <li><a href="#设置-redis-密码-可选">设置 redis 密码 (可选)</a></li>
+        <li><a href="#修改-bind">修改 bind</a></li>
+        <li><a href="#启动-redis">启动 redis</a></li>
+      </ol>
+    </li>
+    <li><a href="#apt-安装">apt 安装</a>
+      <ol>
+        <li><a href="#更换阿里源可选">更换阿里源(可选)</a></li>
+        <li><a href="#安装-redis">安装 redis</a></li>
+        <li><a href="#修改配置文件">修改配置文件</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/redis-%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8C%85%E7%AE%A1%E7%90%86%E5%AE%89%E8%A3%85/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/redis/Blog-How-to-monitor-Redis-with-Prometheus.jpg" loading="lazy" alt="Featured image of post Redis 的二进制安装与包管理安装" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/" >
+                linux应用部署
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/redis-%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8C%85%E7%AE%A1%E7%90%86%E5%AE%89%E8%A3%85/">Redis 的二进制安装与包管理安装</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Redis（全称为Remote Dictionary Server）是一个开源的高性能键值对存储系统，具有快速、灵活和可扩展的特性。它是一个基于内存的数据结构存储系统，可以用作数据库、缓存和消息代理。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 13, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <h2 id="redis-简介">Redis 简介</h2>
+<blockquote>
+<p>Redis（全称为Remote Dictionary Server）是一个开源的高性能键值对存储系统，具有快速、灵活和可扩展的特性。它是一个基于内存的数据结构存储系统，可以用作数据库、缓存和消息代理。</p>
+</blockquote>
+<h2 id="二进制编译安装">二进制编译安装</h2>
+<ul>
+<li>到 <a class="link" href="https://download.redis.io/releases/"  target="_blank" rel="noopener"
+    >官网</a> 获取二进制包</li>
+</ul>
+<h3 id="获取源码包">获取源码包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 安装依赖</span>
+</span></span><span class="line"><span class="cl">apt install -y make gcc wget
+</span></span><span class="line"><span class="cl"><span class="nv">VERSION</span><span class="o">=</span>7.0.9
+</span></span><span class="line"><span class="cl">wget https://download.redis.io/releases/redis-<span class="nv">$VERSION</span>.tar.gz 
+</span></span><span class="line"><span class="cl">tar zxvf redis-<span class="nv">$VERSION</span>.tar.gz
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="编译安装">编译安装</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">cd</span> redis-<span class="nv">$VERSION</span>
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> src
+</span></span><span class="line"><span class="cl">make install <span class="nv">PREFIX</span><span class="o">=</span>/usr/local/redis
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="移动配置文件到安装目录下">移动配置文件到安装目录下</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">cd</span> ../
+</span></span><span class="line"><span class="cl">mkdir /usr/local/redis/etc
+</span></span><span class="line"><span class="cl">mv redis.conf /usr/local/redis/etc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="配置-redis-为后台启动">配置 redis 为后台启动</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 将daemonize no 改成daemonize yes</span>
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/daemonize no/daemonize yes/&#39;</span> /usr/local/redis/etc/redis.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="将-redis-加入到开机启动">将 redis 加入到开机启动</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 在里面添加内容：/usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf (意思就是开机调用这段开启redis的命令)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;/usr/local/redis/bin/redis-server /usr/local/redis/etc/redis.conf&#34;</span> &gt;&gt; /etc/rc.local
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="设置-redis-密码-可选">设置 redis 密码 (可选)</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">vim /usr/local/redis/etc/redis.conf
+</span></span><span class="line"><span class="cl">修改 requirepass
+</span></span><span class="line"><span class="cl">格式如下:
+</span></span><span class="line"><span class="cl"><span class="c1"># command, these will cause requirepass to be ignored.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">requirepass <span class="m">123456</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># New users are initialized with restrictive permissions by default, via the</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 方式二</span>
+</span></span><span class="line"><span class="cl">a.运行命令：redis-cli
+</span></span><span class="line"><span class="cl">b.查看现有的 redis 密码<span class="o">(</span>可选操作，可以没有<span class="o">)</span>
+</span></span><span class="line"><span class="cl">　　运行命令：config get requirepass 如果没有设置过密码的话运行结果会如下图所示
+</span></span><span class="line"><span class="cl">c.设置 redis 密码
+</span></span><span class="line"><span class="cl">    运行命令：config <span class="nb">set</span> requirepass ****<span class="o">(</span>****为你要设置的密码<span class="o">)</span>，设置成功的话会返回‘OK’字样
+</span></span><span class="line"><span class="cl">d.测试连接
+</span></span><span class="line"><span class="cl">　　重启 redis 服务
+</span></span><span class="line"><span class="cl">　　//（redis-cli -h 127.0.0.1 -p <span class="m">6379</span> -a ****（****为你设置的密码））
+</span></span><span class="line"><span class="cl">　　输入 redis-cli 进入命令模式，使用 auth <span class="s1">&#39;*****&#39;</span> （****为你设置的密码）登陆
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="修改-bind">修改 bind</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">vim /usr/local/redis/etc/redis.conf
+</span></span><span class="line"><span class="cl">修改 <span class="nb">bind</span> 为宿主机 ip
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 防火墙相关</span>
+</span></span><span class="line"><span class="cl">a.配置防火墙:  **firewall-cmd --zone<span class="o">=</span>public --add-port<span class="o">=</span>6379/tcp --permanent**（开放**6379**端口）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">systemctl restart firewalld（重启防火墙以使配置即时生效）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">查看系统所有开放的端口：firewall-cmd --zone<span class="o">=</span>public --list-ports
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将 redis-cli, redis-server 拷贝到 bin 下，让 redis-cli 指令可以在任意目录下直接使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">cp /usr/local/redis/bin/redis-server /usr/local/bin/
+</span></span><span class="line"><span class="cl">cp /usr/local/redis/bin/redis-cli /usr/local/bin/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="启动-redis">启动 redis</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">redis-server /usr/local/redis/etc/redis.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ps -ef <span class="p">|</span> grep redis
+</span></span><span class="line"><span class="cl">root       <span class="m">11074</span>       <span class="m">1</span>  <span class="m">0</span> 11:24 ?        00:00:00 redis-server 127.0.0.1:6379
+</span></span><span class="line"><span class="cl">root       <span class="m">11296</span>    <span class="m">1443</span>  <span class="m">0</span> 11:32 pts/0    00:00:00 grep --color<span class="o">=</span>auto redis
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="apt-安装">apt 安装</h2>
+<p>ubuntu 版本: 20.04</p>
+<h3 id="更换阿里源可选">更换阿里源(可选)</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">mv /etc/apt/sources.list /etc/apt/sources.list.bak
+</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF &gt; /etc/apt/sources.list
+</span></span></span><span class="line"><span class="cl"><span class="s">deb https://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s">deb-src https://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">deb https://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s">deb-src https://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">deb https://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s">deb-src https://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># deb https://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s"># deb-src https://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">deb https://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s">deb-src https://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">apt update
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="安装-redis">安装 redis</h3>
+<blockquote>
+<p>apt 源中的 redis 目前版本停留在 5.x.x</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">apt-cache madison redis
+</span></span><span class="line"><span class="cl">apt install -y redis
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>设置开机自启</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">systemctl <span class="nb">enable</span> --now redis-server
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="修改配置文件">修改配置文件</h3>
+<ol>
+<li>修改<code>bind</code>为宿主机 ip</li>
+<li>修改<code>requirepass</code>以添加密码</li>
+<li>修改<code>daemonize</code>让启动的 redis 后台运行 (<code>sed -i 's/daemonize no/daemonize yes/' /etc/redis/redis.conf</code>)</li>
+</ol>
+<blockquote>
+<p>如何找到 redis 配置文件位置: <code>systemctl status redis-server.service</code> 会给出 redis 启动的配置参数, 带有配置文件位置</p>
+</blockquote>
+
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/ubuntu/">ubuntu</a>
+        
+            <a href="/tags/redis/">redis</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 -  2024 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
