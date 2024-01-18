@@ -257,6 +257,7 @@
       <ol>
         <li><a href="#修改-http-与-sock-代理地址">修改 http 与 sock 代理地址</a></li>
         <li><a href="#修改-etcresolvconf">修改 /etc/resolv.conf</a></li>
+        <li><a href="#配置-apt-使用代理">配置 apt 使用代理</a></li>
         <li><a href="#测试连接">测试连接</a></li>
       </ol>
     </li>
@@ -273,6 +274,7 @@
         <li><a href="#问题分析">问题分析:</a></li>
         <li><a href="#v-two-ray-演示">v-two-ray 演示:</a></li>
         <li><a href="#设置-git-代理">设置 git 代理</a></li>
+        <li><a href="#取消-git-代理">取消 git 代理</a></li>
       </ol>
     </li>
   </ol>
@@ -398,7 +400,7 @@
 <h2 id="ubuntu">Ubuntu</h2>
 <h3 id="修改-http-与-sock-代理地址">修改 http 与 sock 代理地址</h3>
 <p>开启局域网连接</p>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png"
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png"
 	
 	
 	
@@ -409,7 +411,7 @@
 	
 ></p>
 <p>v-two-ray 端口地址:</p>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png"
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png"
 	
 	
 	
@@ -533,8 +535,24 @@
 </span></span><span class="line"><span class="cl">$ ln -s /run/systemd//resolve/resolv.conf /etc/
 </span></span></code></pre></td></tr></table>
 </div>
+</div><h3 id="配置-apt-使用代理">配置 apt 使用代理</h3>
+<p>虚拟机配置了代理就无法使用 apt, 需要配置 apt 代理</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">cat <span class="s">&lt;&lt; EOF &gt; /etc/apt/apt.conf.d/98https-http-proxy
+</span></span></span><span class="line"><span class="cl"><span class="s">Acquire::http::Proxy &#34;http://192.168.254.1:10811&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">Acquire::https::Proxy &#34;http://192.168.254.1:10811&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div><h3 id="测试连接">测试连接</h3>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116204539080.png"
+<p><img src="/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116204539080.png"
 	
 	
 	
@@ -550,7 +568,7 @@
 </blockquote>
 <h2 id="centos">Centos</h2>
 <p>开启局域网连接</p>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png"
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png"
 	
 	
 	
@@ -561,7 +579,7 @@
 	
 ></p>
 <p>v-two-ray 端口地址:</p>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png"
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png"
 	
 	
 	
@@ -670,7 +688,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="测试代理">测试代理</h3>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240117103010500.png"
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240117103010500.png"
 	
 	
 	
@@ -692,7 +710,7 @@
 </ul>
 <h3 id="v-two-ray-演示">v-two-ray 演示:</h3>
 <p>开启局域网连接</p>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png"
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png"
 	
 	
 	
@@ -703,7 +721,7 @@
 	
 ></p>
 <p>v-two-ray 端口地址:</p>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png"
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png"
 	
 	
 	
@@ -723,6 +741,17 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git config --global http.proxy http://127.0.0.1:10809
 </span></span><span class="line"><span class="cl">git config --global https.proxy https://127.0.0.1:10809
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="取消-git-代理">取消 git 代理</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git config --global --unset http.proxy
+</span></span><span class="line"><span class="cl">git config --global --unset https.proxy
 </span></span></code></pre></td></tr></table>
 </div>
 </div>

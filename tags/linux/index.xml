@@ -1858,7 +1858,7 @@
         <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell函数/cover.png" alt="Featured image of post Shell函数" /&gt;&lt;h2 id=&#34;函数定义与使用&#34;&gt;函数定义与使用&lt;/h2&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;&lt;strong&gt;语法格式&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/image-20231210165438966.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/image-20231210165438966.png&#34;
 	
 	
 	
@@ -1868,7 +1868,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/image-20231210165425935.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/image-20231210165425935.png&#34;
 	
 	
 	
@@ -2711,7 +2711,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;2-变量测试&#34;&gt;2. 变量测试&lt;/h2&gt;
 &lt;p&gt;变量测试实际用得较少, 大多都可以通过&lt;code&gt;if-else&lt;/code&gt;替换&lt;/p&gt;
-&lt;p&gt;变量替换参照表&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231209180314353.png&#34;
+&lt;p&gt;变量替换参照表&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231209180314353.png&#34;
 	
 	
 	
@@ -3189,7 +3189,7 @@
 &lt;p&gt;两者等价&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;declare 命令参数表:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210152406254.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210152406254.png&#34;
 	
 	
 	
@@ -3208,7 +3208,7 @@
 &lt;p&gt;$(()) : 只可用于加减乘除&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;参数表&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210154009070.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210154009070.png&#34;
 	
 	
 	

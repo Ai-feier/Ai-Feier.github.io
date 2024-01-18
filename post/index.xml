@@ -35,7 +35,7 @@
 &lt;h2 id=&#34;ubuntu&#34;&gt;Ubuntu&lt;/h2&gt;
 &lt;h3 id=&#34;修改-http-与-sock-代理地址&#34;&gt;修改 http 与 sock 代理地址&lt;/h3&gt;
 &lt;p&gt;开启局域网连接&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png&#34;
 	
 	
 	
@@ -46,7 +46,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;v-two-ray 端口地址:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png&#34;
 	
 	
 	
@@ -170,8 +170,24 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ ln -s /run/systemd//resolve/resolv.conf /etc/
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;配置-apt-使用代理&#34;&gt;配置 apt 使用代理&lt;/h3&gt;
+&lt;p&gt;虚拟机配置了代理就无法使用 apt, 需要配置 apt 代理&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt; EOF &amp;gt; /etc/apt/apt.conf.d/98https-http-proxy
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;Acquire::http::Proxy &amp;#34;http://192.168.254.1:10811&amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;Acquire::https::Proxy &amp;#34;http://192.168.254.1:10811&amp;#34;;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;测试连接&#34;&gt;测试连接&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116204539080.png&#34;
+&lt;p&gt;&lt;img src=&#34;/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116204539080.png&#34;
 	
 	
 	
@@ -187,7 +203,7 @@
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;centos&#34;&gt;Centos&lt;/h2&gt;
 &lt;p&gt;开启局域网连接&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png&#34;
 	
 	
 	
@@ -198,7 +214,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;v-two-ray 端口地址:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png&#34;
 	
 	
 	
@@ -307,7 +323,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;测试代理&#34;&gt;测试代理&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240117103010500.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240117103010500.png&#34;
 	
 	
 	
@@ -329,7 +345,7 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;v-two-ray-演示&#34;&gt;v-two-ray 演示:&lt;/h3&gt;
 &lt;p&gt;开启局域网连接&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192407913.png&#34;
 	
 	
 	
@@ -340,7 +356,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;v-two-ray 端口地址:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116192334539.png&#34;
 	
 	
 	
@@ -360,6 +376,17 @@
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git config --global http.proxy http://127.0.0.1:10809
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git config --global https.proxy https://127.0.0.1:10809
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;取消-git-代理&#34;&gt;取消 git 代理&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git config --global --unset http.proxy
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git config --global --unset https.proxy
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
@@ -14373,7 +14400,7 @@ Dockerfile中只允许有一个ENTRYPOINT命令，多指定时会覆盖前面的
         <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell函数/cover.png" alt="Featured image of post Shell函数" /&gt;&lt;h2 id=&#34;函数定义与使用&#34;&gt;函数定义与使用&lt;/h2&gt;
 &lt;!-- more --&gt;
 &lt;p&gt;&lt;strong&gt;语法格式&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/image-20231210165438966.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/image-20231210165438966.png&#34;
 	
 	
 	
@@ -14383,7 +14410,7 @@ Dockerfile中只允许有一个ENTRYPOINT命令，多指定时会覆盖前面的
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/image-20231210165425935.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%87%bd%e6%95%b0/image-20231210165425935.png&#34;
 	
 	
 	
@@ -15226,7 +15253,7 @@ Dockerfile中只允许有一个ENTRYPOINT命令，多指定时会覆盖前面的
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;2-变量测试&#34;&gt;2. 变量测试&lt;/h2&gt;
 &lt;p&gt;变量测试实际用得较少, 大多都可以通过&lt;code&gt;if-else&lt;/code&gt;替换&lt;/p&gt;
-&lt;p&gt;变量替换参照表&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231209180314353.png&#34;
+&lt;p&gt;变量替换参照表&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231209180314353.png&#34;
 	
 	
 	
@@ -15704,7 +15731,7 @@ Dockerfile中只允许有一个ENTRYPOINT命令，多指定时会覆盖前面的
 &lt;p&gt;两者等价&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;declare 命令参数表:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210152406254.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210152406254.png&#34;
 	
 	
 	
@@ -15723,7 +15750,7 @@ Dockerfile中只允许有一个ENTRYPOINT命令，多指定时会覆盖前面的
 &lt;p&gt;$(()) : 只可用于加减乘除&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;参数表&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210154009070.png&#34;
+&lt;p&gt;&lt;img src=&#34;//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/image-20231210154009070.png&#34;
 	
 	
 	
