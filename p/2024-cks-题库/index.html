@@ -1,0 +1,3106 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='CKS是一项基于性能的认证考试，在模拟的真实环境中测试考生对Kubernetes和云安全的知识。获得CKS证书表明学员具备在构建、部署和运行时保护基于容器的应用程序和Kubernetes平台的必要能力，并有资格在专业环境中执行这些任务。'>
+<meta name="keywords" content="cka, 2024, 题库, k8s"><title>2024 CKS 题库</title>
+
+<link rel='canonical' href='/p/2024-cks-%E9%A2%98%E5%BA%93/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='2024 CKS 题库'>
+<meta property='og:description' content='CKS是一项基于性能的认证考试，在模拟的真实环境中测试考生对Kubernetes和云安全的知识。获得CKS证书表明学员具备在构建、部署和运行时保护基于容器的应用程序和Kubernetes平台的必要能力，并有资格在专业环境中执行这些任务。'>
+<meta property='og:url' content='/p/2024-cks-%E9%A2%98%E5%BA%93/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kubernetes' /><meta property='article:published_time' content='2024-01-21T18:08:28&#43;08:00'/><meta property='article:modified_time' content='2024-01-21T18:08:28&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/cks.png' />
+<meta name="twitter:title" content="2024 CKS 题库">
+<meta name="twitter:description" content="CKS是一项基于性能的认证考试，在模拟的真实环境中测试考生对Kubernetes和云安全的知识。获得CKS证书表明学员具备在构建、部署和运行时保护基于容器的应用程序和Kubernetes平台的必要能力，并有资格在专业环境中执行这些任务。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/cks.png' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "light");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li>
+      <ol>
+        <li>
+          <ol>
+            <li></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/2024-cks-%E9%A2%98%E5%BA%93/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/cks.png" loading="lazy" alt="Featured image of post 2024 CKS 题库" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/kubernetes/" >
+                Kubernetes
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/2024-cks-%E9%A2%98%E5%BA%93/">2024 CKS 题库</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            CKS是一项基于性能的认证考试，在模拟的真实环境中测试考生对Kubernetes和云安全的知识。获得CKS证书表明学员具备在构建、部署和运行时保护基于容器的应用程序和Kubernetes平台的必要能力，并有资格在专业环境中执行这些任务。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 21, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    11 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <h1 id="cks-题库-1kube-bench-修复不安全项">CKS 题库 1、kube-bench 修复不安全项</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d60e1c3e373.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="context">Context:</h5>
+<p>针对 kubeadm创建的 cluster运行CIS基准测试工具时，发现了多个必须立即解决的问题。</p>
+<h5 id="task">Task:</h5>
+<p>通过配置修复所有问题并重新启动受影响的组件以确保新的设置生效。</p>
+<p>修复针对 API 服务器发现的所有以下违规行为：<br />
+1.2.7 Ensure that the &ndash;authorization-mode argument is not set to AlwaysAllow <strong>FAIL</strong><br />
+1.2.8 Ensure that the &ndash;authorization-mode argument includes Node <strong>FAIL</strong><br />
+1.2.9 Ensure that the &ndash;authorization-mode argument includes RBAC <strong>FAIL</strong><br />
+1.2.18 Ensure that the &ndash;insecure-bind-address argument is not set <strong>FAIL</strong> （1.25中这项题目没给出，但最好也检查一下，模拟环境里需要改）<br />
+~~1.2.19 Ensure that the &ndash;insecure-port argument is set to 0 FAIL ~~（1.25中这项题目没给出，不需要再修改了）</p>
+<p>修复针对kubelet发现的所有以下违规行为：<br />
+Fix all of the following violations that were found against the kubelet:<br />
+4.2.1 Ensure that the anonymous-auth argument is set to false <strong>FAIL</strong><br />
+4.2.2 Ensure that the &ndash;authorization-mode argument is not set to AlwaysAllow <strong>FAIL</strong><br />
+注意：尽可能使用 <strong>Webhook</strong> 身份验证/授权。</p>
+<p>修复针对etcd发现的所有以下违规行为：<br />
+Fix all of the following violations that were found against etcd:<br />
+2.2 Ensure that the &ndash;client-cert-auth argument is set to true <strong>FAIL</strong></p>
+<hr />
+<h5 id="参考">参考:</h5>
+<p><a class="link" href="https://kubernetes.io/zh/docs/reference/config-api/kubelet-config.v1beta1/"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/reference/config-api/kubelet-config.v1beta1/</a></p>
+<hr />
+<h5 id="解答">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSCS00201
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="1-修改api-server">1. 修改api-server</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kube-bench master
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>检查FAIL项,并根据题目要求进行修改</p>
+<p>备份文件 <strong>/etc/kubernetes/manifests/kube-apiserver.yaml</strong><br />
+修改文件内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">- --authorization-mode=Node,RBAC  #修改参数为Node,RBAC
+</span></span><span class="line"><span class="cl">- --insecure-bind-address=0.0.0.0 #删除这一行 #
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="2-修改kubelet">2. 修改kubelet</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kube-bench node
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>检查FAIL项,并根据题目修改对应项</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl status kubelet
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d616eaf2f87.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+><br />
+cat /etc/systemd/system/kubelet.service.d/10-kubeadm.conf中你也会看到Environment=&ldquo;KUBELET_CONFIG_ARGS=&ndash;config=*<strong>/var/lib/kubelet/config.yaml*</strong>&quot;。<br />
+所以去修改这个文件<br />
+修改之前，备份一下配置文件。</p>
+<p>vim /var/lib/kubelet/config.yaml</p>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d6174b9e7aa.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>重载配置 重启kubelet服务</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl daemon-reload
+</span></span><span class="line"><span class="cl">systemctl restart kubelet.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="3-修改-etcd">3. 修改 etcd</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kube-bench
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>备份文件 <strong>/etc/kubernetes/manifests/etcd.yaml</strong></p>
+<p>修改</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">- --client-cert-auth=true #修改为true
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>做完以后要检查一下 apiserver 运行正常</p>
+<hr />
+<h1 id="cks-题库-2pod指定serviceaccount">CKS 题库 2、Pod指定ServiceAccount</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d61ca724b68.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="context-1">Context</h5>
+<p>您组织的安全策略包括：</p>
+<ul>
+<li>ServiceAccount不得自动挂载API凭据</li>
+<li>ServiceAccount名称必须以“-sa”结尾</li>
+</ul>
+<p>清单文件 <strong>/cks/sa/pod1.yaml</strong> 中指定的Pod由于ServiceAccount指定错误而无法调度。</p>
+<p>请完成以下项目：</p>
+<h5 id="task-1">Task</h5>
+<ol>
+<li>在现有namespace <strong>qa</strong> 中创建一个名为 <strong>backend-sa</strong> 的新ServiceAccount，<br />
+确保此ServiceAccount不自动挂载API凭据。</li>
+<li>使用 <strong>/cks/sa/pod1.yaml</strong> 中的清单文件来创建一个Pod。</li>
+<li>最后，清理 namespace <strong>qa</strong> 中任何 未使用的 ServiceAccount。</li>
+</ol>
+<hr />
+<h5 id="参考-1">参考:</h5>
+<p><a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-service-account/#"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-service-account/#</a>使用默认的服务账户访问-api-服务器</p>
+<hr />
+<h5 id="解答-1">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSCH00301
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h6 id="创建-serviceaccount">创建 ServiceAccount</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vi qa-sa.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>qa-sa.yaml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">backend-sa </span><span class="w"> </span><span class="c">#修改为 对应的name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">qa    </span><span class="w"> </span><span class="c">#namespace名称</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">automountServiceAccountToken</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">  </span><span class="c">#false为不自动挂载secret</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>应用 并 检查</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -f qa-sa.yaml create
+</span></span><span class="line"><span class="cl">kubectl -n qa get sa
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d61e90b4ff6.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h6 id="使用该sa创建-pod">使用该SA创建 pod</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /cks/sa/pod1.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">……</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">backend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">qa</span><span class="w"> </span><span class="c">#注意命名空间是否对</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l">backend-sa</span><span class="w"> </span><span class="c"># 没有则添加一行，有则修改这一行为刚才创建的ServiceAccount（考试时，默认已有这一行，需要修改。）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">……</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d61f7b70ed3.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h6 id="删除未使用的-serviceaccount">删除未使用的 ServiceAccount</h6>
+<p>查看所有 SA</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n qa get sa
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>过滤已经在用的 SA</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n qa get pod -o yaml <span class="p">|</span> grep -i serviceAccountName
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>删除不用的sa</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n qa delete sa test01
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d620689c162.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h1 id="cks-题库-3默认网络策略">CKS 题库 3、默认网络策略</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d620f0c3277.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="context-2">Context</h5>
+<p>一个默认拒绝（default-deny）的NetworkPolicy可避免在未定义任何其他NetworkPolicy的namespace中意外公开Pod。</p>
+<h5 id="task-2">Task</h5>
+<p>为所有类型为 <strong>Ingress+Egress</strong> 的流量在 namespace <strong>testing</strong> 中创建一个名为 <strong>denypolicy</strong> 的新默认拒绝 NetworkPolicy 。<br />
+此新的 NetworkPolicy 必须拒绝 namespace <strong>testing</strong> 中的所有的 <strong>Ingress + Egress</strong> 流量。<br />
+将新创建的默认拒绝 NetworkPolicy 应用在 namespace <strong>testing</strong> 中运行的所有 Pod 。</p>
+<p>你可以在 <strong>/cks/net/p1.yaml</strong> 找到一个模板清单文件。</p>
+<hr />
+<h5 id="参考-2">参考:</h5>
+<p><a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/services-networking/network-policies/#"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/concepts/services-networking/network-policies/#</a>默认拒绝所有入口和所有出站流量</p>
+<hr />
+<h5 id="解答-2">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSCS00101
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编辑模板文件 /cks/net/p1.yaml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">NetworkPolicy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">denypolicy    </span><span class="w"> </span><span class="c">#注意修改name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">testing  </span><span class="w"> </span><span class="c">#添加namespace</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">Ingress           </span><span class="w"> </span><span class="c">#注意看题，是Ingress + Egress（入口+出口），还是只是Ingress或只是Egress。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">Egress            </span><span class="w"> </span><span class="c">#在1.25的考试中，只要求拒绝所有Egress流量，那就只写这这个- Egress即可，这种情况就不要写- Ingress了。</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建并检查</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -f /cks/net/p1.yaml create
+</span></span><span class="line"><span class="cl">kubectl -n testing describe networkpolicies denypolicy
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d623cd406ed.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+><br />
+<img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d623df38feb.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h1 id="cks-题库-4rbac---rolebinding">CKS 题库 4、RBAC - RoleBinding</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d625592fa52.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="context-3">Context</h5>
+<p>绑定到 Pod 的 ServiceAccount 的 Role 授予过度宽松的权限。完成以下项目以减少权限集。</p>
+<h5 id="task-3">Task</h5>
+<p>一个名为 <strong>web-pod</strong> 的现有 Pod 已在 namespace <strong>db</strong> 中运行。<br />
+编辑绑定到 Pod 的 ServiceAccount <strong>service-account-web</strong> 的现有 Role，仅允许只对 <strong>services</strong> 类型的资源执行 <strong>get</strong> 操作。<br />
+在 namespace <strong>db</strong> 中创建一个名为 <strong>role-2</strong> ，并仅允许只对 <strong>namespaces</strong> 类型的资源执行 <strong>delete</strong> 操作的新 Role。<br />
+创建一个名为 <strong>role-2-binding</strong> 的新 RoleBinding，将新创建的 Role 绑定到 Pod 的 ServiceAccount。</p>
+<p>注意：请勿删除现有的 RoleBinding。</p>
+<hr />
+<h5 id="参考-3">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh/docs/reference/access-authn-authz/rbac/#role-and-clusterole"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/reference/access-authn-authz/rbac/#role-and-clusterole</a></p>
+<p><a class="link" href="https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/rbac/#"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/reference/access-authn-authz/rbac/#</a>一些命令行工具</p>
+<hr />
+<h5 id="解答-3">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSCH00201
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看 ServiceAccount rolebinding 对应关系</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n db describe rolebindings
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编辑 role-1 权限</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n db edit role role-1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">rules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">apiGroups</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="s2">&#34;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">services</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">get</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d62eff57f01.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>检查</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n db describe role role-1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d62f59eff5e.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>在db命名空间，创建名为role-2的role，并且通过rolebinding绑定service-account-web，只允许对namespaces做delete操作。</p>
+<p><strong>记住 &ndash;verb是权限，可能考delete或者update等 &ndash;resource是对象，可能考namespaces或者persistentvolumeclaims等。</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n db create role role-2 --verb<span class="o">=</span>delete --resource<span class="o">=</span>namespaces
+</span></span><span class="line"><span class="cl">kubectl -n db create rolebinding role-2-binding --role<span class="o">=</span>role-2 --serviceaccount<span class="o">=</span>db:service-account-web
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>检查</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n db describe rolebindings
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d63068d1ccd.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h1 id="cks-题库-5日志审计-log-audit">CKS 题库 5、日志审计 log audit</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d63209bca12.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="task-4">Task</h5>
+<p>在cluster中启用审计日志。为此，请启用日志后端，并确保：</p>
+<ul>
+<li>日志存储在 <strong>/var/log/kubernetes/audit-logs.txt</strong></li>
+<li>日志文件能保留 <strong>10</strong> 天</li>
+<li>最多保留 <strong>2</strong> 个旧审计日志文件</li>
+</ul>
+<p><strong>/etc/kubernetes/logpolicy/sample-policy.yaml</strong> 提供了基本策略。它仅指定不记录的内容。</p>
+<p>注意：基本策略位于 cluster 的 master 节点上。</p>
+<hr />
+<p>编辑和扩展基本策略以记录：</p>
+<ul>
+<li>RequestResponse 级别的 <strong>persistentvolumes</strong> 更改</li>
+<li>namespace <strong>front-apps</strong> 中 <strong>configmaps</strong> 更改的请求体</li>
+<li><strong>Metadata</strong> 级别的所有 namespace 中的 ConfigMap 和 Secret 的更改</li>
+</ul>
+<p>此外，添加一个全方位的规则以在 <strong>Metadata</strong> 级别记录所有其他请求。</p>
+<p>注意：不要忘记应用修改后的策略。</p>
+<hr />
+<h5 id="参考-4">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh/docs/tasks/debug/debug-cluster/audit/"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/tasks/debug/debug-cluster/audit/</a></p>
+<hr />
+<h5 id="解答-4">解答:</h5>
+<blockquote>
+<p>日志审计这一题需要自己调整的内容还是挺多的，因此要非常仔细，建议修改前备份一下原始的环境，要不然修改错了就会导致集群崩溃。</p>
+</blockquote>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSCH00601
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h6 id="切换到master的root下">切换到Master的root下</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh master01
+</span></span><span class="line"><span class="cl">sudo -i
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="配置审计策略">配置审计策略</h5>
+<p>先备份配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /etc/kubernetes/logpolicy/sample-policy.yaml bak/
+</span></span><span class="line"><span class="cl">vim /etc/kubernetes/logpolicy/sample-policy.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>不要删除原有规则, 可以在下面继续追加题目要求的规则</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">RequestResponse</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;persistentvolumes&#34;</span><span class="p">]</span><span class="w"> </span><span class="c">#根据题目要求修改，比如题目要求的是namespaces。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">Request</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;configmaps&#34;</span><span class="p">]</span><span class="w"> </span><span class="c">#根据题目要求修改，比如题目要求的是persistentvolumes或者pods。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">namespaces</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;front-apps&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">Metadata</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;secrets&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;configmaps&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">Metadata</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">omitStages</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;RequestReceived&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="配置-master-节点的kube-apiserveryaml">配置 master 节点的kube-apiserver.yaml</h5>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /etc/kubernetes/manifests/kube-apiserver.yaml bakyaml/
+</span></span><span class="line"><span class="cl">vi /etc/kubernetes/manifests/kube-apiserver.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加以下参数：注意空格要对齐，不建议放到最后，建议按照下图的位置放这四条信息。</p>
+<p>定义审计策略yaml文件位置，通过hostpath挂载</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- --<span class="l">audit-policy-file=/etc/kubernetes/logpolicy/sample-policy.yaml</span><span class="w"> </span><span class="c">#主意检查，如果考试中已经存在了，则不要重复添加。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#定义审计日志位置，通过hostpath挂载</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- --<span class="l">audit-log-path=/var/log/kubernetes/audit-logs.txt</span><span class="w"> </span><span class="c">#主意检查，如果考试中已经存在了，则不要重复添加。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#定义保留旧审计日志文件的最大天数为10天</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- --<span class="l">audit-log-maxage=10</span><span class="w"> </span><span class="c">#主意检查，如果考试中已经存在了，则不要重复添加。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#定义要保留的审计日志文件的最大数量为2个</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- --<span class="l">audit-log-maxbackup=2</span><span class="w"> </span><span class="c">#主意检查，如果考试中已经存在了，则不要重复添加。</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">volumeMounts</span><span class="p">:</span><span class="w"> </span><span class="c">#找到这个字段，添加下面内容</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/kubernetes/logpolicy/sample-policy.yaml</span><span class="w"> </span><span class="c">#这里也可以写到目录/etc/kubernetes/logpolicy/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">audit</span><span class="w"> </span><span class="c">#注意，在1.25考试中，蓝色的内容已经默认有了，你只需要添加绿色字体的内容。可以通过红色字，在文件中定位。但模拟环境没有加，需要你全部手动添加。这样是为了练习，万一考试中没有，你也会加。但是如果考试中已添加，你再添加一遍，则会报错，导致api-server启不起来。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c">#这个为true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log/kubernetes/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">audit-log</span><span class="w"> </span><span class="c">#注意，在1.25考试中，蓝色的内容已经有了，你只需要添加绿色字体的内容。可以通过红色字，在文件中定位。但模拟环境没有加，需要你全部手动添加。这样是为了练习，万一考试中没有，你也会加。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c">#这个为false</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span><span class="c">#找到这个字段，添加下面内容 #注意，在1.25考试中，蓝色的内容已经有了，volumes这段无需修改，但是为了以防万一，模拟环境中没有加，需要你手动添加。这样是为了练习，万一考试中没有，你也会加。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">audit</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">path: /etc/kubernetes/logpolicy/sample-policy.yaml #这里如果写到目录/etc/kubernetes/logpolicy/，则下面的type:应为type</span><span class="p">:</span><span class="w"> </span><span class="l">DirectoryOrCreate</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">File</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">audit-log</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log/kubernetes/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">DirectoryOrCreate</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>重启kubelet服务, 等待2分钟后，再检查</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl restart kubelet
+</span></span><span class="line"><span class="cl">kubectl get pod -A
+</span></span><span class="line"><span class="cl">tail /var/log/kubernetes/audit-logs.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d74f792bf77.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h1 id="cks-题库-6创建-secret">CKS 题库 6、创建 Secret</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d74fafeaf01.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="task-5">Task</h5>
+<p>在 namespace <strong>istio-system</strong> 中获取名为 <strong>db1-test</strong> 的现有 secret 的内容<br />
+将 <strong>username</strong> 字段存储在名为 <strong>/cks/sec/user.txt</strong> 的文件中，并将<strong>password</strong> 字段存储在名为 <strong>/cks/sec/pass.txt</strong> 的文件中。<br />
+注意：你必须创建以上两个文件，他们还不存在。</p>
+<p>注意：不要在以下步骤中使用/修改先前创建的文件，如果需要，可以创建新的临时文件。</p>
+<p>在 <strong>istio-system</strong> namespace 中创建一个名为 <strong>db2-test</strong> 的新 secret ，内容如下：<br />
+<strong>username : production-instance</strong><br />
+<strong>password : KvLftKgs4aVH</strong><br />
+最后，创建一个新的 Pod ，它可以通过卷访问 secret <strong>db2-test</strong> ：<br />
+Pod 名称 <strong>secret-pod</strong><br />
+Namespace <strong>istio-system</strong><br />
+容器名 <strong>dev-container</strong><br />
+镜像 <strong>nginx</strong><br />
+卷名 <strong>secret-volume</strong><br />
+挂载路径 <strong>/etc/secret</strong></p>
+<hr />
+<h5 id="参考-5">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh/docs/tasks/configmap-secret/managing-secret-using-kubectl/#decoding-secret"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/tasks/configmap-secret/managing-secret-using-kubectl/#decoding-secret</a></p>
+<p><a class="link" href="https://kubernetes.io/zh/docs/tasks/configmap-secret/managing-secret-using-kubectl/#create-a-secret"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/tasks/configmap-secret/managing-secret-using-kubectl/#create-a-secret</a></p>
+<p><a class="link" href="https://kubernetes.io/zh/docs/concepts/configuration/secret/#using-secrets"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/concepts/configuration/secret/#using-secrets</a></p>
+<hr />
+<h5 id="解答-5">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSCH00701
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将db1-test的username和password，通过base64解码保存到题目指定文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n istio-system get secrets db1-test -o <span class="nv">jsonpath</span><span class="o">={</span>.data.username<span class="o">}</span> <span class="p">|</span> base64 -d &gt; /cks/sec/user.txt
+</span></span><span class="line"><span class="cl">kubectl -n istio-system get secrets db1-test -o <span class="nv">jsonpath</span><span class="o">={</span>.data.password<span class="o">}</span> <span class="p">|</span> base64 -d &gt; /cks/sec/pass.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>检查</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /cks/sec/user.txt
+</span></span><span class="line"><span class="cl">cat /cks/sec/pass.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建名为 db2-test 的 secret 使用题目要求的用户名和密码作为键值。注意要加命名空间。</p>
+<blockquote>
+<p>注意，如果密码中有特殊字符（例如：$，\，*，= 和 !），需要加单引号来转义&ndash;from-literal=password=&lsquo;G!Y*d$zDsb&rsquo;这样</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n istio-system create secret generic db2-test --from-literal <span class="nv">username</span><span class="o">=</span>production-instance --from-literal <span class="nv">assword</span><span class="o">=</span>KvLftKgs4aVH
+</span></span><span class="line"><span class="cl">kubectl -n istio-system get secret
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据题目要求，参考官网，创建Pod使用该secret</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim k8s-secret.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>k8s-secret.yaml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-pod         </span><span class="w"> </span><span class="c">#pod名字</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">istio-system  </span><span class="w"> </span><span class="c">#命名空间</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dev-container    </span><span class="w"> </span><span class="c">#容器名字</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx           </span><span class="w"> </span><span class="c">#镜像名字</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-volume  </span><span class="w"> </span><span class="c">#卷名</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/etc/secret&#34;</span><span class="w">  </span><span class="c">#挂载路径</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-volume    </span><span class="w"> </span><span class="c">#卷名</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">secret</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l">db2-test </span><span class="w"> </span><span class="c">#名为 db2-test 的 secret</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -f k8s-secret.yaml create
+</span></span><span class="line"><span class="cl">kubectl -n istio-system get pod
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr />
+<h1 id="cks-题库-7dockerfile检测">CKS 题库 7、Dockerfile检测</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d75f97df732.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="task-6">Task</h5>
+<p>分析和编辑给定的Dockerfile /cks/docker/Dockerfile（基于ubuntu:16.04 镜像），<br />
+并修复在文件中拥有的突出的安全/最佳实践问题的两个指令。</p>
+<p>分析和编辑给定的清单文件 /cks/docker/deployment.yaml ，<br />
+并修复在文件中拥有突出的安全/最佳实践问题的两个字段。</p>
+<p>注意：请勿添加或删除配置设置；只需修改现有的配置设置让以上两个配置设置都不再有安全/最佳实践问题。</p>
+<p>注意：如果您需要非特权用户来执行任何项目，请使用用户ID 65535 的用户 nobody 。</p>
+<p>只修改即可，不需要创建。</p>
+<hr />
+<h5 id="参考-6">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh/docs/concepts/security/pod-security-standards/#restricted"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/concepts/security/pod-security-standards/#restricted</a></p>
+<hr />
+<h5 id="解答-6">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSSC00301
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改Dockerfile</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /cks/docker/Dockerfile
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">#修改基础镜像为题目要求的 ubuntu:16.04</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">FROM ubuntu:16.04</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#仅将CMD上面的USER root修改为USER nobody，不要改其他的USER root。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">USER nobody</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改deployment.yaml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /cks/docker/deployment.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">template里标签跟上面的内容不一致，所以需要将原先的run: couchdb修改为app: couchdb
+</span></span><span class="line"><span class="cl">app: couchdb
+</span></span><span class="line"><span class="cl">注意，这里具体要改成app: couchdb还是其他的标签，要以考试给你的yaml文件的上下文其他标签为准，要与另外两个标签一致，具体见下方截图。）
+</span></span><span class="line"><span class="cl">感谢网友Tse和adams的反馈和纠正。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">删除 &#39;SYS_ADMIN&#39; 字段，确保 &#39;privileged&#39;: 为False 。
+</span></span><span class="line"><span class="cl">(CKS考试是有多套类似考试环境的，所以有时是删SYS_ADMIN，有时是改&#39;privileged&#39;: False）
+</span></span><span class="line"><span class="cl">注意 注意，如果考试时，本来就没有&#39;SYS_ADMIN&#39; 字段，且&#39;privileged&#39;:也默认就为False，则直接将直接改成如下。
+</span></span><span class="line"><span class="cl">securityContext:
+</span></span><span class="line"><span class="cl">  privileged: False
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d764aab5da8.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+><br />
+<img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d764aee47b2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h1 id="cks-题库-8沙箱运行容器-gvisor">CKS 题库 8、沙箱运行容器 gVisor</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d764d8030b3.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="context-4">Context</h5>
+<p>该 cluster 使用 <strong>containerd</strong> 作为 CRI 运行时。<strong>containerd</strong> 的默认运行时处理程序是 <strong>runc</strong> 。<br />
+<strong>containerd</strong> 已准备好支持额外的运行时处理程序 <strong>runsc</strong> (gVisor)。</p>
+<h5 id="task-7">Task</h5>
+<p>使用名为 <strong>runsc</strong> 的现有运行时处理程序，创建一个名为 <strong>untrusted</strong> 的 RuntimeClass。<br />
+更新 namespace <strong>server</strong> 中的所有 Pod 以在 <strong>gVisor</strong> 上运行。<br />
+您可以在 <strong>/cks/gVisor/rc.yaml</strong> 中找到一个模版清单。</p>
+<hr />
+<h5 id="参考-7">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/containers/runtime-class/#2-"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/concepts/containers/runtime-class/#2-</a>创建相应的-runtimeclass-资源</p>
+<hr />
+<h5 id="解答-7">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSMV00301
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建RuntimeClass</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /cks/gVisor/rc.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>rc.yaml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion: node.k8s.io/v1   ##将apiVersion: node.k8s.io/v1beta1修改为apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">node.k8s.io/v1。这个在1.25正式考试的时候，是对的，不需要修改的。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">RuntimeClass</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">untrusted</span><span class="w"> </span><span class="c"># 用来引用 RuntimeClass 的名字，RuntimeClass 是一个集群层面的资源</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">handler</span><span class="p">:</span><span class="w"> </span><span class="l">runsc   </span><span class="w"> </span><span class="c"># 对应的 CRI 配置的名称</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -f /cks/gVisor/rc.yaml create
+</span></span><span class="line"><span class="cl">kubectl get RuntimeClass
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将命名空间为server下的Pod引用RuntimeClass。<br />
+考试时，3个Deployment下有3个Pod，修改3个deployment即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n server get deployment
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n server edit deployments busybox-run
+</span></span><span class="line"><span class="cl">kubectl -n server edit deployments nginx-host
+</span></span><span class="line"><span class="cl">kubectl -n server edit deployments run-test
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w"> </span><span class="c">#找到这个spec，注意在deployment里是有两个单独行的spec的，要找第二个，也就是下面有containers这个字段的spec。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l">untrusted</span><span class="w"> </span><span class="c">#添加这一行，注意空格对齐，保存会报错，忽略即可。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx:1.9</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">run-test</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr />
+<h1 id="cks-题库-9网络策略-networkpolicy">CKS 题库 9、网络策略 NetworkPolicy</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d7687d05cbb.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="task-8">Task</h5>
+<p>创建一个名为 <strong>pod-restriction</strong> 的 NetworkPolicy 来限制对在 namespace <strong>dev-team</strong> 中运行的 Pod <strong>products-service</strong> 的访问。<br />
+只允许以下 Pod 连接到 Pod <strong>products-service</strong></p>
+<ul>
+<li>namespace <strong>qaqa</strong> 中的 Pod</li>
+<li>位于任何 namespace，带有标签 <strong>environment: testing</strong> 的 Pod<br />
+注意：确保应用 NetworkPolicy。</li>
+</ul>
+<p>你可以在 <strong>/cks/net/po.yaml</strong> 找到一个模板清单文件。</p>
+<hr />
+<h5 id="参考-8">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh/docs/concepts/services-networking/network-policies/#networkpolicy-resource"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/concepts/services-networking/network-policies/#networkpolicy-resource</a></p>
+<hr />
+<h5 id="解答-8">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSSH00301
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>检查namespace标签</p>
+<p>模拟环境已提前打好标签了，所以你只需要检查标签即可。但为了防止考试时，没有给你打标签，所以还是需要你将下面打标签的命令记住。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看 qaqa 命名空间标签（name: qaqa）</span>
+</span></span><span class="line"><span class="cl">kubectl get ns --show-labels
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看 pod 标签（environment: testing）</span>
+</span></span><span class="line"><span class="cl">kubectl get pod -n dev-team --show-labels
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果 Pod 或者 Namespace 没有标签，则需要打上标签。<br />
+注意：我这里将pod products-service的标签打成了environment: testing，下面会有解释，不要和题目里要求的“位于任何namespace，带有标签environment: testing的Pod”这句话里的标签混淆了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl label ns qaqa <span class="nv">name</span><span class="o">=</span>qaqa
+</span></span><span class="line"><span class="cl">kubectl label pod products-service <span class="nv">environment</span><span class="o">=</span>testing -n dev-team
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建NetworkPolicy</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vi /cks/net/po.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pod-restriction</span><span class="w"> </span><span class="c">#修改</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">dev-team</span><span class="w"> </span><span class="c">#修改</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment: testing #根据题目要求的标签修改，这个写的是Pod products-service的标签，也就是使用kubectl get pod -n dev-team --show-labels查出来的pod的标签，这个标签不要和题目里要求的“位于任何namespace，带有标签environment: testing的Pod”这句话里的标签混淆了，两个没有关系，所以可不一样。比如你考试时查出来的POD products-service的标签是name: products，那这里的environment: testing就要换成name</span><span class="p">:</span><span class="w"> </span><span class="l">products。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">Ingress</span><span class="w"> </span><span class="c">#注意，这里只写 - Ingress，不要将 - Egress也复制进来！</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="c">#第一个from</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">namespaceSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name: qaqa #命名空间有name</span><span class="p">:</span><span class="w"> </span><span class="l">qaqa标签的</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="c">#第二个from</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">namespaceSelector</span><span class="p">:</span><span class="w"> </span>{}<span class="w"> </span><span class="c">#修改为这样，所有命名空间</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="c">#注意，这个podSelector前面的“-” 要删除，换成空格，空格对齐要对。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">environment: testing #有environment: testing标签的Pod，这个地方是根据题目要求“Pods with label environment</span><span class="p">:</span><span class="w"> </span><span class="l">testing , in any namespace”，这句话里的pod标签写的。不要和上面spec里的混淆。</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d76a1ece122.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>创建 检查</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f /cks/net/po.yaml
+</span></span><span class="line"><span class="cl">kubectl get networkpolicy -n dev-team
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr />
+<h1 id="cks-题库-10trivy-扫描镜像安全漏洞">CKS 题库 10、Trivy 扫描镜像安全漏洞</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d4c544481f8.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="task-9">Task:</h5>
+<p>使用 Trivy 开源容器扫描器检测 namespace <strong>kamino</strong> 中 具有严重漏洞的镜像 的 Pod。</p>
+<p>查找具有 <strong>High</strong> 或 <strong>Critical</strong> 严重性漏洞的镜像，并删除使用这些镜像的 Pod 。</p>
+<p>注意：Trivy 仅安装在 cluster 的 master 节点上，<br />
+在工作节点上不可使用。<br />
+你必须切换到 cluster 的 master 节点才能使用 Trivy</p>
+<hr />
+<h5 id="参考资料">参考资料:</h5>
+<p><a class="link" href="https://kubernetes.io/zh-cn/docs/reference/kubectl/cheatsheet/#"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/reference/kubectl/cheatsheet/#</a>格式化输出</p>
+<hr />
+<h5 id="解答-9">解答:</h5>
+<ol>
+<li>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSSC00401
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>查看namespace下pod 和image</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl get pods -n kamino -o<span class="o">=</span>custom-columns<span class="o">=</span><span class="s2">&#34;NAME:.metadata.name,IMAGE:.spec.containers[*].image&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d4c7ff9a487.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+</li>
+<li>
+<p>提取镜像名并进行扫描</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl describe pod -n kamino <span class="p">|</span> grep -i image: <span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> sort -u
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d4c94baac94.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+><br />
+扫描并显示结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">for</span> i in <span class="sb">`</span>kubectl describe pod -n kamino <span class="p">|</span> grep -i image: <span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> sort -u<span class="sb">`</span><span class="p">;</span> <span class="k">do</span> trivy -q image -s HIGH,CRITICAL <span class="nv">$i</span> <span class="p">|</span> grep -iEB3 <span class="s2">&#34;HIGH:|CRITICAL:&#34;</span> <span class="p">;</span> <span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d4ca67ee1ea.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+><br />
+可以看到除了amazonlinux:2 其他镜像都存在高危漏洞, 对应之前的pod和images列表 删除包含漏洞的image即可</p>
+</li>
+<li>
+<p>删除包含漏洞的pod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n kamino delete pod tri111 tri222 tri333
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d4cba52e0db.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+</li>
+</ol>
+<hr />
+<h1 id="cks-题库-11apparmor">CKS 题库 11、AppArmor</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d4dd690858b.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="context-5">Context:</h5>
+<p>APPArmor 已在 cluster 的工作节点node02上被启用。一个 APPArmor 配置文件已存在，但尚未被实施。</p>
+<h5 id="task-10">Task:</h5>
+<p>在 cluster 的工作节点node02上，实施位于 <strong>/etc/apparmor.d/nginx_apparmor</strong> 的现有APPArmor 配置文件。<br />
+编辑位于 <strong>/cks/KSSH00401/nginx-deploy.yaml</strong> 的现有清单文件以应用 AppArmor 配置文件。<br />
+最后，应用清单文件并创建其中指定的 Pod 。</p>
+<p>请注意，考试时，考题里已表明APPArmor在工作节点上，所以你需要ssh到开头写的工作节点上。<br />
+在模拟环境，你需要ssh到node02这个工作节点。<br />
+<img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d4de5099a35.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h5 id="参考-9">参考:</h5>
+<p><a class="link" href="https://kubernetes.io/zh/docs/tutorials/security/apparmor/#example"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/tutorials/security/apparmor/#example</a></p>
+<h5 id="解答-10">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSSH00401
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>连接到 node02 并切换到 root</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh node02
+</span></span><span class="line"><span class="cl">sudo -i
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>切换到 apparmor 目录, 并检查配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vi /etc/apparmor.d/etc/apparmor.d/nginx_apparmor
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>nginx_apparmor</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">#include &lt;tunables/global&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#nginx-profile-3 #检查这一行是否存在 存在则注释掉</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">profile nginx-profile-3 flags=(attach_disconnected) {</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#include &lt;abstractions/base&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">file,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Deny all file writes.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">deny /** w,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>}<span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d50c8a63282.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>执行 并 检查 apparmor策略模块</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apparmor_parser -q /etc/apparmor.d/nginx_apparmor
+</span></span><span class="line"><span class="cl">apparmor_status <span class="p">|</span> grep nginx-profile-3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d51546b1035.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>修改 pod 文件</p>
+<p><strong>（注意！注意！考试时，这个文件是在默认登录的终端那个初始节点上的，而不是在这个work节点的）</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vi /cks/KSSH00401/nginx-deploy.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加注解</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">container.apparmor.security.beta.kubernetes.io/podx</span><span class="p">:</span><span class="w"> </span><span class="l">localhost/nginx-profile-3</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建pod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -f  /cks/KSSH00401/nginx-deploy.yaml create
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>检查</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl get pod
+</span></span><span class="line"><span class="cl">kubectl <span class="nb">exec</span> podx -- cat /proc/1/attr/current
+</span></span><span class="line"><span class="cl">kubectl <span class="nb">exec</span> podx -- touch /tmp/test
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看current显示 xxx (enforce)<br />
+创建文件提示权限不足<br />
+<img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d5176f0c215.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h1 id="cks-题库-12sysdig--falco">CKS 题库 12、Sysdig &amp; falco</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d76b22944e9.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>Task：<br />
+使用运行时检测工具来检测 Pod <strong>tomcat123</strong> 单个容器中频发生成和执行的异常进程。<br />
+有两种工具可供使用：</p>
+<ul>
+<li><strong>sysdig</strong></li>
+<li><strong>falco</strong></li>
+</ul>
+<p>注： 这些工具只预装在 cluster 的工作节点 <strong>node02</strong> 上，不在 master 节点。<br />
+使用工具至少分析 <strong>30</strong> 秒 ，使用过滤器检查生成和执行的进程，将事件写到 <strong>/opt/KSR00101/incidents/summary</strong> 文件中，<br />
+其中包含检测的事件， 格式如下：<br />
+<strong>timestamp , uid/username , processName</strong></p>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d76b41828a2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>保持工具的原始时间戳格式不变。<br />
+注： 确保事件文件存储在集群的工作节点上。</p>
+<blockquote>
+<p>请注意，考试时，考题里已表明sysdig在工作节点上，所以你需要ssh到开头写的工作节点上。但在模拟环境，你需要ssh到node02这个工作节点。<br />
+<img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d76b77187a9.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+</blockquote>
+<hr />
+<h5 id="解答-11">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSSC00401
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>切换到 node02 节点 使用root</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh node02
+</span></span><span class="line"><span class="cl">sudo -i
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>找到containerd的socket</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">crictl info <span class="p">|</span> grep sock
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d76c6ddf583.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>使用crictl命令找到容器，题目要求的是tomcat123，则grep tomcat123。<br />
+crictl ps | grep tomcat123</p>
+<p>注意，考试时，你要通过上面命令grep pod name，然后你要记住的是container name。只是模拟环境里的pod name和container name一样，都是tomcat123。<br />
+<img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d76cf92b921.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>通过 sysdig 扫描容器30s并输出到指定文件：<br />
+sysdig -h 和-l 查看帮助<br />
+注：可以使用 sysdig -l |grep time 过滤，确认输出格式字段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sysdig -l <span class="p">|</span> grep <span class="nb">time</span>
+</span></span><span class="line"><span class="cl">sysdig -l <span class="p">|</span> grep uid
+</span></span><span class="line"><span class="cl">sysdig -l <span class="p">|</span> grep proc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>开始扫描 （我目前想不到别的方法，只能将命令分成2条了，谁有更好的方法，可以分享一下。）<br />
+（container.name也可以换成container.id=7cb82fdbc1295。注意要写container name，而不是pod name，只是模拟环境里，pod name和container name一样，都是tomcat123）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sysdig -M <span class="m">30</span> -p <span class="s2">&#34;%evt.time,%user.uid,%proc.name&#34;</span> --cri /run/containerd/containerd.sock container.name<span class="o">=</span>tomcat123 &gt;&gt; /opt/KSR00101/incidents/summary
+</span></span><span class="line"><span class="cl">sysdig -M <span class="m">30</span> -p <span class="s2">&#34;%evt.time,%user.name,%proc.name&#34;</span> --cri /run/containerd/containerd.sock container.name<span class="o">=</span>tomcat123 &gt;&gt; /opt/KSR00101/incidents/summary
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>提示：如果考试时执行sysdig报错“Unable to load the driver”，则执行下面一条命令：（模拟环境里不需要执行）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#启用模块</span>
+</span></span><span class="line"><span class="cl">sysdig-probe-loader
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后再次执行sysdig -M 30 ……</p>
+<p>如果还是报错，就重装一下sysdig，命令为 <strong>apt install sysdig</strong></p>
+<p>查看保存的文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /opt/KSR00101/incidents/summary <span class="p">|</span>head
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr />
+<h1 id="cks-题库-13container安全上下文">CKS 题库 13、Container安全上下文</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d778e2f07c4.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="context-6">Context</h5>
+<p>Container Security Context应在特定namespace中修改Deployment。</p>
+<h5 id="task-11">Task</h5>
+<p>按照如下要求修改 <strong>sec-ns</strong> 命名空间里的 Deployment <strong>secdep</strong></p>
+<ul>
+<li>用ID为 <strong>30000</strong> 的用户启动容器（设置用户ID为: 30000）</li>
+<li>不允许进程获得超出其父进程的特权（禁止allowPrivilegeEscalation）</li>
+<li>以只读方式加载容器的根文件系统（对根文件的只读权限）</li>
+</ul>
+<hr />
+<h5 id="参考-10">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/security-context/"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/security-context/</a></p>
+<hr />
+<h5 id="解答-12">解答:</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSMV00102
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d77d4b61d0c.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>修改 deployment secdep</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n sec-ns edit deployment secdep
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在template字段下面的spec里面，添加或修改如下红字内容，并保存（考试中也是在Deployment下有两个image的）<br />
+请注意，考试和模拟环境中，先检查spec下面（非containers下面）是否有securityContext: {}，如果有则可以直接修改即可。否则重复添加是不生效的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">      </span><span class="nt">securityContext</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">allowPrivilegeEscalation</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">readOnlyRootFilesystem</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d77ca3da75c.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h1 id="cks-题库-14启用api-server认证">CKS 题库 14、启用API server认证</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d77d939f996.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="context-7">Context</h5>
+<p>由 <strong>kubeadm</strong> 创建的 cluster 的 Kubernetes API 服务器，出于测试目的，<br />
+临时配置允许未经身份验证和未经授权的访问，授予匿名用户 cluster-admin 的访问权限.</p>
+<h5 id="task-12">Task</h5>
+<p>重新配置 cluster 的 Kubernetes APl 服务器，以确保只允许经过身份验证和授权的 REST 请求。<br />
+使用授权模式 <strong>Node</strong> , <strong>RBAC</strong> 和准入控制器 <strong>NodeRestriction</strong> 。<br />
+删除用户 <strong>system:anonymous</strong> 的 ClusterRoleBinding 来进行清理。</p>
+<p>注意：所有 kubectl 配置环境/文件也被配置使用未经身份验证和未经授权的访问。<br />
+你不必更改它，但请注意，一旦完成 cluster 的安全加固， kubectl 的配置将无法工作。<br />
+您可以使用位于 cluster 的 master 节点上，cluster 原本的 kubectl 配置文件<br />
+<strong>/etc/kubernetes/admin.conf</strong> ，以确保经过身份验证的授权的请求仍然被允许。</p>
+<blockquote>
+<p>模拟环境里，初始化这道题的脚本为b.sh</p>
+</blockquote>
+<hr />
+<h5 id="参考-11">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh/docs/reference/command-line-tools-reference/kube-apiserver/"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/reference/command-line-tools-reference/kube-apiserver/</a></p>
+<hr />
+<h5 id="解答-13">解答</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSCF00301
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>远程到 master 并切换到 root</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh master01
+</span></span><span class="line"><span class="cl">sudo -i
+</span></span><span class="line"><span class="cl">sh /root/b.sh <span class="c1">#模拟这道题的环境</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>确保只有认证并且授权过的REST请求才被允许<br />
+<strong>/etc/kubernetes/manifests/kube-apiserver.yaml</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- --<span class="l">authorization-mode=AlwaysAllow</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- --<span class="l">enable-admission-plugins=AlwaysAdmit</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- --<span class="l">authorization-mode=Node,RBAC </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#注意，只保留Node,RBAC这两个，中间是英文状态下的逗号。在1.25考试中，这一条可能默认已经有了，但还是要检查确认一下。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- --<span class="l">enable-admission-plugins=NodeRestriction </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#在1.25考试中，这一个原先为AlwaysAdmit，需要修改为NodeRestriction。</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>重启kubelet</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl daemon-reload
+</span></span><span class="line"><span class="cl">systemctl restart kubelet
+</span></span><span class="line"><span class="cl">kubectl get pod -A <span class="c1">#过几分钟集群才会恢复正常</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>删除题目要求的角色绑定</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl get clusterrolebinding system:anonymous     <span class="c1">#检查</span>
+</span></span><span class="line"><span class="cl">kubectl delete clusterrolebinding system:anonymous  <span class="c1">#删除</span>
+</span></span><span class="line"><span class="cl">kubectl get clusterrolebinding system:anonymous     <span class="c1">#检查</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d782032c2f9.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>验证<br />
+<img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d7823637023.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h1 id="cks-题库-15tls安全配置">CKS 题库 15、TLS安全配置</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d782659684a.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="task-13">Task</h5>
+<p>通过TLS加强kube-apiserver安全配置，要求</p>
+<ul>
+<li>kube-apiserver除了 <strong>TLS 1.3</strong> 及以上的版本可以使用，其他版本都不允许使用。</li>
+<li>密码套件（Cipher suite）为 <strong>TLS_AES_128_GCM_SHA256</strong></li>
+</ul>
+<p>通过TLS加强ETCD安全配置，要求</p>
+<ul>
+<li>密码套件（Cipher suite）为 <strong>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</strong></li>
+</ul>
+<hr />
+<h5 id="参考-12">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh-cn/docs/reference/command-line-tools-reference/kube-apiserver/"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh-cn/docs/reference/command-line-tools-reference/kube-apiserver/</a></p>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d782e15c4c5.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+><br />
+<img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d782fc5d2a0.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h5 id="解答-14">解答</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config user-context KSRS00501
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>远程到 master 并切换到 root</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh master01
+</span></span><span class="line"><span class="cl">sudo -i
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改 kube-apiserver, 养成 修改之前备份文件的好习惯</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir bakyaml
+</span></span><span class="line"><span class="cl">cp /etc/kubernetes/manifests/kube-apiserver.yaml bakyaml/
+</span></span><span class="line"><span class="cl">vim /etc/kubernetes/manifests/kube-apiserver.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加或修改相关内容，并保存(先检查一下，如果考试环境里已经给你这两条了，则你只需要修改即可)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span>- --<span class="l">tls-cipher-suites=TLS_AES_128_GCM_SHA256</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- --<span class="l">tls-min-version=VersionTLS13</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>等待3分钟，等集群应用策略后，再检查kube-apiserver，确保Running。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl -n kube-system get pod
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改 ETCD</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /etc/kubernetes/manifests/etcd.yaml bakyaml/
+</span></span><span class="line"><span class="cl">vim /etc/kubernetes/manifests/etcd.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加或修改相关内容，并保存</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span>- --<span class="l">cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改完成后，需要等待3分钟，等集群应用策略后，再检查一下所有pod，特别是etcd和kube-apiserver两个pod，确保模拟环境是正常的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl get pod -A
+</span></span><span class="line"><span class="cl">kubectl -n kube-system get pod
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d7847974394.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<hr />
+<h1 id="cks-题库-16imagepolicywebhook容器镜像扫描">CKS 题库 16、ImagePolicyWebhook容器镜像扫描</h1>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d7849181779.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<h5 id="context-8">Context</h5>
+<p>cluster 上设置了容器镜像扫描器，但尚未完全集成到 cluster 的配置中。<br />
+完成后，容器镜像扫描器应扫描并拒绝易受攻击的镜像的使用。</p>
+<h5 id="task-14">Task</h5>
+<p>注意：你必须在 cluster 的 <strong>master</strong> 节点上完成整个考题，所有服务和文件都已被准备好并放置在该节点上。</p>
+<p>给定一个目录 <strong>/etc/kubernetes/epconfig</strong> 中不完整的配置，<br />
+以及具有 HTTPS 端点 <strong><a class="link" href="https://image-bouncer-webhook.default.svc:1323/image_policy"  target="_blank" rel="noopener"
+    >https://image-bouncer-webhook.default.svc:1323/image_policy</a></strong> 的功能性容器镜像扫描器：</p>
+<ul>
+<li>启用必要的插件来创建镜像策略</li>
+<li>校验控制配置并将其更改为隐式拒绝（implicit deny）</li>
+<li>编辑配置以正确指向提供的 HTTPS 端点</li>
+</ul>
+<p>最后，通过尝试部署易受攻击的资源 <strong>/cks/img/web1.yaml</strong> 来测试配置是否有效。</p>
+<hr />
+<h5 id="参考-13">参考</h5>
+<p><a class="link" href="https://kubernetes.io/zh/docs/reference/access-authn-authz/admission-controllers/#"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/reference/access-authn-authz/admission-controllers/#</a>如何启用一个准入控制器</p>
+<p><a class="link" href="https://kubernetes.io/zh/docs/reference/access-authn-authz/admission-controllers/#imagepolicywebhook"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/reference/access-authn-authz/admission-controllers/#imagepolicywebhook</a></p>
+<p><a class="link" href="https://kubernetes.io/zh/docs/tasks/debug/debug-cluster/audit/#log-"  target="_blank" rel="noopener"
+    >https://kubernetes.io/zh/docs/tasks/debug/debug-cluster/audit/#log-</a>后端</p>
+<hr />
+<h5 id="解答-15">解答</h5>
+<p>切换集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl config use-context KSSH00901
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>远程到master并切换root</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh master01
+</span></span><span class="line"><span class="cl">sudo -i
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编辑admission_configuration.json（题目会给这个目录），修改defaultAllow为false：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vi /etc/kubernetes/epconfig/admission_configuration.json
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">&#34;denyTTL&#34;: </span><span class="m">50</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">&#34;retryBackoff&#34;: </span><span class="m">500</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">&#34;defaultAllow&#34;: </span><span class="kc">false</span><span class="w"> </span><span class="c">#将true改为false</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>编辑/etc/kubernetes/epconfig/kubeconfig.yml，添加 webhook server 地址：<br />
+操作前，先备份配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /etc/kubernetes/epconfig/kubeconfig.yml bakyaml/
+</span></span><span class="line"><span class="cl">vi /etc/kubernetes/epconfig/kubeconfig.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改如下内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">certificate-authority</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/kubernetes/epconfig/server.crt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="l">https://image-bouncer-webhook.default.svc:1323/image_policy</span><span class="w"> </span><span class="c">#添加webhook server地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">bouncer_webhook</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>编辑kube-apiserver.yaml，从官网中引用 ImagePolicyWebhook 的配置信息：<br />
+操作前，先备份配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /etc/kubernetes/manifests/kube-apiserver.yaml bakyaml/
+</span></span><span class="line"><span class="cl">vi /etc/kubernetes/manifests/kube-apiserver.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在- command:下添加如下内容，注意空格要对齐（不建议放到最后，建议放置的位置详见下方截图）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- --<span class="l">enable-admission-plugins=NodeRestriction,ImagePolicyWebhook</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- --<span class="l">admission-control-config-file=/etc/kubernetes/epconfig/admission_configuration.json</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#在1.25的考试中，默认这行已经添加了，但为了以防万一，模拟环境，没有添加，需要你手动添加。考试时，你先检查，有的话，就不要再重复添加了。重复添加反而会报错！</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d786aa2501a.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>在kube-apiserver.yaml的 volumeMounts 增加</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">volumeMounts</span><span class="p">:</span><span class="w"> </span><span class="c">#在volumeMounts下面增加 #注意，在1.25考试中，蓝色的内容可能已经有了，你只需要添加绿色字体的内容。可以通过红色字，在文件中定位。但模拟环境没有加，需要你全部手动添加。这样是为了练习，万一考试中没有，你也会加。但是如果考试中已添加，你再添加一遍，则会报错，导致api-server启不起来。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/kubernetes/epconfig</span><span class="w"> </span><span class="c">#建议紧挨着volumeMounts的下方增加</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">epconfig</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d786b46aa7d.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>在kube-apiserver.yaml的volumes 增加</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span><span class="c">#在volumes下面增加 #注意，在1.25考试中，蓝色的内容可能已经有了，你只需要检查确认一下是否准确。可以通过红色字，在文件中定位。但模拟环境没有加，需要你全部手动添加。这样是为了练习，万一考试中没有，你也会加。但是如果考试中已添加，你再添加一遍，则会报错，导致api-server启不起来。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">epconfig</span><span class="w"> </span><span class="c">#建议紧挨着volumes的下方增加</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/kubernetes/epconfig</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">DirectoryOrCreate</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#如果你写的是目录，则是DirectoryOrCreate，如果你写的是文件，则是File</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d786d668716.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+<p>重启并检查集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl restart kubelet
+</span></span><span class="line"><span class="cl">kubectl -n kube-system get pod
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过尝试部署易受攻击的资源 <strong>/cks/img/web1.yaml</strong> 来测试配置是否有效<br />
+无法创建pod，如下报错，表示成功。<br />
+因为模拟环境里的image_policy策略是镜像tag是latest的不允许创建。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f /cks/img/web1.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/cks/63d7872bacf15.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="file"
+	
+	
+></p>
+
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/kubernetes/">kubernetes</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E6%A1%88%E4%BE%8B%E4%BD%BF%E7%94%A8-configmap-%E6%9D%A5%E9%85%8D%E7%BD%AE-redis/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/redis/1_cKRFZsFXbyrOyKNB5MLn9A.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/redis/1_cKRFZsFXbyrOyKNB5MLn9A.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">真实世界的案例：使用 ConfigMap 来配置 Redis</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/kubernetes-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-apiserver-%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4%E7%94%A8%E6%88%B7/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_RAHmolC--zbpMi7JiTH3Gg.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_RAHmolC--zbpMi7JiTH3Gg.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kubernetes 用户管理, ApiServer 新增集群用户</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/2024-cka-%E9%A2%98%E5%BA%93/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/cka%20%26%20cks/cert.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/cka%20%26%20cks/cert.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">2024 CKA 题库</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/keepalived-nginx%E5%AE%9E%E7%8E%B0%E9%AB%98%E5%8F%AF%E7%94%A8apiserver/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1c9798a03347452295e1b66af9606f57.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1c9798a03347452295e1b66af9606f57.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Keepalived&#43;nginx实现高可用apiserver</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E5%85%A8%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E4%BD%BF%E7%94%A8-kind-%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-k8s-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/blogimage-kubernetes.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/blogimage-kubernetes.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">全平台通用使用 kind 快速搭建 k8s 开发环境</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 -  2024 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

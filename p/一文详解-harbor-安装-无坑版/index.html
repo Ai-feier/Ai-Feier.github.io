@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Harbor 是一个开源的企业级Docker 镜像仓库，它提供了一套可以在云计算和容器化环境中使用的管理工具，支持统一管理多种镜像仓库，可以方便地进行镜像的管理、存储、分发和安全验证。'>
+<meta name="keywords" content="harbor, docker, docker push"><title>一文详解 Harbor 安装, 无坑版</title>
+
+<link rel='canonical' href='/p/%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-harbor-%E5%AE%89%E8%A3%85-%E6%97%A0%E5%9D%91%E7%89%88/'>
+
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='一文详解 Harbor 安装, 无坑版'>
+<meta property='og:description' content='Harbor 是一个开源的企业级Docker 镜像仓库，它提供了一套可以在云计算和容器化环境中使用的管理工具，支持统一管理多种镜像仓库，可以方便地进行镜像的管理、存储、分发和安全验证。'>
+<meta property='og:url' content='/p/%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-harbor-%E5%AE%89%E8%A3%85-%E6%97%A0%E5%9D%91%E7%89%88/'>
+<meta property='og:site_name' content='Ai-feier&#39;s Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='harbor' /><meta property='article:tag' content='docker' /><meta property='article:tag' content='docker compose' /><meta property='article:published_time' content='2024-01-21T18:18:54&#43;08:00'/><meta property='article:modified_time' content='2024-01-21T18:18:54&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/harbor-2.webp' />
+<meta name="twitter:title" content="一文详解 Harbor 安装, 无坑版">
+<meta name="twitter:description" content="Harbor 是一个开源的企业级Docker 镜像仓库，它提供了一套可以在云计算和容器化环境中使用的管理工具，支持统一管理多种镜像仓库，可以方便地进行镜像的管理、存储、分发和安全验证。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/harbor-2.webp' />
+    <link rel="shortcut icon" href="/favicon.png" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "light");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
+            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Ai-feier'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/MaKemediTation'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前置依赖">前置依赖</a>
+      <ol>
+        <li><a href="#安装-docker-ce">安装 docker-ce</a></li>
+        <li><a href="#安装-docker-compose">安装 docker-compose</a></li>
+      </ol>
+    </li>
+    <li><a href="#安装-harbor">安装 harbor</a>
+      <ol>
+        <li><a href="#生成证书">生成证书</a></li>
+        <li><a href="#安装方式">安装方式</a></li>
+        <li><a href="#访问-harbor">访问 harbor</a></li>
+      </ol>
+    </li>
+    <li><a href="#推送镜像">推送镜像</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-harbor-%E5%AE%89%E8%A3%85-%E6%97%A0%E5%9D%91%E7%89%88/">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/harbor-2.webp" loading="lazy" alt="Featured image of post 一文详解 Harbor 安装, 无坑版" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/docker/" >
+                docker
+            </a>
+        
+            <a href="/categories/docker-compose/" >
+                docker compose
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-harbor-%E5%AE%89%E8%A3%85-%E6%97%A0%E5%9D%91%E7%89%88/">一文详解 Harbor 安装, 无坑版</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Harbor 是一个开源的企业级Docker 镜像仓库，它提供了一套可以在云计算和容器化环境中使用的管理工具，支持统一管理多种镜像仓库，可以方便地进行镜像的管理、存储、分发和安全验证。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 21, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    <span id="busuanzi_container_page_pv" style="color: rgb(0,0,0); size: 7px">Total Views: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
+
+    
+    
+    <ul>
+<li>实验环境: Ubuntu 20.04</li>
+</ul>
+<h2 id="前置依赖">前置依赖</h2>
+<h3 id="安装-docker-ce">安装 docker-ce</h3>
+<p>让apt可以支持HTTPS</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 顺便安装 openssl</span>
+</span></span><span class="line"><span class="cl">apt install apt-transport-https ca-certificates curl software-properties-common openssl -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装 docker-ce</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 添加apt gpg阿里源公钥</span>
+</span></span><span class="line"><span class="cl">curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg <span class="p">|</span> sudo apt-key add -
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加apt docker阿里源</span>
+</span></span><span class="line"><span class="cl">add-apt-repository <span class="s2">&#34;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu focal stable&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 更新包列表</span>
+</span></span><span class="line"><span class="cl">apt update
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装 docker-ce</span>
+</span></span><span class="line"><span class="cl">apt install -y docker-ce
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置 docker 阿里源镜像地址</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">sudo mkdir -p /etc/docker
+</span></span><span class="line"><span class="cl">sudo tee /etc/docker/daemon.json <span class="s">&lt;&lt;-&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">{
+</span></span></span><span class="line"><span class="cl"><span class="s">	&#34;registry-mirrors&#34;: [
+</span></span></span><span class="line"><span class="cl"><span class="s">		&#34;https://nol6uuul.mirror.aliyuncs.com&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s">		&#34;https://registry.docker-cn.com&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;https://docker.mirrors.ustc.edu.cn&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;https://dockerhub.azk8s.cn&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;http://hub-mirror.c.163.com&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">	]
+</span></span></span><span class="line"><span class="cl"><span class="s">}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">sudo systemctl daemon-reload
+</span></span><span class="line"><span class="cl">sudo systemctl restart docker
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">docker version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="安装-docker-compose">安装 docker-compose</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">curl -SL https://github.com/docker/compose/releases/download/v2.24.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+</span></span><span class="line"><span class="cl">chmod +x /usr/local/bin/docker-compose
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建软链接</span>
+</span></span><span class="line"><span class="cl">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">docker-compose --version
+</span></span><span class="line"><span class="cl"><span class="c1">#Docker Compose version v2.24.1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="安装-harbor">安装 harbor</h2>
+<h3 id="生成证书">生成证书</h3>
+<p>gen_certs.sh:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ca</span>
+</span></span><span class="line"><span class="cl">openssl genrsa -out ca.key <span class="m">4096</span>
+</span></span><span class="line"><span class="cl">openssl req -x509 -new -nodes -sha512 -days <span class="m">3650</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> -subj <span class="s2">&#34;/C=CN/ST=Beijing/L=Beijing/O=example/OU=Personal/CN=myharbor.com&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> -key ca.key <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> -out ca.crt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># server sert</span>
+</span></span><span class="line"><span class="cl">openssl genrsa -out myharbor.com.key <span class="m">4096</span>
+</span></span><span class="line"><span class="cl">openssl req -sha512 -new <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -subj <span class="s2">&#34;/C=CN/ST=Beijing/L=Beijing/O=example/OU=Personal/CN=myharbor.com&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -key myharbor.com.key <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -out myharbor.com.csr
+</span></span><span class="line"><span class="cl">cat &gt; v3.ext <span class="s">&lt;&lt;-EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">authorityKeyIdentifier=keyid,issuer
+</span></span></span><span class="line"><span class="cl"><span class="s">basicConstraints=CA:FALSE
+</span></span></span><span class="line"><span class="cl"><span class="s">keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+</span></span></span><span class="line"><span class="cl"><span class="s">extendedKeyUsage = serverAuth
+</span></span></span><span class="line"><span class="cl"><span class="s">subjectAltName = @alt_names
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[alt_names]
+</span></span></span><span class="line"><span class="cl"><span class="s">DNS.1=myharbor.com
+</span></span></span><span class="line"><span class="cl"><span class="s">DNS.2=myharbor
+</span></span></span><span class="line"><span class="cl"><span class="s">DNS.3=hostname
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">openssl x509 -req -sha512 -days <span class="m">3650</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -extfile v3.ext <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -CA ca.crt -CAkey ca.key -CAcreateserial <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -in myharbor.com.csr <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -out myharbor.com.crt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 把服务器证书复制到 harbor 证书目录</span>
+</span></span><span class="line"><span class="cl">mkdir -p /data/cert/
+</span></span><span class="line"><span class="cl">cp myharbor.com.crt /data/cert/
+</span></span><span class="line"><span class="cl">cp myharbor.com.key /data/cert/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将 crt 证书转换为 cert 供 docker 使用</span>
+</span></span><span class="line"><span class="cl">openssl x509 -inform PEM -in myharbor.com.crt -out myharbor.com.cert
+</span></span><span class="line"><span class="cl">mkdir -p /etc/docker/certs.d/myharbor.com/
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果将默认的 nginx 端口 443 映射到其他端口，请创建 /etc/docker/certs.d/myharbor.com:port 或 /etc/docker/certs.d/harbor_IP:port 文件夹。</span>
+</span></span><span class="line"><span class="cl">cp myharbor.com.cert /etc/docker/certs.d/myharbor.com/
+</span></span><span class="line"><span class="cl">cp myharbor.com.key /etc/docker/certs.d/myharbor.com/
+</span></span><span class="line"><span class="cl">cp ca.crt /etc/docker/certs.d/myharbor.com/
+</span></span><span class="line"><span class="cl">systemctl restart docker
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>sed 快捷替换 harbor 地址: <code>sed -i 's/myharbor.com/yourdomain.com/g'</code></p>
+</blockquote>
+<p>运行脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ ./gen_certs.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="安装方式">安装方式</h3>
+<ol>
+<li>在线安装(不推荐)</li>
+<li>离线安装</li>
+</ol>
+<p>到 github harbor <a class="link" href="https://github.com/goharbor/harbor/releases"  target="_blank" rel="noopener"
+    >release</a> 下载安装包</p>
+<ol>
+<li>在线包</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">wget https://github.com/goharbor/harbor/releases/download/v2.10.0/harbor-online-installer-v2.10.0.tgz <span class="p">|</span> tar zxvf harbor-online-installer-v2.10.0.tgz
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> harbor
+</span></span><span class="line"><span class="cl"><span class="c1"># 修改配置文件</span>
+</span></span><span class="line"><span class="cl">mv harbor.yml.tmpl harbor.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>离线包</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">wget https://github.com/goharbor/harbor/releases/download/v2.10.0/harbor-offline-installer-v2.10.0.tgz <span class="p">|</span> tar zxvf harbor-online-installer-v2.10.0.tgz
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 修改配置文件</span>
+</span></span><span class="line"><span class="cl">mv harbor/harbor.yml.tmpl harbor/harbor.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">myharbor.com </span><span class="w"> </span><span class="c"># 修改为你的 harbor 地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># http related config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">http</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># https related config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">https</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">443</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 修改为你的证书</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">certificate</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/docker/certs.d/myharbor.com/myharbor.com.cert</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">private_key</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/docker/certs.d/myharbor.com/myharbor.com.key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># harbor 登录密码</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">harbor_admin_password</span><span class="p">:</span><span class="w"> </span><span class="m">123</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">database</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 数据库密码</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l">root123</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">......</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 镜像的数据目录</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data_volume</span><span class="p">:</span><span class="w"> </span><span class="l">/data</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>install harbor</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">cd</span> harbor 
+</span></span><span class="line"><span class="cl">./install.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">root@ubuntu:~/harbor# docker ps
+</span></span><span class="line"><span class="cl">CONTAINER ID   IMAGE                                 COMMAND                  CREATED          STATUS                    PORTS                                                                            NAMES
+</span></span><span class="line"><span class="cl">9316a4e3faf6   goharbor/nginx-photon:v2.10.0         &#34;nginx -g &#39;daemon of…&#34;   57 seconds ago   Up 53 seconds (healthy)   0.0.0.0:80-&gt;8080/tcp, :::80-&gt;8080/tcp, 0.0.0.0:443-&gt;8443/tcp, :::443-&gt;8443/tcp   nginx
+</span></span><span class="line"><span class="cl">995687da9d27   goharbor/harbor-jobservice:v2.10.0    &#34;/harbor/entrypoint.…&#34;   57 seconds ago   Up 50 seconds (healthy)                                                                                    harbor-jobservice
+</span></span><span class="line"><span class="cl">a1ba9699a081   goharbor/harbor-core:v2.10.0          &#34;/harbor/entrypoint.…&#34;   57 seconds ago   Up 55 seconds (healthy)                                                                                    harbor-core
+</span></span><span class="line"><span class="cl">62b07881e5b2   goharbor/harbor-portal:v2.10.0        &#34;nginx -g &#39;daemon of…&#34;   58 seconds ago   Up 55 seconds (healthy)                                                                                    harbor-portal
+</span></span><span class="line"><span class="cl">7ec4860cfe46   goharbor/registry-photon:v2.10.0      &#34;/home/harbor/entryp…&#34;   58 seconds ago   Up 55 seconds (healthy)                                                                                    registry
+</span></span><span class="line"><span class="cl">3366683058d0   goharbor/redis-photon:v2.10.0         &#34;redis-server /etc/r…&#34;   58 seconds ago   Up 55 seconds (healthy)                                                                                    redis
+</span></span><span class="line"><span class="cl">32e5947ee912   goharbor/harbor-db:v2.10.0            &#34;/docker-entrypoint.…&#34;   58 seconds ago   Up 55 seconds (healthy)                                                                                    harbor-db
+</span></span><span class="line"><span class="cl">3ed9c4d79763   goharbor/harbor-registryctl:v2.10.0   &#34;/home/harbor/start.…&#34;   58 seconds ago   Up 55 seconds (healthy)                                                                                    registryctl
+</span></span><span class="line"><span class="cl">1afd08e2f25e   goharbor/harbor-log:v2.10.0           &#34;/bin/sh -c /usr/loc…&#34;   58 seconds ago   Up 57 seconds (healthy)   127.0.0.1:1514-&gt;10514/tcp                                                        harbor-log
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="访问-harbor">访问 harbor</h3>
+<p>修改主机 hosts 添加 网站</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">192.168.254.130 myharbor.com
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>浏览器访问 harbor</p>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/harbor/image-20240121174905693.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240121174905693"
+	
+	
+></p>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/harbor/image-20240121174944023.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240121174944023"
+	
+	
+></p>
+<h2 id="推送镜像">推送镜像</h2>
+<p>创建项目 initproject</p>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/harbor/image-20240121175433633.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240121175433633"
+	
+	
+></p>
+<p>向虚拟机添加域名解析</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;192.168.254.130 myharbor.com&#34;</span> &gt;&gt; /etc/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>docker login 登录 harbor</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker login myharbor.com
+</span></span><span class="line"><span class="cl"><span class="c1"># username: admin</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># password: 123</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>推送 busybox</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker pull busybox
+</span></span><span class="line"><span class="cl"><span class="c1"># tag: 镜像仓库地址/项目名/镜像名:version</span>
+</span></span><span class="line"><span class="cl">docker tag busybox myharbor.com/initproject/busybox:first
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">docker push myharbor.com/initproject/busybox:first
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看镜像</p>
+<p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/harbor/image-20240121175847344.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20240121175847344"
+	
+	
+></p>
+
+</section>
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/harbor/">harbor</a>
+        
+            <a href="/tags/docker/">docker</a>
+        
+            <a href="/tags/docker-compose/">docker compose</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/%E4%BD%BF%E7%94%A8-docker-%E6%90%AD%E5%BB%BA%E6%90%AD%E5%BB%BA%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93-~-registry/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/Private%20Docker%20Registry.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/docker/Private%20Docker%20Registry.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">使用 docker 搭建搭建私有仓库 ~ Registry</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/%E5%85%A8%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E4%BD%BF%E7%94%A8-kind-%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-k8s-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/blogimage-kubernetes.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/blogimage-kubernetes.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">全平台通用使用 kind 快速搭建 k8s 开发环境</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/docker-ce-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%9B%BD%E5%86%85%E6%BA%90%E9%85%8D%E7%BD%AE-ubuntu-20.04/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/0_85-DDF3zAO5nAsNh.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/0_85-DDF3zAO5nAsNh.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">docker-ce 安装与国内源配置 | Ubuntu 20.04 </h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/15839387687383.jpg" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/15839387687383.jpg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dockerfile: 制作精简镜像</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/dockerfile/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/270-docker_-build_image_thumbnail.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/270-docker_-build_image_thumbnail.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dockerfile</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "89b695d504478273932e",
+        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
+        repo: "Ai-feier.github.io",
+        owner: "Ai-feier",
+        admin: ["Ai-feier"],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+  <section class="copyright">
+    &copy;  2023 -  2024 Ai-feier&#39;s Blog
+  </section>
+
+  
+
+  
+  <div class="busuanzi-footer">
+    
+    
+    <span id="busuanzi_container_site_uv">
+      Total Visitors: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
