@@ -3,10 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>/</loc>
-    <lastmod>2024-01-21T18:18:54+08:00</lastmod>
+    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
   </url><url>
     <loc>/categories/</loc>
-    <lastmod>2024-01-21T18:18:54+08:00</lastmod>
+    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
+  </url><url>
+    <loc>/tags/linux/</loc>
+    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
+  </url><url>
+    <loc>/categories/linux/</loc>
+    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
+  </url><url>
+    <loc>/tags/nfs/</loc>
+    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
+  </url><url>
+    <loc>/tags/ubuntu/</loc>
+    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
+  </url><url>
+    <loc>/p/%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-nfs-%E7%8E%AF%E5%A2%83/</loc>
+    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
   </url><url>
     <loc>/tags/docker/</loc>
     <lastmod>2024-01-21T18:18:54+08:00</lastmod>
@@ -21,12 +42,6 @@
     <lastmod>2024-01-21T18:18:54+08:00</lastmod>
   </url><url>
     <loc>/tags/harbor/</loc>
-    <lastmod>2024-01-21T18:18:54+08:00</lastmod>
-  </url><url>
-    <loc>/post/</loc>
-    <lastmod>2024-01-21T18:18:54+08:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2024-01-21T18:18:54+08:00</lastmod>
   </url><url>
     <loc>/p/%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-harbor-%E5%AE%89%E8%A3%85-%E6%97%A0%E5%9D%91%E7%89%88/</loc>
@@ -47,16 +62,10 @@
     <loc>/tags/git/</loc>
     <lastmod>2024-01-17T10:52:14+08:00</lastmod>
   </url><url>
-    <loc>/categories/linux/</loc>
-    <lastmod>2024-01-17T10:52:14+08:00</lastmod>
-  </url><url>
     <loc>/tags/resolve/</loc>
     <lastmod>2024-01-17T10:52:14+08:00</lastmod>
   </url><url>
     <loc>/categories/tips/</loc>
-    <lastmod>2024-01-17T10:52:14+08:00</lastmod>
-  </url><url>
-    <loc>/tags/ubuntu/</loc>
     <lastmod>2024-01-17T10:52:14+08:00</lastmod>
   </url><url>
     <loc>/tags/v2ray/</loc>
@@ -244,9 +253,6 @@
   </url><url>
     <loc>/tags/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C/</loc>
     <lastmod>2023-12-18T02:11:39+08:00</lastmod>
-  </url><url>
-    <loc>/tags/linux/</loc>
-    <lastmod>2023-12-17T15:17:00+08:00</lastmod>
   </url><url>
     <loc>/tags/shell/</loc>
     <lastmod>2023-12-17T15:17:00+08:00</lastmod>

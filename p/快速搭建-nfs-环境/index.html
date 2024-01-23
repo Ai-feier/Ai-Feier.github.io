@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='总结文件查找命令 find 的常用参数, 以及实操命令'>
-<meta name="keywords" content="find, linux"><title>Find文件查找</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='NFS（Network File System）**即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间共享资源**。 在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。'>
+<meta name="keywords" content="nfs, ubuntu, linux"><title>快速搭建 nfs 环境</title>
 
-<link rel='canonical' href='/p/find%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE/'>
+<link rel='canonical' href='/p/%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-nfs-%E7%8E%AF%E5%A2%83/'>
 
-<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Find文件查找'>
-<meta property='og:description' content='总结文件查找命令 find 的常用参数, 以及实操命令'>
-<meta property='og:url' content='/p/find%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE/'>
+<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='快速搭建 nfs 环境'>
+<meta property='og:description' content='NFS（Network File System）**即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间共享资源**。 在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。'>
+<meta property='og:url' content='/p/%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-nfs-%E7%8E%AF%E5%A2%83/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='find' /><meta property='article:tag' content='Linux' /><meta property='article:published_time' content='2023-12-17T15:13:03&#43;08:00'/><meta property='article:modified_time' content='2023-12-17T15:13:03&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/hero.png' />
-<meta name="twitter:title" content="Find文件查找">
-<meta name="twitter:description" content="总结文件查找命令 find 的常用参数, 以及实操命令"><meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/hero.png' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='ubuntu' /><meta property='article:tag' content='nfs' /><meta property='article:tag' content='Linux' /><meta property='article:published_time' content='2024-01-23T18:04:03&#43;08:00'/><meta property='article:modified_time' content='2024-01-23T18:04:03&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/nfs-in-linux.png.webp' />
+<meta name="twitter:title" content="快速搭建 nfs 环境">
+<meta name="twitter:description" content="NFS（Network File System）**即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间共享资源**。 在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/nfs-in-linux.png.webp' />
     <link rel="shortcut icon" href="/favicon.png" />
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <meta name="referrer" content="no-referrer-when-downgrade">
@@ -247,34 +247,16 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#常用选项-找文件">常用选项 (找文件)</a>
+    <li><a href="#nfs-环境搭建">nfs 环境搭建</a>
       <ol>
-        <li><a href="#语法格式">语法格式</a></li>
-        <li><a href="#选项参数表">选项参数表:</a>
-          <ol>
-            <li><a href="#-type-参数">-type 参数</a></li>
-            <li><a href="#-size-参数">-size 参数</a></li>
-            <li><a href="#-mtime">-mtime</a></li>
-            <li><a href="#-mmin">-mmin</a></li>
-            <li><a href="#-mindepth">-mindepth</a></li>
-            <li><a href="#-maxdepth">-maxdepth</a></li>
-          </ol>
-        </li>
+        <li><a href="#实验环境">实验环境</a></li>
+        <li><a href="#安装-nfsnfs主节点">安装 nfs（nfs主节点）</a></li>
+        <li><a href="#配置">配置</a></li>
+        <li><a href="#启动服务">启动服务</a></li>
+        <li><a href="#测试挂载nfs-node节点">测试挂载（nfs node节点）</a></li>
       </ol>
     </li>
-    <li><a href="#find-操作-执行">find 操作 (执行)</a>
-      <ol>
-        <li><a href="#-exec">-exec</a></li>
-        <li><a href="#逻辑运算符">逻辑运算符</a></li>
-      </ol>
-    </li>
-    <li><a href="#其他查找命令">其他查找命令</a>
-      <ol>
-        <li><a href="#locate-默认部分匹配">locate: 默认部分匹配</a></li>
-        <li><a href="#whereis-查找二进制文件">whereis: 查找二进制文件</a></li>
-        <li><a href="#which-查找二进制程序文件">which: 查找二进制程序文件</a></li>
-      </ol>
-    </li>
+    <li><a href="#参考">参考</a></li>
   </ol>
 </nav>
         </div>
@@ -289,9 +271,9 @@
     <article class="has-image main-article">
     <header class="article-header">
         <div class="article-image">
-            <a href="/p/find%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE/">
+            <a href="/p/%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-nfs-%E7%8E%AF%E5%A2%83/">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/hero.png" loading="lazy" alt="Featured image of post Find文件查找" />
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/nfs-in-linux.png.webp" loading="lazy" alt="Featured image of post 快速搭建 nfs 环境" />
                 
             </a>
         </div>
@@ -310,12 +292,12 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/p/find%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE/">Find文件查找</a>
+            <a href="/p/%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-nfs-%E7%8E%AF%E5%A2%83/">快速搭建 nfs 环境</a>
         </h2>
     
         
         <h3 class="article-subtitle">
-            总结文件查找命令 find 的常用参数, 以及实操命令
+            NFS（Network File System）**即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间共享资源**。 在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。
         </h3>
         
     </div>
@@ -336,7 +318,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">Dec 17, 2023</time>
+                <time class="article-time--published">Jan 23, 2024</time>
             </div>
         
 
@@ -351,7 +333,7 @@
 
 
                 <time class="article-time--reading">
-                    2 minute read
+                    1 minute read
                 </time>
             </div>
         
@@ -371,316 +353,152 @@
 
     
     
-    <h2 id="常用选项-找文件">常用选项 (找文件)</h2>
-<!-- more --> 
-<h3 id="语法格式">语法格式</h3>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/find%e6%96%87%e4%bb%b6%e6%9f%a5%e6%89%be/image-20231210194845588.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="image-20231210194845588"
-	
-	
-></p>
-<h3 id="选项参数表">选项参数表:</h3>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/find%e6%96%87%e4%bb%b6%e6%9f%a5%e6%89%be/image-20231210194910732.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="image-20231210194910732"
-	
-	
-></p>
-<p><img src="/https:/blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/find%e6%96%87%e4%bb%b6%e6%9f%a5%e6%89%be/image-20231210195003301.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="image-20231210195003301"
-	
-	
-></p>
+    <h2 id="nfs-环境搭建">nfs 环境搭建</h2>
+<p>简介: NFS（Network File System）<strong>即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间共享资源</strong>。 在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。</p>
+<h3 id="实验环境">实验环境</h3>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
-<th>常用</th>
-<th>解释</th>
+<th>节点</th>
+<th>用途</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>-name</td>
-<td>find /etc -name &lsquo;*conf&rsquo;</td>
+<td>192.168.254.130</td>
+<td>nfs 服务器</td>
 </tr>
 <tr>
-<td>-iname</td>
-<td>find /etc -name &lsquo;*conf&rsquo;  忽略大小写</td>
-</tr>
-<tr>
-<td>-user</td>
-<td>find . -user username</td>
-</tr>
-<tr>
-<td>-group</td>
-<td>find . -group groupname</td>
-</tr>
-<tr>
-<td>-type</td>
-<td>find . -type f</td>
-</tr>
-<tr>
-<td>-size</td>
-<td>find /etc -size -10000c       查找小于10000字节的文件</td>
+<td>172.28.18.117</td>
+<td>用于挂载 nfs</td>
 </tr>
 </tbody>
 </table></div>
-<h4 id="-type-参数">-type 参数</h4>
-<div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>-type 参数</th>
-<th>对应文件类型</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>f</td>
-<td>文件类型</td>
-</tr>
-<tr>
-<td>d</td>
-<td>目录</td>
-</tr>
-<tr>
-<td>c</td>
-<td>字符设备文件</td>
-</tr>
-<tr>
-<td>b</td>
-<td>块设备文件</td>
-</tr>
-<tr>
-<td>l</td>
-<td>链接文件</td>
-</tr>
-<tr>
-<td>p</td>
-<td>管道文件</td>
-</tr>
-</tbody>
-</table></div>
-<h4 id="-size-参数">-size 参数</h4>
-<div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>-size 参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-n</td>
-<td>find /etc -size -10000c       查找小于10000字节的文件</td>
-</tr>
-<tr>
-<td>+n</td>
-<td>find /etc -size +1M       查找大于10000字节的文件</td>
-</tr>
-</tbody>
-</table></div>
-<blockquote>
-<p>c : 字节</p>
-<p>k: 1000字节</p>
-<p>M : Mb</p>
+<p>操作系统: Ubuntu 20.04</p>
+<h3 id="安装-nfsnfs主节点">安装 nfs（nfs主节点）</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get install -y nfs-kernel-server  <span class="c1"># 安装 NFS服务器端</span>
+</span></span><span class="line"><span class="cl">sudo apt-get install -y nfs-common         <span class="c1"># 安装 NFS客户端</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>nfs服务器端，只在集群中某一台安装即可</p>
 </blockquote>
-<h4 id="-mtime">-mtime</h4>
-<p>以天为单位</p>
-<div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>-mtime 参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-n</td>
-<td>n 天内修改的文件</td>
-</tr>
-<tr>
-<td>+n</td>
-<td>n 天以前修改的文件</td>
-</tr>
-<tr>
-<td>n</td>
-<td>第 n 天修改的文件</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>示例</strong></p>
+<h3 id="配置">配置</h3>
+<p>创建nfs共享目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /nfs/share
+</span></span><span class="line"><span class="cl">chmod -R <span class="m">666</span> /nfs/share
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改配置 <code>vim /etc/exports</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#若需要把 “/data/backups” 目录设置为 NFS 共享目录，请在该文件末尾添加下面的一行：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 当登录NFS主机使用共享目录的使用者是root时，其权限将被转换成为匿名使用者，通常它的UID与GID都会变成nobody身份,添加no_root_squash参数，确保root账户能用</span>
+</span></span><span class="line"><span class="cl">/nfs/share *<span class="o">(</span>rw,sync,no_root_squash<span class="o">)</span>     <span class="c1"># * 表示允许任何网段 IP 的系统访问该 NFS 目录</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置生效</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">exportfs</span> <span class="o">-</span><span class="n">r</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看生效</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">exportfs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="启动服务">启动服务</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo /etc/init.d/nfs-kernel-server start    或者  
+</span></span><span class="line"><span class="cl">sudo /etc/init.d/nfs-kernel-server restart
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="测试挂载nfs-node节点">测试挂载（nfs node节点）</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /nfs/share
+</span></span><span class="line"><span class="cl">mount -t nfs 192.168.254.130:/nfs/share /nfsremote -o nolock
+</span></span><span class="line"><span class="cl">wget -O /nfsremote/baidu.html baidu.com
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <ol>
-<li>查找 /etc 下 5 天内修改的文件, 并以 conf 结尾</li>
-<li>查找 /etc 10 天前修改的文件, 属主为 root</li>
+<li>
+<p>如果提示 <code>mount: /nfsremote: bad option; for several filesystems (e.g. nfs, cifs) you might need a /sbin/mount.&lt;type&gt; helper program.</code><br />
+&gt;<br />
+&gt;     在客户端节点安装 nfs 客户端 <code>sudo apt-get install nfs-common -y</code></p>
+</li>
+<li>
+<p>如果提示 <code>mount.nfs: access denied by server while mounting</code><br />
+&gt;<br />
+&gt;     在服务器端 ``/etc/exports<code>中加入</code>insecure<code>&gt; &gt;     如:</code>/nfs/share *(insecure,rw,sync,no_root_squash)`</p>
+</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find /etc -mtime -5 -name <span class="s1">&#39;*conf&#39;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ find /etc -mtime +10 -user root
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="-mmin">-mmin</h4>
-<div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>-mmin 参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-n</td>
-<td>n 分钟内修改</td>
-</tr>
-<tr>
-<td>+n</td>
-<td>n 分钟以前修改</td>
-</tr>
-</tbody>
-</table></div>
-<h4 id="-mindepth">-mindepth</h4>
-<blockquote>
-<p>要作为 find 第一个选项</p>
-<p>从第 n 级子目录开始搜索</p>
-<p>要搜索的目录为第一个目录</p>
 </blockquote>
-<h4 id="-maxdepth">-maxdepth</h4>
-<p><strong>-newer</strong></p>
+<p>在挂载的目录写入数据，则能看到主节点也能同步写入。这时你可在两个节点看到 baidu.html</p>
+<p>如果要解绑，则执行命令：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find /etc -newer 123.txt  <span class="c1"># 查找比 123.txt 更新的文件</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">umount /nfsremote
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="find-操作-执行">find 操作 (执行)</h2>
-<ul>
-<li>-print</li>
-<li>-exec</li>
-<li>-ok : 与 -exec 一致, 需要用户交互</li>
-</ul>
-<h3 id="-exec">-exec</h3>
-<p>删除</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find ./etc -name <span class="s2">&#34;*conf&#34;</span> -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>复制</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find ./etc -size +1M -exec cp <span class="o">{}</span> ./test/ <span class="se">\;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>练习: 把 /var/log/ 下 7 天以上的文件删除</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find /var/log/ -name <span class="s2">&#34;*.log&#34;</span> -mtime +7 -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="逻辑运算符">逻辑运算符</h3>
-<ul>
-<li>-a              与</li>
-<li>-o              或</li>
-<li>-not | !       非</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ find . -not -user &lt;username&gt; 
-</span></span><span class="line"><span class="cl">$ find . ! -user &lt;username&gt; 
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$ find -type f -a -user &lt;username&gt; -a -size +300c
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 属主为 ? 或以 .yml 结尾的文件</span>
-</span></span><span class="line"><span class="cl">$ find . -type f -a <span class="se">\(</span> -user &lt;username&gt; -o -name <span class="s1">&#39;*.yml&#39;</span> <span class="se">\)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="其他查找命令">其他查找命令</h2>
-<h3 id="locate-默认部分匹配">locate: 默认部分匹配</h3>
-<p>位于软件包 mlocate</p>
-<p>find 是直接从磁盘中查找, locate 是从数据库中查找</p>
-<p>数据库文件位置: /var/lib/mlocate/mlocate.db      -&gt;    通过 updatedb 更新数据库文件</p>
-<p>数据库配置文件: /etc/updatedb.conf</p>
-<p>在后台 cron 定定时任务执行更新</p>
-<h3 id="whereis-查找二进制文件">whereis: 查找二进制文件</h3>
-<div class="table-wrapper"><table>
-<thead>
-<tr>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-b</td>
-<td>二进制文件</td>
-</tr>
-<tr>
-<td>-m</td>
-<td>返回帮助文档</td>
-</tr>
-<tr>
-<td>-s</td>
-<td>返回源代码文件</td>
-</tr>
-</tbody>
-</table></div>
-<h3 id="which-查找二进制程序文件">which: 查找二进制程序文件</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">which mysql
-</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</div><h2 id="参考">参考</h2>
+<blockquote>
+<ol>
+<li><a class="link" href="https://www.cnblogs.com/reachos/p/16352960.html"  target="_blank" rel="noopener"
+    >nfs 配置文件讲解</a></li>
+<li><a class="link" href="https://www.cnblogs.com/yanling-coder/p/13028552.html#locknolock"  target="_blank" rel="noopener"
+    >mount 挂载参数解释</a></li>
+</ol>
+</blockquote>
+
 </section>
 
     <footer class="article-footer">
     
     <section class="article-tags">
         
-            <a href="/tags/find/">find</a>
+            <a href="/tags/ubuntu/">ubuntu</a>
+        
+            <a href="/tags/nfs/">nfs</a>
         
             <a href="/tags/linux/">Linux</a>
         
@@ -716,18 +534,18 @@
             
                 
 <article class="has-image">
-    <a href="/p/%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA-nfs-%E7%8E%AF%E5%A2%83/">
+    <a href="/p/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/">
         
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/nfs-in-linux.png.webp" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/nfs-in-linux.png.webp"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/clash.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/clash.png"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">快速搭建 nfs 环境</h2>
+            <h2 class="article-title">如何让虚拟机拥有愉快网络环境</h2>
         </div>
     </a>
 </article>
@@ -792,18 +610,18 @@
             
                 
 <article class="has-image">
-    <a href="/p/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/">
+    <a href="/p/find%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE/">
         
         
             <div class="article-image">
                 
-                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/clash.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/clash.png"/>
+                    <img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/hero.png" loading="lazy" data-key="" data-hash="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/hero.png"/>
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">如何让虚拟机拥有愉快网络环境</h2>
+            <h2 class="article-title">Find文件查找</h2>
         </div>
     </a>
 </article>
