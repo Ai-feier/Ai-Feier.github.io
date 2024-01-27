@@ -6,7 +6,31 @@
         <description>Recent content in Tags on Ai-feier&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Sat, 27 Jan 2024 15:18:11 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 27 Jan 2024 19:05:45 +0800</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>linux</title>
+        <link>/tags/linux/</link>
+        <pubDate>Sat, 27 Jan 2024 19:05:45 +0800</pubDate>
+        
+        <guid>/tags/linux/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>linux应用部署</title>
+        <link>/tags/linux%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</link>
+        <pubDate>Sat, 27 Jan 2024 19:05:45 +0800</pubDate>
+        
+        <guid>/tags/linux%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>postgresql</title>
+        <link>/tags/postgresql/</link>
+        <pubDate>Sat, 27 Jan 2024 19:05:45 +0800</pubDate>
+        
+        <guid>/tags/postgresql/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>k8s</title>
         <link>/tags/k8s/</link>
         <pubDate>Sat, 27 Jan 2024 15:18:11 +0800</pubDate>
@@ -52,14 +76,6 @@
         <pubDate>Sat, 27 Jan 2024 15:18:11 +0800</pubDate>
         
         <guid>/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>Linux</title>
-        <link>/tags/linux/</link>
-        <pubDate>Fri, 26 Jan 2024 20:36:58 +0800</pubDate>
-        
-        <guid>/tags/linux/</guid>
         <description></description>
         </item>
         <item>
