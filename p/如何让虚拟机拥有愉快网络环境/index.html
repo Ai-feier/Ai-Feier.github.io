@@ -754,6 +754,33 @@
 </span></span><span class="line"><span class="cl">git config --global --unset https.proxy
 </span></span></code></pre></td></tr></table>
 </div>
+</div><blockquote>
+<p><strong>如果是虚拟机的话, 需要将地址设为网关地址</strong></p>
+</blockquote>
+<p>另外如果是 VMware 虚拟机:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ ip r
+</span></span><span class="line"><span class="cl">default via 192.168.254.2 dev ens33 proto static
+</span></span><span class="line"><span class="cl">192.168.254.0/24 dev ens33 proto kernel scope link src 192.168.254.130
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>虚拟机网关为 <code>192.168.254.2</code>, 但该网关为虚拟网关不接流量, 应使用 <code>192.168.254.1</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git config --global http.proxy http://192.168.254.1:10809
+</span></span><span class="line"><span class="cl">git config --global https.proxy https://192.168.254.1:10809
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
