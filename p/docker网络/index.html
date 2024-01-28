@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='/p/docker%E7%BD%91%E7%BB%9C/'>
 
-<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Docker网络'>
+<link rel="stylesheet" href="/scss/style.min.172a3f2c8b781fab5217dc0b57632378208c08cb340c8f862a9604273d8dcd1c.css"><meta property='og:title' content='Docker网络'>
 <meta property='og:description' content='介绍 docker 的网络模式, 从 0 到 1 完成 docker 容器的网络配置'>
 <meta property='og:url' content='/p/docker%E7%BD%91%E7%BB%9C/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
@@ -25,7 +25,7 @@
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "light");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -43,187 +43,22 @@
         }
     })();
 </script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
-            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='https://github.com/Ai-feier'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
+<div class="container main-container flex on-phone--column extended">
 
 
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/MaKemediTation'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+    <a href="/" class="back-home">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+  <polyline points="15 6 9 12 15 18" />
 </svg>
 
 
 
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
+        <span>Back</span>
+    </a>
+</div>
 
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>Links</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
 
     <aside class="sidebar right-sidebar sticky">
         
@@ -418,90 +253,30 @@
 ></p>
 <h3 id="为-null-模式重新配置网络">为 Null 模式重新配置网络</h3>
 <h4 id="create-network-ns">Create network ns</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">mkdir -p /var/run/netns
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">mkdir -p /var/run/netns
 </span></span><span class="line"><span class="cl">find -L /var/run/netns -type l -delete
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="start-nginx-docker-with-non-network-mode">Start nginx docker with non network mode</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker run --network<span class="o">=</span>none  -d nginx
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="check-corresponding-pid">Check corresponding pid</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker ps<span class="p">|</span>grep nginx
+</span></span></code></pre></div><h4 id="start-nginx-docker-with-non-network-mode">Start nginx docker with non network mode</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker run --network<span class="o">=</span>none  -d nginx
+</span></span></code></pre></div><h4 id="check-corresponding-pid">Check corresponding pid</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker ps<span class="p">|</span>grep nginx
 </span></span><span class="line"><span class="cl">docker inspect &lt;containerid&gt;<span class="p">|</span>grep -i pid
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="s2">&#34;Pid&#34;</span>: 876884,
 </span></span><span class="line"><span class="cl"><span class="s2">&#34;PidMode&#34;</span>: <span class="s2">&#34;&#34;</span>,
 </span></span><span class="line"><span class="cl"><span class="s2">&#34;PidsLimit&#34;</span>: null,
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="check-network-config-for-the-container">Check network config for the container</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nsenter -t <span class="m">558754</span> -n ip a
+</span></span></code></pre></div><h4 id="check-network-config-for-the-container">Check network config for the container</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nsenter -t <span class="m">558754</span> -n ip a
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="m">65536</span> qdisc noqueue state UNKNOWN group default qlen <span class="m">1000</span>
 </span></span><span class="line"><span class="cl">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 </span></span><span class="line"><span class="cl">    inet 127.0.0.1/8 scope host lo
 </span></span><span class="line"><span class="cl">       valid_lft forever preferred_lft forever
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="link-network-namespace">Link network namespace</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">pid</span><span class="o">=</span><span class="m">558754</span>
+</span></span></code></pre></div><h4 id="link-network-namespace">Link network namespace</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">pid</span><span class="o">=</span><span class="m">558754</span>
 </span></span><span class="line"><span class="cl">ln -s /proc/<span class="nv">$pid</span>/ns/net /var/run/netns/<span class="nv">$pid</span>
 </span></span><span class="line"><span class="cl">ip netns list
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="check-docker-bridge-on-the-host">Check docker bridge on the host</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">brctl show
+</span></span></code></pre></div><h4 id="check-docker-bridge-on-the-host">Check docker bridge on the host</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">brctl show
 </span></span><span class="line"><span class="cl">ip a
 </span></span><span class="line"><span class="cl">4: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc noqueue state UP group default
 </span></span><span class="line"><span class="cl">    link/ether 02:42:35:40:d3:8b brd ff:ff:ff:ff:ff:ff
@@ -509,43 +284,13 @@
 </span></span><span class="line"><span class="cl">       valid_lft forever preferred_lft forever
 </span></span><span class="line"><span class="cl">    inet6 fe80::42:35ff:fe40:d38b/64 scope link
 </span></span><span class="line"><span class="cl">       valid_lft forever preferred_lft forever
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="create-veth-pair">Create veth pair</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">ip link add A <span class="nb">type</span> veth peer name B
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="config-a">Config A</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">brctl addif docker0 A
+</span></span></code></pre></div><h4 id="create-veth-pair">Create veth pair</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">ip link add A <span class="nb">type</span> veth peer name B
+</span></span></code></pre></div><h4 id="config-a">Config A</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">brctl addif docker0 A
 </span></span><span class="line"><span class="cl">ip link <span class="nb">set</span> A up
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="config-b">Config B</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nv">SETIP</span><span class="o">=</span>172.17.0.10
+</span></span></code></pre></div><h4 id="config-b">Config B</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nv">SETIP</span><span class="o">=</span>172.17.0.10
 </span></span><span class="line"><span class="cl"><span class="nv">SETMASK</span><span class="o">=</span><span class="m">16</span>
 </span></span><span class="line"><span class="cl"><span class="nv">GATEWAY</span><span class="o">=</span>172.17.0.1
 </span></span><span class="line"><span class="cl">
@@ -554,18 +299,9 @@
 </span></span><span class="line"><span class="cl">ip netns <span class="nb">exec</span> <span class="nv">$pid</span> ip link <span class="nb">set</span> eth0 up
 </span></span><span class="line"><span class="cl">ip netns <span class="nb">exec</span> <span class="nv">$pid</span> ip addr add <span class="nv">$SETIP</span>/<span class="nv">$SETMASK</span> dev eth0
 </span></span><span class="line"><span class="cl">ip netns <span class="nb">exec</span> <span class="nv">$pid</span> ip route add default via <span class="nv">$GATEWAY</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="check-connectivity">Check connectivity</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">curl 172.17.0.10
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="容器的多主机间通信">容器的多主机间通信</h2>
+</span></span></code></pre></div><h4 id="check-connectivity">Check connectivity</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">curl 172.17.0.10
+</span></span></code></pre></div><h2 id="容器的多主机间通信">容器的多主机间通信</h2>
 <h3 id="underlay">Underlay</h3>
 <p><strong>为容器的预留一端 IP, 主机就清楚其 IP 的路由, 则能解决主机间容器的互通</strong></p>
 <h3 id="overlay">Overlay</h3>
@@ -714,7 +450,7 @@
     </div>
 </aside>
 
-     
+
     
         
     <div id="gitalk-container"></div>
@@ -864,6 +600,15 @@
 
         document.head.appendChild(customFont);
     }());
+</script>
+<script src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js" integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css" integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
 </script>
 
     </body>

@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='/p/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/'>
 
-<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='如何让虚拟机拥有愉快网络环境'>
+<link rel="stylesheet" href="/scss/style.min.172a3f2c8b781fab5217dc0b57632378208c08cb340c8f862a9604273d8dcd1c.css"><meta property='og:title' content='如何让虚拟机拥有愉快网络环境'>
 <meta property='og:description' content='解决 vmware 虚拟机与主机代理的壁垒, 以及 git clone 的速度限制, 提供： ubuntu, centos, git 方法'>
 <meta property='og:url' content='/p/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
@@ -25,7 +25,7 @@
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "light");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -43,187 +43,22 @@
         }
     })();
 </script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
-            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='https://github.com/Ai-feier'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
+<div class="container main-container flex on-phone--column extended">
 
 
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/MaKemediTation'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+    <a href="/" class="back-home">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+  <polyline points="15 6 9 12 15 18" />
 </svg>
 
 
 
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
+        <span>Back</span>
+    </a>
+</div>
 
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>Links</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
 
     <aside class="sidebar right-sidebar sticky">
         
@@ -428,39 +263,7 @@
 <p>如果是 wsl 就用改, wsl 的网关本来就是一个真实网关</p>
 <p>注意: 虚拟机网卡配置的网关依然得是虚拟 ip: <code>192.168.254.2</code></p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># add proxy</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># add proxy</span>
 </span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">hostip</span><span class="o">=</span><span class="k">$(</span>ip route <span class="p">|</span> grep default <span class="p">|</span> awk <span class="s1">&#39;{print $3}&#39;</span><span class="k">)</span>
 </span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">hostip</span><span class="o">=</span>192.168.254.1   <span class="c1"># 按你的 nat 配置修改为可承载流量的网关, 如果网关真实可达, 注释本行</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># export socks_hostport=7890</span>
@@ -488,70 +291,32 @@
 </span></span></span><span class="line"><span class="cl"><span class="s1">    echo $http_proxy
 </span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#end proxy</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="修改-etcresolvconf">修改 /etc/resolv.conf</h3>
+</span></span></code></pre></div><h3 id="修改-etcresolvconf">修改 /etc/resolv.conf</h3>
 <p><code>/etc/resolv.conf</code> 是一个软链接文件, 我们直接修改会无效</p>
 <ol>
 <li>修改 /etc/systemd/resolved.conf</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>Resolve<span class="o">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>Resolve<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="nv">DNS</span><span class="o">=</span>8.8.8.8 114.114.114.114
 </span></span><span class="line"><span class="cl"><span class="c1">#FallbackDNS=</span>
 </span></span><span class="line"><span class="cl">...
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="2">
+</span></span></code></pre></div><ol start="2">
 <li>重载 resolve</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ systemctl restart systemd-resolved 
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="3">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ systemctl restart systemd-resolved 
+</span></span></code></pre></div><ol start="3">
 <li>新建 /etc/resolv.conf 链接</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ mv /etc/resolv.conf /etc/resolv.conf.bak
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ mv /etc/resolv.conf /etc/resolv.conf.bak
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">$ ln -s /run/systemd//resolve/resolv.conf /etc/
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="配置-apt-使用代理">配置 apt 使用代理</h3>
+</span></span></code></pre></div><h3 id="配置-apt-使用代理">配置 apt 使用代理</h3>
 <p>虚拟机配置了代理就无法使用 apt, 需要配置 apt 代理</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">cat <span class="s">&lt;&lt; EOF &gt; /etc/apt/apt.conf.d/98https-http-proxy
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">cat <span class="s">&lt;&lt; EOF &gt; /etc/apt/apt.conf.d/98https-http-proxy
 </span></span></span><span class="line"><span class="cl"><span class="s">Acquire::http::Proxy &#34;http://192.168.254.1:10811&#34;;
 </span></span></span><span class="line"><span class="cl"><span class="s">Acquire::https::Proxy &#34;http://192.168.254.1:10811&#34;;
 </span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="测试连接">测试连接</h3>
+</span></span></code></pre></div><h3 id="测试连接">测试连接</h3>
 <p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240116204539080.png"
 	
 	
@@ -591,39 +356,7 @@
 ></p>
 <h3 id="设置代理地址">设置代理地址</h3>
 <p>centos 暴露路径也相同</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># add proxy</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># add proxy</span>
 </span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">hostip</span><span class="o">=</span><span class="k">$(</span>ip route <span class="p">|</span> grep default <span class="p">|</span> awk <span class="s1">&#39;{print $3}&#39;</span><span class="k">)</span>
 </span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">hostip</span><span class="o">=</span>192.168.254.1  <span class="c1"># 按你的 nat 配置修改为可承载流量的网关, 如果网关真实可达, 注释本行</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># export socks_hostport=7890</span>
@@ -651,43 +384,17 @@
 </span></span></span><span class="line"><span class="cl"><span class="s1">    echo $http_proxy
 </span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#end proxy</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="修改-networkmanager">修改 NetworkManager</h3>
+</span></span></code></pre></div><h3 id="修改-networkmanager">修改 NetworkManager</h3>
 <p>修改<code>/etc/NetworkManager/NetworkManager.conf</code>文件，在main部分添加<code>dns=none</code>选项：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>main<span class="o">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>main<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="nv">plugins</span><span class="o">=</span>ifcfg-rh
 </span></span><span class="line"><span class="cl"><span class="nv">dns</span><span class="o">=</span>none <span class="c1"># 注意是这句</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>再手动修改<code>/etc/resolv.conf</code>文件，添加下面的DNS：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nameserver 114.114.114.114
+</span></span></code></pre></div><p>再手动修改<code>/etc/resolv.conf</code>文件，添加下面的DNS：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nameserver 114.114.114.114
 </span></span><span class="line"><span class="cl">nameserver 8.8.8.8
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="最后重启网卡">最后重启网卡：</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">systemctl restart network
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="测试代理">测试代理</h3>
+</span></span></code></pre></div><h3 id="最后重启网卡">最后重启网卡：</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">systemctl restart network
+</span></span></code></pre></div><h3 id="测试代理">测试代理</h3>
 <p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/%E5%A6%82%E4%BD%95%E8%AE%A9%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8B%A5%E6%9C%89%E6%84%89%E5%BF%AB%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83/image-20240117103010500.png"
 	
 	
@@ -733,55 +440,22 @@
 ></p>
 <p>我们知道的 v-two-ray 的端口, 这里我们要用本地端口, 因为我们是主机的 git</p>
 <h3 id="设置-git-代理">设置 git 代理</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git config --global http.proxy http://127.0.0.1:10809
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git config --global http.proxy http://127.0.0.1:10809
 </span></span><span class="line"><span class="cl">git config --global https.proxy https://127.0.0.1:10809
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="取消-git-代理">取消 git 代理</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git config --global --unset http.proxy
+</span></span></code></pre></div><h3 id="取消-git-代理">取消 git 代理</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git config --global --unset http.proxy
 </span></span><span class="line"><span class="cl">git config --global --unset https.proxy
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
+</span></span></code></pre></div><blockquote>
 <p><strong>如果是虚拟机的话, 需要将地址设为网关地址</strong></p>
 </blockquote>
 <p>另外如果是 VMware 虚拟机:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ ip r
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ ip r
 </span></span><span class="line"><span class="cl">default via 192.168.254.2 dev ens33 proto static
 </span></span><span class="line"><span class="cl">192.168.254.0/24 dev ens33 proto kernel scope link src 192.168.254.130
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>虚拟机网关为 <code>192.168.254.2</code>, 但该网关为虚拟网关不接流量, 应使用 <code>192.168.254.1</code></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git config --global http.proxy http://192.168.254.1:10809
+</span></span></code></pre></div><p>虚拟机网关为 <code>192.168.254.2</code>, 但该网关为虚拟网关不接流量, 应使用 <code>192.168.254.1</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git config --global http.proxy http://192.168.254.1:10809
 </span></span><span class="line"><span class="cl">git config --global https.proxy https://192.168.254.1:10809
-</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span></code></pre></div>
 </section>
 
     <footer class="article-footer">
@@ -931,7 +605,7 @@
     </div>
 </aside>
 
-     
+
     
         
     <div id="gitalk-container"></div>
@@ -1081,6 +755,15 @@
 
         document.head.appendChild(customFont);
     }());
+</script>
+<script src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js" integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css" integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
 </script>
 
     </body>

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='持久化卷（Persistent Volume, PV）允许用户将外部存储映射到集群，而持久化卷申请（Persistent Volume Claim, PVC）则类似于许可证，使有授权的应用（Pod）可以使用PV。概括地说，PV代表的是Kubernetes中的存储；PVC就像许可证，赋予Pod访问PV的权限；sc则使分配过程是动态的。'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='PV代表的是Kubernetes中的存储；PVC就像许可证，赋予Pod访问PV的权限；sc则使分配过程是动态的。'>
 <meta name="keywords" content="pv, pvc, sc, storageclass, nfs"><title>步步深入 k8s 使用 pv pvc sc 在 nfs 基础上共享存储</title>
 
 <link rel='canonical' href='/p/%E6%AD%A5%E6%AD%A5%E6%B7%B1%E5%85%A5-k8s-%E4%BD%BF%E7%94%A8-pv-pvc-sc-%E5%9C%A8-nfs-%E5%9F%BA%E7%A1%80%E4%B8%8A%E5%85%B1%E4%BA%AB%E5%AD%98%E5%82%A8/'>
 
-<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='步步深入 k8s 使用 pv pvc sc 在 nfs 基础上共享存储'>
-<meta property='og:description' content='持久化卷（Persistent Volume, PV）允许用户将外部存储映射到集群，而持久化卷申请（Persistent Volume Claim, PVC）则类似于许可证，使有授权的应用（Pod）可以使用PV。概括地说，PV代表的是Kubernetes中的存储；PVC就像许可证，赋予Pod访问PV的权限；sc则使分配过程是动态的。'>
+<link rel="stylesheet" href="/scss/style.min.172a3f2c8b781fab5217dc0b57632378208c08cb340c8f862a9604273d8dcd1c.css"><meta property='og:title' content='步步深入 k8s 使用 pv pvc sc 在 nfs 基础上共享存储'>
+<meta property='og:description' content='PV代表的是Kubernetes中的存储；PVC就像许可证，赋予Pod访问PV的权限；sc则使分配过程是动态的。'>
 <meta property='og:url' content='/p/%E6%AD%A5%E6%AD%A5%E6%B7%B1%E5%85%A5-k8s-%E4%BD%BF%E7%94%A8-pv-pvc-sc-%E5%9C%A8-nfs-%E5%9F%BA%E7%A1%80%E4%B8%8A%E5%85%B1%E4%BA%AB%E5%AD%98%E5%82%A8/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='pv' /><meta property='article:tag' content='pvc' /><meta property='article:tag' content='sc' /><meta property='article:tag' content='storageclass' /><meta property='article:tag' content='nfs' /><meta property='article:published_time' content='2024-01-28T17:02:38&#43;08:00'/><meta property='article:modified_time' content='2024-01-28T17:02:38&#43;08:00'/><meta property='og:image' content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/2024%20spring/sc%20pv%20pvc/image-20240128165511823.png' />
 <meta name="twitter:title" content="步步深入 k8s 使用 pv pvc sc 在 nfs 基础上共享存储">
-<meta name="twitter:description" content="持久化卷（Persistent Volume, PV）允许用户将外部存储映射到集群，而持久化卷申请（Persistent Volume Claim, PVC）则类似于许可证，使有授权的应用（Pod）可以使用PV。概括地说，PV代表的是Kubernetes中的存储；PVC就像许可证，赋予Pod访问PV的权限；sc则使分配过程是动态的。"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="PV代表的是Kubernetes中的存储；PVC就像许可证，赋予Pod访问PV的权限；sc则使分配过程是动态的。"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/2024%20spring/sc%20pv%20pvc/image-20240128165511823.png' />
     <link rel="shortcut icon" href="/favicon.png" />
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -25,7 +25,7 @@
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "light");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -43,187 +43,22 @@
         }
     })();
 </script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
-            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='https://github.com/Ai-feier'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
+<div class="container main-container flex on-phone--column extended">
 
 
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/MaKemediTation'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+    <a href="/" class="back-home">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+  <polyline points="15 6 9 12 15 18" />
 </svg>
 
 
 
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
+        <span>Back</span>
+    </a>
+</div>
 
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>Links</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
 
     <aside class="sidebar right-sidebar sticky">
         
@@ -306,7 +141,7 @@
     
         
         <h3 class="article-subtitle">
-            持久化卷（Persistent Volume, PV）允许用户将外部存储映射到集群，而持久化卷申请（Persistent Volume Claim, PVC）则类似于许可证，使有授权的应用（Pod）可以使用PV。概括地说，PV代表的是Kubernetes中的存储；PVC就像许可证，赋予Pod访问PV的权限；sc则使分配过程是动态的。
+            PV代表的是Kubernetes中的存储；PVC就像许可证，赋予Pod访问PV的权限；sc则使分配过程是动态的。
         </h3>
         
     </div>
@@ -342,7 +177,7 @@
 
 
                 <time class="article-time--reading">
-                    5 minute read
+                    4 minute read
                 </time>
             </div>
         
@@ -411,70 +246,24 @@
 </table></div>
 <h2 id="nfs-环境搭建">nfs 环境搭建</h2>
 <p><strong>安装 nfs</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get install -y nfs-kernel-server  <span class="c1"># 安装 NFS服务器端</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get install -y nfs-kernel-server  <span class="c1"># 安装 NFS服务器端</span>
 </span></span><span class="line"><span class="cl">sudo apt-get install -y nfs-common         <span class="c1"># 安装 NFS客户端</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
+</span></span></code></pre></div><blockquote>
 <p>nfs服务器端，只在集群中某一台安装即可</p>
 </blockquote>
 <p><strong>创建nfs共享目录</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /nfs/share
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /nfs/share
 </span></span><span class="line"><span class="cl">chmod -R <span class="m">777</span> /nfs/share
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>修改配置 <code>vim /etc/exports</code></strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 当登录NFS主机使用共享目录的使用者是root时，其权限将被转换成为匿名使用者，通常它的UID与GID都会变成nobody身份,添加no_root_squash参数，确保root账户能用</span>
+</span></span></code></pre></div><p><strong>修改配置 <code>vim /etc/exports</code></strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 当登录NFS主机使用共享目录的使用者是root时，其权限将被转换成为匿名使用者，通常它的UID与GID都会变成nobody身份,添加no_root_squash参数，确保root账户能用</span>
 </span></span><span class="line"><span class="cl">/nfs/share *<span class="o">(</span>rw,sync,no_root_squash<span class="o">)</span>     <span class="c1"># * 表示允许任何网段 IP 的系统访问该 NFS 目录</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>配置生效</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">exportfs -r
+</span></span></code></pre></div><p><strong>配置生效</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">exportfs -r
 </span></span><span class="line"><span class="cl">exportfs  <span class="c1"># 查看生效</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>启动服务</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo /etc/init.d/nfs-kernel-server restart
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">mount -t nfs 192.168.254.130:/nfs/share /nfsremote -o nolock
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
+</span></span></code></pre></div><p><strong>启动服务</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo /etc/init.d/nfs-kernel-server restart
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">mount -t nfs 192.168.254.130:/nfs/share /nfsremote -o nolock
+</span></span></code></pre></div><blockquote>
 <ol>
 <li>如果提示 <code>mount.nfs: access denied by server while mounting</code><br />
 &gt;<br />
@@ -482,15 +271,8 @@
 </ol>
 </blockquote>
 <p><strong>实例数据</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;hello world&#34;</span> &gt; /nfs/share/index.html
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="pod-挂载-nfs">pod 挂载 nfs</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;hello world&#34;</span> &gt; /nfs/share/index.html
+</span></span></code></pre></div><h2 id="pod-挂载-nfs">pod 挂载 nfs</h2>
 <h3 id="架构图">架构图</h3>
 <p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/2024%20spring/sc%20pv%20pvc/image-20240128164131754.png"
 	
@@ -503,36 +285,7 @@
 	
 ></p>
 <p><strong>pod_nfs.yaml:</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-testpod</span><span class="w">
@@ -557,22 +310,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">nfs</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="m">192.168.254.133</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/nfs/share</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>验证结果:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k create -f pod_nfs.yaml
+</span></span></span></code></pre></div><p>验证结果:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k create -f pod_nfs.yaml
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">$ k get po -owide
 </span></span><span class="line"><span class="cl">NAME             READY   STATUS    RESTARTS   AGE   IP               NODE     NOMINATED NODE   READINESS GATES
@@ -580,9 +319,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">$ curl node01:8080
 </span></span><span class="line"><span class="cl">hello world
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="pvc-方式挂载-nfs">pvc 方式挂载 nfs</h2>
+</span></span></code></pre></div><h2 id="pvc-方式挂载-nfs">pvc 方式挂载 nfs</h2>
 <h3 id="架构图-1">架构图</h3>
 <p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/2024%20spring/sc%20pv%20pvc/image-20240128164806076.png"
 	
@@ -595,69 +332,7 @@
 	
 ></p>
 <p><strong>pod_nfs_pv_pvc.yaml:</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># pv 分配资源</span><span class="w">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># pv 分配资源</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolume</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -715,28 +390,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">datadir</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-pvc01</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>验证结果:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k get po -owide
+</span></span></span></code></pre></div><p>验证结果:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k get po -owide
 </span></span><span class="line"><span class="cl">NAME             READY   STATUS    RESTARTS   AGE   IP               NODE     NOMINATED NODE   READINESS GATES
 </span></span><span class="line"><span class="cl">nfs-pv-pvc-pod   1/1     Running   <span class="m">0</span>          97s   10.244.196.135   node01   &lt;none&gt;           &lt;none&gt;
 </span></span><span class="line"><span class="cl">nfs-testpod      1/1     Running   <span class="m">0</span>          16m   10.244.196.134   node01   &lt;none&gt;           &lt;none&gt;
@@ -750,9 +405,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">$ curl node01:8081
 </span></span><span class="line"><span class="cl">hello world
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
+</span></span></code></pre></div><blockquote>
 <p>注意: 1 个 pv 能绑定一个 pvc</p>
 </blockquote>
 <h2 id="storageclass-方式动态申请-pv">storageclass 方式动态申请 pv</h2>
@@ -773,39 +426,7 @@
     >nfs-provisioner</a></p>
 <p>安装 <code>nfs-provisioner</code></p>
 <p>本次使用的是 <code>nfs-provisioner</code> 是 <code>nfs subdir</code></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 通过 helm 安装, 安装 helm</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 通过 helm 安装, 安装 helm</span>
 </span></span><span class="line"><span class="cl">wget https://get.helm.sh/helm-v3.7.0-linux-amd64.tar.gz 
 </span></span><span class="line"><span class="cl">tar zxvf helm-v3.7.0-linux-amd64.tar.gz
 </span></span><span class="line"><span class="cl">mv linux-amd64/helm /usr/local/bin/
@@ -833,70 +454,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 我们需要从 pod 中获取 provisioner 的地址(pod 的环境变量), 用作 sc 的 provisioner 地址</span>
 </span></span><span class="line"><span class="cl">k describe po nfs-subdir-external-provisioner-f8db66c64-cgpqk <span class="p">|</span> grep PROVISIONER_NAME
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>pod_nfs_sc_pvc.yaml:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 构建 storageclass</span><span class="w">
+</span></span></code></pre></div><p>pod_nfs_sc_pvc.yaml:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 构建 storageclass</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -952,24 +511,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">datadir</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-pvc02</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>验证结果:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k get po -owide
+</span></span></span></code></pre></div><p>验证结果:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k get po -owide
 </span></span><span class="line"><span class="cl">NAME                                              READY   STATUS    RESTARTS   AGE   IP               NODE     NOMINATED NODE   READINESS GATES
 </span></span><span class="line"><span class="cl">nfs-sc-pvc-pod                                    1/1     Running   <span class="m">0</span>          10s   10.244.196.138   node01   &lt;none&gt;           &lt;none&gt;
 </span></span><span class="line"><span class="cl">
@@ -979,9 +522,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">$ curl node01:8082
 </span></span><span class="line"><span class="cl">hello world
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="参考">参考</h2>
+</span></span></code></pre></div><h2 id="参考">参考</h2>
 <blockquote>
 <ol>
 <li><a class="link" href="https://kubernetes.io/zh-cn/docs/concepts/storage/storage-classes/#nfs"  target="_blank" rel="noopener"
@@ -1134,7 +675,7 @@
     </div>
 </aside>
 
-     
+
     
         
     <div id="gitalk-container"></div>
@@ -1284,6 +825,15 @@
 
         document.head.appendChild(customFont);
     }());
+</script>
+<script src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js" integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css" integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
 </script>
 
     </body>

@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='/p/netstat-nc-ss/'>
 
-<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='netstat &amp;&amp; nc &amp;&amp; ss'>
+<link rel="stylesheet" href="/scss/style.min.172a3f2c8b781fab5217dc0b57632378208c08cb340c8f862a9604273d8dcd1c.css"><meta property='og:title' content='netstat &amp;&amp; nc &amp;&amp; ss'>
 <meta property='og:description' content='netstat 命令主要功能用于各种网络相关信息。 ss 与 netstat 命令的使用十分的相似, 而 ss 命令的优势在于它能够显示更多 TCP 和连接状态的详情信息，并且速度更快更高效。 nc 又名 ncat'>
 <meta property='og:url' content='/p/netstat-nc-ss/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
@@ -25,7 +25,7 @@
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "light");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -43,187 +43,22 @@
         }
     })();
 </script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
-            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='https://github.com/Ai-feier'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
+<div class="container main-container flex on-phone--column extended">
 
 
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/MaKemediTation'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+    <a href="/" class="back-home">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+  <polyline points="15 6 9 12 15 18" />
 </svg>
 
 
 
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
+        <span>Back</span>
+    </a>
+</div>
 
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>Links</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
 
     <aside class="sidebar right-sidebar sticky">
         
@@ -386,7 +221,7 @@
 
 
                 <time class="article-time--reading">
-                    7 minute read
+                    6 minute read
                 </time>
             </div>
         
@@ -541,22 +376,7 @@
 </blockquote>
 <h3 id="实例">实例</h3>
 <h4 id="1显示系统网络状态的所有连接">1）显示系统网络状态的所有连接</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -a <span class="p">|</span> head 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -a <span class="p">|</span> head 
 </span></span><span class="line"><span class="cl">Active Internet connections <span class="o">(</span>servers and established<span class="o">)</span>
 </span></span><span class="line"><span class="cl">Proto Recv-Q Send-Q Local Address           Foreign Address         State      
 </span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:sunrpc          0.0.0.0:*               LISTEN     
@@ -567,23 +387,8 @@
 </span></span><span class="line"><span class="cl">tcp6       <span class="m">0</span>      <span class="m">0</span> <span class="o">[</span>::<span class="o">]</span>:sunrpc             <span class="o">[</span>::<span class="o">]</span>:*                  LISTEN     
 </span></span><span class="line"><span class="cl">tcp6       <span class="m">0</span>      <span class="m">0</span> <span class="o">[</span>::<span class="o">]</span>:ssh                <span class="o">[</span>::<span class="o">]</span>:*                  LISTEN     
 </span></span><span class="line"><span class="cl">tcp6       <span class="m">0</span>      <span class="m">0</span> localhost:ipp           <span class="o">[</span>::<span class="o">]</span>:*                  LISTEN     
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="2显示系统网络状态的udp连接信息">2）显示系统网络状态的UDP连接信息</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -anu
+</span></span></code></pre></div><h4 id="2显示系统网络状态的udp连接信息">2）显示系统网络状态的UDP连接信息</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -anu
 </span></span><span class="line"><span class="cl">Active Internet connections <span class="o">(</span>servers and established<span class="o">)</span>
 </span></span><span class="line"><span class="cl">Proto Recv-Q Send-Q Local Address           Foreign Address         State      
 </span></span><span class="line"><span class="cl">udp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:875             0.0.0.0:*                          
@@ -592,90 +397,29 @@
 </span></span><span class="line"><span class="cl">udp        <span class="m">0</span>      <span class="m">0</span> 192.168.122.1:53        0.0.0.0:*                          
 </span></span><span class="line"><span class="cl">udp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:67              0.0.0.0:*                          
 </span></span><span class="line"><span class="cl">udp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:68              0.0.0.0:*                          
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="3显示网卡状态信息">3）显示网卡状态信息</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -i
+</span></span></code></pre></div><h4 id="3显示网卡状态信息">3）显示网卡状态信息</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -i
 </span></span><span class="line"><span class="cl">Kernel Interface table
 </span></span><span class="line"><span class="cl">Iface             MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
 </span></span><span class="line"><span class="cl">ens32            <span class="m">1500</span>      <span class="m">456</span>      <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>           <span class="m">366</span>      <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span> BMRU
 </span></span><span class="line"><span class="cl">lo              <span class="m">65536</span>        <span class="m">4</span>      <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>             <span class="m">4</span>      <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span> LRU
 </span></span><span class="line"><span class="cl">virbr0           <span class="m">1500</span>        <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span> <span class="m">0</span>             <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span>      <span class="m">0</span> BMU
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="4显示网络路由表信息">4）显示网络路由表信息</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -r 
+</span></span></code></pre></div><h4 id="4显示网络路由表信息">4）显示网络路由表信息</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -r 
 </span></span><span class="line"><span class="cl">Kernel IP routing table
 </span></span><span class="line"><span class="cl">Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 </span></span><span class="line"><span class="cl">default         gateway         0.0.0.0         UG        <span class="m">0</span> <span class="m">0</span>          <span class="m">0</span> ens32
 </span></span><span class="line"><span class="cl">192.168.2.0     0.0.0.0         255.255.255.0   U         <span class="m">0</span> <span class="m">0</span>          <span class="m">0</span> ens32
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="5查看关于sshdhttpssocsdnnetsosearchqsshdspm1001210130017020的pid值">5）查看关于<a class="link" href="https://so.csdn.net/so/search?q=sshd&amp;spm=1001.2101.3001.7020"  target="_blank" rel="noopener"
+</span></span></code></pre></div><h4 id="5查看关于sshdhttpssocsdnnetsosearchqsshdspm1001210130017020的pid值">5）查看关于<a class="link" href="https://so.csdn.net/so/search?q=sshd&amp;spm=1001.2101.3001.7020"  target="_blank" rel="noopener"
     >sshd</a>的PID值</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -p <span class="p">|</span> grep ssh
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -p <span class="p">|</span> grep ssh
 </span></span><span class="line"><span class="cl">unix  <span class="m">3</span>      <span class="o">[</span> <span class="o">]</span>         STREAM     CONNECTED     <span class="m">26245</span>    1216/sshd            
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="6-使用管道符查看某个在运行的服务信息">6) 使用管道符查看某个在运行的服务信息</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -antup <span class="p">|</span> grep httpd
+</span></span></code></pre></div><h4 id="6-使用管道符查看某个在运行的服务信息">6) 使用管道符查看某个在运行的服务信息</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ netstat -antup <span class="p">|</span> grep httpd
 </span></span><span class="line"><span class="cl">tcp6       <span class="m">0</span>      <span class="m">0</span> :::80                   :::*                    LISTEN      322/httpd           
 </span></span><span class="line"><span class="cl">tcp6       <span class="m">0</span>      <span class="m">0</span> :::443                  :::*                    LISTEN      322/httpd           
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="7访问每种协议的统计信息">7）访问每种协议的统计信息</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cobol" data-lang="cobol"><span class="line"><span class="cl"><span class="c">$ nets</span><span class="nv">tat</span> <span class="o">-</span><span class="nv">s</span> <span class="err">
+</span></span></code></pre></div><h4 id="7访问每种协议的统计信息">7）访问每种协议的统计信息</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cobol" data-lang="cobol"><span class="line"><span class="cl"><span class="c">$ nets</span><span class="nv">tat</span> <span class="o">-</span><span class="nv">s</span> <span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nv">Ip</span><span class="p">:</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">    46</span><span class="mi">3 </span><span class="nv">total</span> <span class="nv">packets</span> <span class="nv">received</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">    0 </span><span class="nv">forwarded</span><span class="err">
@@ -690,9 +434,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">      </span>  <span class="err">destination</span> <span class="nv">unreachable</span><span class="p">:</span> <span class="mi">2
 </span></span></span><span class="line"><span class="cl"><span class="mi">    3 </span><span class="nv">ICMP</span> <span class="nv">messages</span> <span class="nv">sent</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">......</span><span class="err">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="ss">ss</h2>
+</span></span></span></code></pre></div><h2 id="ss">ss</h2>
 <h3 id="简介-1">简介</h3>
 <p>ss（Socket Statistics）命令主要功能是<strong>显示套接字信息</strong>。与netstat命令的使用十分的相似，都是用于显示<a class="link" href="https://so.csdn.net/so/search?q=%e5%a5%97%e6%8e%a5%e5%ad%97&amp;spm=1001.2101.3001.7020"  target="_blank" rel="noopener"
     >套接字</a>信息，而ss命令的优势在于它能够显示更多TCP和连接状态的详情信息，并且速度更快更高效。</p>
@@ -837,26 +579,7 @@ ss [options] [ FILTER ]</p>
 </table></div>
 <h3 id="heading"></h3>
 <h3 id="常用命令">常用命令</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ ss -l  <span class="c1"># 显示本地打开的所有端口</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ ss -l  <span class="c1"># 显示本地打开的所有端口</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">$ ss -pl  <span class="c1"># 显示每个进程具体打开的socket</span>
 </span></span><span class="line"><span class="cl">
@@ -871,121 +594,47 @@ ss [options] [ FILTER ]</p>
 </span></span><span class="line"><span class="cl">$ ss -x src /tmp/.X11-unix/*  <span class="c1"># 找出所有连接X服务器的进程</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">$ ss -s  <span class="c1"># 列出当前socket详细信息</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="实例-1">实例</h3>
+</span></span></code></pre></div><h3 id="实例-1">实例</h3>
 <h4 id="1-列出已建立的连接">1) 列出已建立的连接</h4>
 <p>默认情况，只使用<code>ss</code>命令，不加任何参数的情况下，它会显示所有已建立连接的套接字列表信息</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss <span class="p">|</span>wc -l
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss <span class="p">|</span>wc -l
 </span></span><span class="line"><span class="cl"><span class="m">716</span>
 </span></span><span class="line"><span class="cl">$ ss <span class="p">|</span> head -n <span class="m">3</span>
 </span></span><span class="line"><span class="cl">Netid  State      Recv-Q Send-Q Local Address:Port                 Peer Address:Port                
 </span></span><span class="line"><span class="cl">u_str  ESTAB      <span class="m">0</span>      <span class="m">0</span>       * <span class="m">37084</span>                 * <span class="m">37928</span>                
 </span></span><span class="line"><span class="cl">u_str  ESTAB      <span class="m">0</span>      <span class="m">0</span>       * <span class="m">36812</span>                 * <span class="m">36814</span>                
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="2-监听tcp协议的套接字信息">2) 监听TCP协议的套接字信息</h4>
+</span></span></code></pre></div><h4 id="2-监听tcp协议的套接字信息">2) 监听TCP协议的套接字信息</h4>
 <p>可以使用<code>-l</code>参数监听所有<code>tcp</code>协议的套接字内容</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -lt
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -lt
 </span></span><span class="line"><span class="cl">State      Recv-Q Send-Q  Local Address:Port                   Peer Address:Port                
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">100</span>         127.0.0.1:smtp                              *:*                    
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">128</span>                 *:sunrpc                            *:*                    
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">5</span>       192.168.122.1:domain                            *:*                    
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">128</span>                 *:ssh                               *:*                   
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="3-查看主机监听的端口">3) 查看主机监听的端口</h4>
+</span></span></code></pre></div><h4 id="3-查看主机监听的端口">3) 查看主机监听的端口</h4>
 <p><code>-n</code>表示不解析域名，显示的是IP+端口的格式</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -tnl 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -tnl 
 </span></span><span class="line"><span class="cl">State      Recv-Q Send-Q    Local Address:Port                   Peer Address:Port              
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">100</span>           127.0.0.1:25                                *:*                  
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">128</span>                   *:111                               *:*                  
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">5</span>         192.168.122.1:53                                *:*                  
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">128</span>                   *:22                                *:*                  
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">128</span>           127.0.0.1:631                               *:*              
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="4-显示在运行进程的信息">4) 显示在运行进程的信息</h4>
+</span></span></code></pre></div><h4 id="4-显示在运行进程的信息">4) 显示在运行进程的信息</h4>
 <p>需要使用到<code>-p</code>的参数，结合<code>-tl</code>是显示tcp协议的服务并且处于监听状态下的信息</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -tlp  <span class="p">|</span>head -10
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -tlp  <span class="p">|</span>head -10
 </span></span><span class="line"><span class="cl">State      Recv-Q Send-Q Local Address:Port                 Peer Address:Port                
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">100</span>    127.0.0.1:smtp                     *:*                     users:<span class="o">((</span><span class="s2">&#34;master&#34;</span>,pid<span class="o">=</span>1284,fd<span class="o">=</span>13<span class="o">))</span>
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">128</span>        *:sunrpc                   *:*                     users:<span class="o">((</span><span class="s2">&#34;rpcbind&#34;</span>,pid<span class="o">=</span>704,fd<span class="o">=</span>8<span class="o">))</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>可以看到在最后一列会显示进程的名称、PID、fd文件描述符等信息。</p>
+</span></span></code></pre></div><p>可以看到在最后一列会显示进程的名称、PID、fd文件描述符等信息。</p>
 <h4 id="5-显示所有已经建立的信息">5) 显示所有已经建立的信息</h4>
 <p>需要使用<code>-a</code>参数，表示显示所有的连接信息</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -a <span class="p">|</span> wc -l
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -a <span class="p">|</span> wc -l
 </span></span><span class="line"><span class="cl"><span class="m">963</span>
 </span></span><span class="line"><span class="cl">$ ss  <span class="p">|</span> wc -l
 </span></span><span class="line"><span class="cl"><span class="m">716</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>还可以在加上<code>-t -n</code>参数使用</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -ant 
+</span></span></code></pre></div><p>还可以在加上<code>-t -n</code>参数使用</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -ant 
 </span></span><span class="line"><span class="cl">State      Recv-Q Send-Q    Local Address:Port                   Peer Address:Port              
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">100</span>           127.0.0.1:25                                *:*                  
 </span></span><span class="line"><span class="cl">LISTEN     <span class="m">0</span>      <span class="m">128</span>                   *:111                               *:*                  
@@ -996,40 +645,14 @@ ss [options] [ FILTER ]</p>
 </span></span><span class="line"><span class="cl">$ ss -nt 
 </span></span><span class="line"><span class="cl">State      Recv-Q Send-Q    Local Address:Port                   Peer Address:Port              
 </span></span><span class="line"><span class="cl">ESTAB      <span class="m">0</span>      <span class="m">0</span>       192.168.157.166:22                  192.168.157.213:65011              
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="6-显示服务更多的信息">6) 显示服务更多的信息</h4>
+</span></span></code></pre></div><h4 id="6-显示服务更多的信息">6) 显示服务更多的信息</h4>
 <p>如显示<code>-o</code>时间信息、<code>-m</code>显示套接字使用的内容、<code>-i</code>显示内部tcp的信息</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -imo <span class="p">|</span> head -2
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -imo <span class="p">|</span> head -2
 </span></span><span class="line"><span class="cl">Netid  State      Recv-Q Send-Q Local Address:Port                 Peer Address:Port                
 </span></span><span class="line"><span class="cl">u_str  ESTAB      <span class="m">0</span>      <span class="m">0</span>       * <span class="m">37084</span>                 * <span class="m">37928</span>                 skmem:<span class="o">(</span>r0,rb212992,t0,tb212992,f0,w0,o0,bl0,d0<span class="o">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="7-显示套接字的使用信息">7) 显示套接字的使用信息</h4>
+</span></span></code></pre></div><h4 id="7-显示套接字的使用信息">7) 显示套接字的使用信息</h4>
 <p>显示使用信息需要用到<code>-s</code>的参数</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -s 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -s 
 </span></span><span class="line"><span class="cl">Total: <span class="m">1711</span> <span class="o">(</span>kernel 2055<span class="o">)</span>
 </span></span><span class="line"><span class="cl">TCP:   <span class="m">11</span> <span class="o">(</span>estab 1, closed 1, orphaned 0, synrecv 0, timewait 0/0<span class="o">)</span>, ports <span class="m">0</span>
 </span></span><span class="line"><span class="cl">
@@ -1040,9 +663,7 @@ ss [options] [ FILTER ]</p>
 </span></span><span class="line"><span class="cl">TCP	      <span class="m">10</span>        <span class="m">6</span>         <span class="m">4</span>        
 </span></span><span class="line"><span class="cl">INET	  <span class="m">22</span>        <span class="m">14</span>        <span class="m">8</span>        
 </span></span><span class="line"><span class="cl">FRAG	  <span class="m">0</span>         <span class="m">0</span>         <span class="m">0</span>        
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="8-匹配远程与本地地址和端口号">8) 匹配远程与本地地址和端口号</h4>
+</span></span></code></pre></div><h4 id="8-匹配远程与本地地址和端口号">8) 匹配远程与本地地址和端口号</h4>
 <p>这里需要用到几种参数格式</p>
 <blockquote>
 <p>分别是：<br />
@@ -1052,44 +673,18 @@ dport：目标端口<br />
 sport：来源端口</p>
 </blockquote>
 <p>匹配远程地址和端口号</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ss dst 192.168.157.33
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ss dst 192.168.157.33
 </span></span><span class="line"><span class="cl">ss dst 192.168.157.33:443
 </span></span><span class="line"><span class="cl">ss dst 192.168.157.33:http
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>匹配本地端口和端口号</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ss src 192.168.157.166
+</span></span></code></pre></div><p>匹配本地端口和端口号</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ss src 192.168.157.166
 </span></span><span class="line"><span class="cl">ss src 192.168.157.166:22
 </span></span><span class="line"><span class="cl">ss src 192.168.157.166:ssh
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>8.1) 当然还可以将本地与远程端口和一个数进行比较</strong></p>
+</span></span></code></pre></div><p><strong>8.1) 当然还可以将本地与远程端口和一个数进行比较</strong></p>
 <p>使用方法：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ss dport OP num
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ss dport OP num
 </span></span><span class="line"><span class="cl">ss sport OP num
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>OP 及关系运算符:</p>
+</span></span></code></pre></div><p>OP 及关系运算符:</p>
 <div class="table-wrapper"><table>
 <thead>
 <tr>
@@ -1127,53 +722,22 @@ sport：来源端口</p>
 </tbody>
 </table></div>
 <p>显示来源端口小于50的端口号的内容</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -ntul sport lt <span class="m">50</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -ntul sport lt <span class="m">50</span>
 </span></span><span class="line"><span class="cl">Netid  State      Recv-Q Send-Q Local Address:Port                Peer Address:Port              
 </span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">100</span>        127.0.0.1:25                             *:*                  
 </span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">128</span>                *:22                             *:*                  
 </span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">100</span>            <span class="o">[</span>::1<span class="o">]</span>:25                          <span class="o">[</span>::<span class="o">]</span>:*                  
 </span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">128</span>             <span class="o">[</span>::<span class="o">]</span>:22                          <span class="o">[</span>::<span class="o">]</span>:*              
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>如果要用符号，则需要在符号前面加上转义符。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -ntul sport <span class="se">\&lt;</span> <span class="m">50</span>
+</span></span></code></pre></div><p>如果要用符号，则需要在符号前面加上转义符。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ss -ntul sport <span class="se">\&lt;</span> <span class="m">50</span>
 </span></span><span class="line"><span class="cl">Netid  State      Recv-Q Send-Q Local Address:Port                Peer Address:Port              
 </span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">100</span>        127.0.0.1:25                             *:*                  
 </span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">128</span>                *:22                             *:*                  
 </span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">100</span>            <span class="o">[</span>::1<span class="o">]</span>:25                          <span class="o">[</span>::<span class="o">]</span>:*                  
 </span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">128</span>             <span class="o">[</span>::<span class="o">]</span>:22                          <span class="o">[</span>::<span class="o">]</span>:*            
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="9-ss列出处在fin-wait-1状态的httphttps连接"><strong>9) ss列出处在FIN-WAIT-1状态的http、https连接</strong></h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ ss -o state fin-wait-1 <span class="s1">&#39;( sport = :http or sport = :https )&#39;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>ss常用的state状态：</p>
+</span></span></code></pre></div><h4 id="9-ss列出处在fin-wait-1状态的httphttps连接"><strong>9) ss列出处在FIN-WAIT-1状态的http、https连接</strong></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ ss -o state fin-wait-1 <span class="s1">&#39;( sport = :http or sport = :https )&#39;</span>
+</span></span></code></pre></div><p>ss常用的state状态：</p>
 <blockquote>
 <ol>
 <li>established</li>
@@ -1269,56 +833,24 @@ sport：来源端口</p>
 </table></div>
 <h3 id="实例-2">实例</h3>
 <h4 id="1-tcp-端口扫描">1) TCP 端口扫描</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ nc -v -z -w <span class="m">1</span> 192.168.254.130 20-23
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ nc -v -z -w <span class="m">1</span> 192.168.254.130 20-23
 </span></span><span class="line"><span class="cl">192.168.0.3: inverse host lookup failed: Unknown host
 </span></span><span class="line"><span class="cl">nc: connect to 192.168.254.130 port <span class="m">20</span> <span class="o">(</span>tcp<span class="o">)</span> failed: Connection refused
 </span></span><span class="line"><span class="cl">nc: connect to 192.168.254.130 port <span class="m">21</span> <span class="o">(</span>tcp<span class="o">)</span> failed: Connection refused
 </span></span><span class="line"><span class="cl">Connection to 192.168.254.130 <span class="m">22</span> port <span class="o">[</span>tcp/ssh<span class="o">]</span> succeeded!
 </span></span><span class="line"><span class="cl">nc: connect to 192.168.254.130 port <span class="m">23</span> <span class="o">(</span>tcp<span class="o">)</span> failed: Connection refused
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>扫描 192.168.254.130 的端口, 范围是 20-23, <code>-w 1</code>1 秒超时, <code>v</code>详细输出</p>
+</span></span></code></pre></div><p>扫描 192.168.254.130 的端口, 范围是 20-23, <code>-w 1</code>1 秒超时, <code>v</code>详细输出</p>
 <h4 id="2-扫描-udp-端口">2) 扫描 UDP 端口</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-h" data-lang="h"><span class="line"><span class="cl"><span class="err">$</span> <span class="n">nc</span> <span class="o">-</span><span class="n">u</span> <span class="o">-</span><span class="n">z</span> <span class="o">-</span><span class="n">w2</span> <span class="mf">192.168.254.130</span> <span class="mi">20</span><span class="o">-</span><span class="mi">23</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="3-扫描指定端口">3) 扫描指定端口</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ nc -nvv 192.168.254.130 <span class="m">80</span> <span class="c1"># 扫描 80 端口</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-h" data-lang="h"><span class="line"><span class="cl"><span class="err">$</span> <span class="n">nc</span> <span class="o">-</span><span class="n">u</span> <span class="o">-</span><span class="n">z</span> <span class="o">-</span><span class="n">w2</span> <span class="mf">192.168.254.130</span> <span class="mi">20</span><span class="o">-</span><span class="mi">23</span>
+</span></span></code></pre></div><h4 id="3-扫描指定端口">3) 扫描指定端口</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ nc -nvv 192.168.254.130 <span class="m">80</span> <span class="c1"># 扫描 80 端口</span>
 </span></span><span class="line"><span class="cl">nc: connect to 192.168.254.130 port <span class="m">80</span> <span class="o">(</span>tcp<span class="o">)</span> failed: Connection refused
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">$ nc -nvv 192.168.254.130 <span class="m">2</span> <span class="c1"># 扫描 22 端口</span>
 </span></span><span class="line"><span class="cl">Connection to 192.168.254.130 <span class="m">22</span> port <span class="o">[</span>tcp/*<span class="o">]</span> succeeded!
 </span></span><span class="line"><span class="cl">SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
 </span></span><span class="line"><span class="cl">Invalid SSH identification string.
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="4-终端之间通信聊天">4) 终端之间通信聊天</h4>
+</span></span></code></pre></div><h4 id="4-终端之间通信聊天">4) 终端之间通信聊天</h4>
 <p><img src="//blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/2024%20spring/netstat%20nc%20ss/image-20240126195555358.png"
 	
 	
@@ -1496,7 +1028,7 @@ sport：来源端口</p>
     </div>
 </aside>
 
-     
+
     
         
     <div id="gitalk-container"></div>
@@ -1646,6 +1178,15 @@ sport：来源端口</p>
 
         document.head.appendChild(customFont);
     }());
+</script>
+<script src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js" integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css" integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
 </script>
 
     </body>

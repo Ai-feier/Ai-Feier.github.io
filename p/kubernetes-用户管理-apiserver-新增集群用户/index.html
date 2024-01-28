@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='/p/kubernetes-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-apiserver-%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4%E7%94%A8%E6%88%B7/'>
 
-<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Kubernetes 用户管理, ApiServer 新增集群用户'>
+<link rel="stylesheet" href="/scss/style.min.172a3f2c8b781fab5217dc0b57632378208c08cb340c8f862a9604273d8dcd1c.css"><meta property='og:title' content='Kubernetes 用户管理, ApiServer 新增集群用户'>
 <meta property='og:description' content='Kubernetes 主要通过 API Server 对外提供服务，对于这样的系统来说，如果不加以安全限制，那么可能导致请求被滥用，甚至导致整个集群崩塌。'>
 <meta property='og:url' content='/p/kubernetes-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86-apiserver-%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4%E7%94%A8%E6%88%B7/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
@@ -25,7 +25,7 @@
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "light");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -43,187 +43,22 @@
         }
     })();
 </script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
-            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='https://github.com/Ai-feier'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
+<div class="container main-container flex on-phone--column extended">
 
 
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/MaKemediTation'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+    <a href="/" class="back-home">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+  <polyline points="15 6 9 12 15 18" />
 </svg>
 
 
 
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
+        <span>Back</span>
+    </a>
+</div>
 
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>Links</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
 
     <aside class="sidebar right-sidebar sticky">
         
@@ -332,7 +167,7 @@
 
 
                 <time class="article-time--reading">
-                    4 minute read
+                    3 minute read
                 </time>
             </div>
         
@@ -353,108 +188,20 @@
     
     
     <h3 id="生成-key">生成 key</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ openssl genrsa --out mkt.key <span class="m">2048</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="根据-key-生成-csr">根据 key 生成 csr</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ openssl genrsa --out mkt.key <span class="m">2048</span>
+</span></span></code></pre></div><h3 id="根据-key-生成-csr">根据 key 生成 csr</h3>
 <p>CN: 为 mkt</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ openssl req -new -key mkt.key -out mkt.csr -subj <span class="s2">&#34;/CN=mkt&#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="把-csr-发给-apiserver-的-ca-生成-crt">把 csr 发给 apiserver 的 ca 生成 crt</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ openssl x509 -req -in mkt.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out mkt.crt -days <span class="m">1095</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ openssl req -new -key mkt.key -out mkt.csr -subj <span class="s2">&#34;/CN=mkt&#34;</span>
+</span></span></code></pre></div><h3 id="把-csr-发给-apiserver-的-ca-生成-crt">把 csr 发给 apiserver 的 ca 生成 crt</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ openssl x509 -req -in mkt.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out mkt.crt -days <span class="m">1095</span>
 </span></span><span class="line"><span class="cl">Signature ok
 </span></span><span class="line"><span class="cl"><span class="nv">subject</span><span class="o">=</span><span class="nv">CN</span> <span class="o">=</span> mkt
 </span></span><span class="line"><span class="cl">Getting CA Private Key
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>生成文件:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@master1:~/tmp# ls
+</span></span></code></pre></div><p>生成文件:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@master1:~/tmp# ls
 </span></span><span class="line"><span class="cl">mkt.crt  mkt.csr  mkt.key
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>查看证书</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ openssl x509 -in mkt.crt -text -noout
+</span></span></code></pre></div><p>查看证书</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ openssl x509 -in mkt.crt -text -noout
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Certificate:
 </span></span><span class="line"><span class="cl">    Data:
@@ -506,34 +253,8 @@
 </span></span><span class="line"><span class="cl">         37:61:e2:83:1b:50:2e:f9:a3:96:3e:6d:d2:09:67:56:63:07:
 </span></span><span class="line"><span class="cl">         98:8c:14:33:69:e1:24:66:d2:20:33:2e:30:8f:92:a9:61:02:
 </span></span><span class="line"><span class="cl">         7a:1a:97:49
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="查看-kubeconfig">查看 kubeconfig</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl config view
+</span></span></code></pre></div><h3 id="查看-kubeconfig">查看 kubeconfig</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl config view
 </span></span><span class="line"><span class="cl">apiVersion: v1
 </span></span><span class="line"><span class="cl">clusters:
 </span></span><span class="line"><span class="cl">- cluster:
@@ -553,49 +274,11 @@
 </span></span><span class="line"><span class="cl">  user:
 </span></span><span class="line"><span class="cl">    client-certificate-data: DATA+OMITTED
 </span></span><span class="line"><span class="cl">    client-key-data: DATA+OMITTED
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="创建-k8s-用户">创建 k8s 用户</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl config set-credentials mkt --client-certificate<span class="o">=</span>mkt.crt --client-key<span class="o">=</span>mkt.key --embed-certs<span class="o">=</span><span class="nb">true</span>
+</span></span></code></pre></div><h3 id="创建-k8s-用户">创建 k8s 用户</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl config set-credentials mkt --client-certificate<span class="o">=</span>mkt.crt --client-key<span class="o">=</span>mkt.key --embed-certs<span class="o">=</span><span class="nb">true</span>
 </span></span><span class="line"><span class="cl">User <span class="s2">&#34;mkt&#34;</span> set.
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>查看 kubeconfig</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl config view
+</span></span></code></pre></div><p>查看 kubeconfig</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl config view
 </span></span><span class="line"><span class="cl">apiVersion: v1
 </span></span><span class="line"><span class="cl">clusters:
 </span></span><span class="line"><span class="cl">- cluster:
@@ -619,61 +302,21 @@
 </span></span><span class="line"><span class="cl">  user:
 </span></span><span class="line"><span class="cl">    client-certificate-data: DATA+OMITTED
 </span></span><span class="line"><span class="cl">    client-key-data: DATA+OMITTED
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>查看 pod</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k get po -A --user mkt
+</span></span></code></pre></div><p>查看 pod</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k get po -A --user mkt
 </span></span><span class="line"><span class="cl">Error from server <span class="o">(</span>Forbidden<span class="o">)</span>: pods is forbidden: User <span class="s2">&#34;mkt&#34;</span> cannot list resource <span class="s2">&#34;pods&#34;</span> in API group <span class="s2">&#34;&#34;</span> at the cluster scope
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>新建一个 context</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k config set-context mkt@kubernetes --cluster kubernetes --user mkt
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>切换 context</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k config use-context mkt@kubernetes
+</span></span></code></pre></div><p>新建一个 context</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k config set-context mkt@kubernetes --cluster kubernetes --user mkt
+</span></span></code></pre></div><p>切换 context</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ k config use-context mkt@kubernetes
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">$ k get po -A  <span class="c1"># 默认用户已为 mkt</span>
 </span></span><span class="line"><span class="cl">Error from server <span class="o">(</span>Forbidden<span class="o">)</span>: pods is forbidden: User <span class="s2">&#34;mkt&#34;</span> cannot list resource <span class="s2">&#34;pods&#34;</span> in API group <span class="s2">&#34;&#34;</span> at the cluster scope
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
+</span></span></code></pre></div><blockquote>
 <p>其中 &ldquo;mkt&rdquo; 是 csr 中的 CN</p>
 </blockquote>
 <p>为用户绑定 role</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 创建 2 个 user</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 创建 2 个 user</span>
 </span></span><span class="line"><span class="cl">$ kubectl config set-credentials user1 --client-certificate mkt.crt --client-key mkt.key --embed-certs<span class="o">=</span><span class="nb">true</span>
 </span></span><span class="line"><span class="cl">$ kubectl config set-credentials user2 --client-certificate mkt.crt --client-key mkt.key --embed-certs<span class="o">=</span><span class="nb">true</span>
 </span></span><span class="line"><span class="cl">
@@ -682,28 +325,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 创建 clusterrolebinding</span>
 </span></span><span class="line"><span class="cl">$ kubectl create clusterrolebinding pods-binding --clusterrole<span class="o">=</span>podsOwe --user<span class="o">=</span>mkt
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>查看 pod</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl get po -A --user<span class="o">=</span>user1
+</span></span></code></pre></div><p>查看 pod</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ kubectl get po -A --user<span class="o">=</span>user1
 </span></span><span class="line"><span class="cl">$ kubectl get po -A --user<span class="o">=</span>user2
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">calico-apiserver   calico-apiserver-69fc754d76-9w7p6         1/1     Running            <span class="m">4</span> <span class="o">(</span>103m ago<span class="o">)</span>   3d23h
@@ -717,9 +340,7 @@
 </span></span><span class="line"><span class="cl">calico-system      csi-node-driver-j4648                     2/2     Running            <span class="m">8</span> <span class="o">(</span>103m ago<span class="o">)</span>   3d23h
 </span></span><span class="line"><span class="cl">calico-system      csi-node-driver-jf548                     2/2     Running            <span class="m">8</span> <span class="o">(</span>101m ago<span class="o">)</span>   3d22h
 </span></span><span class="line"><span class="cl">......
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
+</span></span></code></pre></div><blockquote>
 <p>我们是把 rolebinding 绑给的 mkt, 但user1, user2均能获取 pod</p>
 <p>说明: 关键的是 csr 的 &ldquo;CN&rdquo;</p>
 <p>补充: 如果有分组的话, 就看 csr 的 &ldquo;O&rdquo;</p>
@@ -866,7 +487,7 @@
     </div>
 </aside>
 
-     
+
     
         
     <div id="gitalk-container"></div>
@@ -1016,6 +637,15 @@
 
         document.head.appendChild(customFont);
     }());
+</script>
+<script src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js" integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css" integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
 </script>
 
     </body>

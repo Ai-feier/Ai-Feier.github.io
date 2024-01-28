@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/'>
 
-<link rel="stylesheet" href="/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='Dockerfile: 制作精简镜像'>
+<link rel="stylesheet" href="/scss/style.min.172a3f2c8b781fab5217dc0b57632378208c08cb340c8f862a9604273d8dcd1c.css"><meta property='og:title' content='Dockerfile: 制作精简镜像'>
 <meta property='og:description' content='从 docker 原理出发, 理解 rootfs, 知晓镜像层, 而后精简镜像'>
 <meta property='og:url' content='/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
@@ -25,7 +25,7 @@
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "light");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -43,187 +43,22 @@
         }
     })();
 </script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_huea1cfd7d8fe03d1de437ebad473f88b6_41359_300x0_resize_box_3.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Ai-feier&#39;s Blog</a></h1>
-            <h2 class="site-description">Dedicated to cloud-native development and Go backend development.</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='https://github.com/Ai-feier'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
+<div class="container main-container flex on-phone--column extended">
 
 
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/MaKemediTation'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<div id="article-toolbar" style="position: sticky;top: 5px;z-index: 1000;">
+    <a href="/" class="back-home">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+  <polyline points="15 6 9 12 15 18" />
 </svg>
 
 
 
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
+        <span>Back</span>
+    </a>
+</div>
 
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>Links</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
 
     <aside class="sidebar right-sidebar sticky">
         
@@ -359,7 +194,7 @@
 
 
                 <time class="article-time--reading">
-                    5 minute read
+                    4 minute read
                 </time>
             </div>
         
@@ -383,20 +218,7 @@
 <p>dockerfile 一条指令对应一层, 最多 127 层</p>
 <p>从 busybox 入手理解 docker 镜像层的写时复制</p>
 <p>dockerfile:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> busybox </span><span class="err">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> busybox </span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> mkdir -p /tmp/foo<span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
@@ -405,41 +227,15 @@
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 删除文件</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> rm /tmp/foo/bar <span class="err">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>一条指令对应 1 层: 4 层</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ docker build -t busybox:copy-on-write -f dockerfile1 .
+</span></span></span></code></pre></div><p>一条指令对应 1 层: 4 层</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ docker build -t busybox:copy-on-write -f dockerfile1 .
 </span></span><span class="line"><span class="cl">$ docker images <span class="p">|</span> grep busybox
 </span></span><span class="line"><span class="cl">busybox      copy-on-write   1f30f7a048eb   About a minute ago   106MB
 </span></span><span class="line"><span class="cl">busybox      latest          beae173ccac6   <span class="m">2</span> years ago          1.24MB
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>看得出来就算镜像删除的文件, 下层创建的不会消失, 删除指令创建的层只会叠加上去</p>
+</span></span></code></pre></div><p>看得出来就算镜像删除的文件, 下层创建的不会消失, 删除指令创建的层只会叠加上去</p>
 <p>使用 docker inspect 查看具体的层信息</p>
 <p>busybox:latest</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect busybox:latest
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect busybox:latest
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">......
 </span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
@@ -449,27 +245,8 @@
 </span></span><span class="line"><span class="cl">            <span class="o">]</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>,
 </span></span><span class="line"><span class="cl">......
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>busybox:copy-on-write</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect busybox:copy-on-write
+</span></span></code></pre></div><p>busybox:copy-on-write</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect busybox:copy-on-write
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">......
 </span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
@@ -482,9 +259,7 @@
 </span></span><span class="line"><span class="cl">            <span class="o">]</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>,
 </span></span><span class="line"><span class="cl">......
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>可以看到 busybox:copy-on-write 明显增加了层数</p>
+</span></span></code></pre></div><p>可以看到 busybox:copy-on-write 明显增加了层数</p>
 <h2 id="制作精简镜像方法">制作精简镜像方法:</h2>
 <ol>
 <li>串联 Dockerfile 指令</li>
@@ -493,33 +268,7 @@
 </ol>
 <p><strong>案例: 二进制部署 redis</strong></p>
 <h3 id="多条命令构建">多条命令构建</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:trusty</span><span class="err">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:trusty</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> VER 7.2.3<span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
@@ -541,43 +290,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 启动 redis</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/usr/local/redis/redis-server&#34;</span><span class="p">,</span> <span class="s2">&#34;/usr/local/redis/redis.conf&#34;</span><span class="p">]</span><span class="err">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="构造镜像">构造镜像</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:many-lines-ubuntu -f dockerfile2 .
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="rootfs">ROOTFS</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">......
+</span></span></span></code></pre></div><h4 id="构造镜像">构造镜像</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:many-lines-ubuntu -f dockerfile2 .
+</span></span></code></pre></div><h4 id="rootfs">ROOTFS</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">......
 </span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="s2">&#34;Type&#34;</span>: <span class="s2">&#34;layers&#34;</span>,
 </span></span><span class="line"><span class="cl">            <span class="s2">&#34;Layers&#34;</span>: <span class="o">[</span>
@@ -597,31 +313,9 @@
 </span></span><span class="line"><span class="cl">            <span class="o">]</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>,
 </span></span><span class="line"><span class="cl">......
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>由于我们写了写多条 RUN 指令, 所以镜像 ROOTFS 极速增长</p>
+</span></span></code></pre></div><p>由于我们写了写多条 RUN 指令, 所以镜像 ROOTFS 极速增长</p>
 <h3 id="一条命令构建-ubuntu">一条命令构建 ubuntu</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:trusty</span><span class="err">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:trusty</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> VER 7.2.3<span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
@@ -637,36 +331,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 启动 redis</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/usr/local/redis/bin/redis-server&#34;</span><span class="p">,</span> <span class="s2">&#34;/usr/local/redis/conf&#34;</span><span class="p">]</span><span class="err">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="构造镜像-1">构造镜像</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:one-line-ubuntu -f dockerfile2 .
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="rootfs-1">ROOTFS</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect redis:one-line-ubuntu
+</span></span></span></code></pre></div><h4 id="构造镜像-1">构造镜像</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:one-line-ubuntu -f dockerfile2 .
+</span></span></code></pre></div><h4 id="rootfs-1">ROOTFS</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect redis:one-line-ubuntu
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">......
 </span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
@@ -679,9 +347,7 @@
 </span></span><span class="line"><span class="cl">            <span class="o">]</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>,
 </span></span><span class="line"><span class="cl">......
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>可以看出指令数减少, ROOTFS 层数也明显减少</p>
+</span></span></code></pre></div><p>可以看出指令数减少, ROOTFS 层数也明显减少</p>
 <h3 id="更改基础镜像为-debian">更改基础镜像为 debian</h3>
 <blockquote>
 <p>巨坑: debian 与 alpine 的镜像在切换国内时问题非常多, 建议直接使用原始镜像的软件源(确保能够访问外网)</p>
@@ -693,27 +359,7 @@
 <li>alpline 与 debian 安装的 gcc 可能会出现版本问题, 需要你更换 gcc 版本</li>
 </ol>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> debian</span><span class="err">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> debian</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> VER 7.2.3<span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
@@ -729,34 +375,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 启动 redis</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/usr/local/redis/bin/redis-server&#34;</span><span class="p">,</span> <span class="s2">&#34;/usr/local/redis/conf&#34;</span><span class="p">]</span><span class="err">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="构造镜像-2">构造镜像</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:one-line-debian -f dockerfile2 .
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="rootfs-2">ROOTFS</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect redis:one-line-debian
+</span></span></span></code></pre></div><h4 id="构造镜像-2">构造镜像</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:one-line-debian -f dockerfile2 .
+</span></span></code></pre></div><h4 id="rootfs-2">ROOTFS</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect redis:one-line-debian
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">......
 </span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
@@ -767,9 +389,7 @@
 </span></span><span class="line"><span class="cl">            <span class="o">]</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>,
 </span></span><span class="line"><span class="cl">......
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>可以看出将多条指令合并书写能够有效减少 ROOTFS 层数</p>
+</span></span></code></pre></div><p>可以看出将多条指令合并书写能够有效减少 ROOTFS 层数</p>
 <h3 id="使用分段构造">使用分段构造</h3>
 <p>多段构造, 在到最后一段, 有小镜像承接, 前面段的内容不会保留下来</p>
 <p>推荐镜像:</p>
@@ -793,34 +413,7 @@
 </table></div>
 <p><em>因为我们需要解压 tar 包, scrath 没有解压工具, 我们使用 busybox 演示</em></p>
 <p>使用 busybox 作为基础镜像</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:trusty as builder</span><span class="err">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:trusty as builder</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> VER 7.2.3<span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
@@ -843,38 +436,13 @@
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 启动 redis</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;/usr/local/redis/bin/redis-server&#34;</span><span class="p">,</span> <span class="s2">&#34;/usr/local/redis/conf&#34;</span><span class="p">]</span><span class="err">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="构造镜像-3">构造镜像</h4>
+</span></span></span></code></pre></div><h4 id="构造镜像-3">构造镜像</h4>
 <blockquote>
 <p>补充: 如果你遇到 Dockerfile 构造时的错误时, 可以加上 <code>--progress=plain --no-cache</code>查看详细构建日志</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:with-busybox -f dockerfile7 . --progress<span class="o">=</span>plain
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="rootfs-3">ROOTFS</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect redis:with-busybox
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker build -t redis:with-busybox -f dockerfile7 . --progress<span class="o">=</span>plain
+</span></span></code></pre></div><h4 id="rootfs-3">ROOTFS</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker inspect redis:with-busybox
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">......
 </span></span><span class="line"><span class="cl"><span class="s2">&#34;RootFS&#34;</span>: <span class="o">{</span>
@@ -886,75 +454,16 @@
 </span></span><span class="line"><span class="cl">            <span class="o">]</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>,
 </span></span><span class="line"><span class="cl">......
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="镜像压缩">镜像压缩</h3>
+</span></span></code></pre></div><h3 id="镜像压缩">镜像压缩</h3>
 <blockquote>
 <p>了解即可 <code>docker squash</code>已不在维护</p>
 </blockquote>
 <h4 id="安装">安装</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">wget https://github.com/jwilder/docker-squash/releases/download/v0.2.0/docker-squash-linux-amd64-v0.2.0.tar.gz 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">wget https://github.com/jwilder/docker-squash/releases/download/v0.2.0/docker-squash-linux-amd64-v0.2.0.tar.gz 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">tar xzvf docker-squash-linux-amd64-v0.2.0.tar.gz -C /usr/local/bin/
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="使用">使用</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@MKT:~/goproject/httppod/tmp# docker save redis:many-lines-ubuntu <span class="p">|</span> docker-squash -verbose -t redis:squash <span class="p">|</span> docker load
+</span></span></code></pre></div><h4 id="使用">使用</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@MKT:~/goproject/httppod/tmp# docker save redis:many-lines-ubuntu <span class="p">|</span> docker-squash -verbose -t redis:squash <span class="p">|</span> docker load
 </span></span><span class="line"><span class="cl">Loading <span class="nb">export</span> from STDIN using /tmp/docker-squash272131964 <span class="k">for</span> tempdir
 </span></span><span class="line"><span class="cl">Loaded image w/ <span class="m">13</span> layers
 </span></span><span class="line"><span class="cl">  -  redis <span class="o">(</span><span class="m">1</span> tags<span class="o">)</span>
@@ -998,31 +507,16 @@
 </span></span><span class="line"><span class="cl">  -  2619184f193f <span class="m">17</span> seconds /bin/sh -c <span class="c1">#(squash) from 228aa3e189d7 370.1 MB</span>
 </span></span><span class="line"><span class="cl">Removing tempdir /tmp/docker-squash272131964
 </span></span><span class="line"><span class="cl">Loaded image: redis:many-lines-ubuntu
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="总结">总结</h2>
+</span></span></code></pre></div><h2 id="总结">总结</h2>
 <p>镜像大小</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@MKT:~/goproject/httppod/tmp# docker images
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@MKT:~/goproject/httppod/tmp# docker images
 </span></span><span class="line"><span class="cl">REPOSITORY   TAG                 IMAGE ID       CREATED             SIZE
 </span></span><span class="line"><span class="cl">redis        with-busybox        a26dc68d9da9   <span class="m">17</span> minutes ago      65.1MB
 </span></span><span class="line"><span class="cl">busybox      copy-on-write       e71e45a955a2   <span class="m">26</span> minutes ago      109MB
 </span></span><span class="line"><span class="cl">redis        many-lines-ubuntu   cf3ded3f5a5f   <span class="m">43</span> minutes ago      565MB
 </span></span><span class="line"><span class="cl">redis        one-line-debian     ac157643d4a6   About an hour ago   669MB
 </span></span><span class="line"><span class="cl">redis        one-line-ubuntu     86be0695bcf2   <span class="m">2</span> hours ago         562MB
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>精简镜像方式:</p>
+</span></span></code></pre></div><p>精简镜像方式:</p>
 <ol>
 <li>使用单条指令替换多条指令</li>
 <li>使用更小的基础镜像</li>
@@ -1181,7 +675,7 @@
     </div>
 </aside>
 
-     
+
     
         
     <div id="gitalk-container"></div>
@@ -1331,6 +825,15 @@
 
         document.head.appendChild(customFont);
     }());
+</script>
+<script src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js" integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css" integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE" crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
 </script>
 
     </body>
