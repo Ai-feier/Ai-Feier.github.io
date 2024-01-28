@@ -3,10 +3,37 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>/</loc>
-    <lastmod>2024-01-27T19:05:45+08:00</lastmod>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
   </url><url>
     <loc>/categories/</loc>
-    <lastmod>2024-01-27T19:05:45+08:00</lastmod>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
+  </url><url>
+    <loc>/categories/kubernetes/</loc>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
+  </url><url>
+    <loc>/tags/nfs/</loc>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
+  </url><url>
+    <loc>/tags/pv/</loc>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
+  </url><url>
+    <loc>/tags/pvc/</loc>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
+  </url><url>
+    <loc>/tags/sc/</loc>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
+  </url><url>
+    <loc>/tags/storageclass/</loc>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
+  </url><url>
+    <loc>/p/%E6%AD%A5%E6%AD%A5%E6%B7%B1%E5%85%A5-k8s-%E4%BD%BF%E7%94%A8-pv-pvc-sc-%E5%9C%A8-nfs-%E5%9F%BA%E7%A1%80%E4%B8%8A%E5%85%B1%E4%BA%AB%E5%AD%98%E5%82%A8/</loc>
+    <lastmod>2024-01-28T17:02:38+08:00</lastmod>
   </url><url>
     <loc>/tags/linux/</loc>
     <lastmod>2024-01-27T19:05:45+08:00</lastmod>
@@ -23,12 +50,6 @@
     <loc>/p/postgresql-%E7%9A%84%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8C%85%E7%AE%A1%E7%90%86%E5%AE%89%E8%A3%85-%E5%85%A8%E5%8F%91%E8%A1%8C%E7%89%88-linux-%E9%80%9A%E7%94%A8/</loc>
     <lastmod>2024-01-27T19:05:45+08:00</lastmod>
   </url><url>
-    <loc>/post/</loc>
-    <lastmod>2024-01-27T19:05:45+08:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
-    <lastmod>2024-01-27T19:05:45+08:00</lastmod>
-  </url><url>
     <loc>/tags/k8s/</loc>
     <lastmod>2024-01-27T15:18:11+08:00</lastmod>
   </url><url>
@@ -36,9 +57,6 @@
     <lastmod>2024-01-27T15:18:11+08:00</lastmod>
   </url><url>
     <loc>/tags/kubernetes/</loc>
-    <lastmod>2024-01-27T15:18:11+08:00</lastmod>
-  </url><url>
-    <loc>/categories/kubernetes/</loc>
     <lastmod>2024-01-27T15:18:11+08:00</lastmod>
   </url><url>
     <loc>/tags/nginx/</loc>
@@ -64,9 +82,6 @@
   </url><url>
     <loc>/p/netstat-nc-ss/</loc>
     <lastmod>2024-01-26T20:36:58+08:00</lastmod>
-  </url><url>
-    <loc>/tags/nfs/</loc>
-    <lastmod>2024-01-23T18:04:03+08:00</lastmod>
   </url><url>
     <loc>/tags/ubuntu/</loc>
     <lastmod>2024-01-23T18:04:03+08:00</lastmod>
