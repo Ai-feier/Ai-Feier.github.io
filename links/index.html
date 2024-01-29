@@ -278,10 +278,10 @@
 
     <section class="article-content">
     <section class="copyright">
-        
-        <span id="busuanzi_container_page_pv" style="font-size: 13px;font-family: 宋体">本文阅读量: <span
-                id="busuanzi_value_page_pv"></span></span>
-        
+    
+    <span id="busuanzi_container_page_pv" style="font-size: 13px">本文阅读量: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
     </section>
 
     
@@ -366,7 +366,7 @@ links:
     <div class="busuanzi-footer">
       
       
-      <span id="busuanzi_container_site_uv" style="font-size: 10px;sfont-family: 宋体;">
+      <span id="busuanzi_container_site_uv" style="font-size: 10px">
       本站造访量: <span id="busuanzi_value_site_uv"></span>
     </span>
     </div>
@@ -482,6 +482,13 @@ links:
     document.addEventListener("readystatechange", () => {
         if (document.readyState === "interactive") NProgress.inc(0.8);
         if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+<script>
+    (function(){var w=window;if(w.ChannelIO){return w.console.error("ChannelIO script included twice.");}var ch=function(){ch.c(arguments);};ch.q=[];ch.c=function(args){ch.q.push(args);};w.ChannelIO=ch;function l(){if(w.ChannelIOInitialized){return;}w.ChannelIOInitialized=true;var s=document.createElement("script");s.type="text/javascript";s.async=true;s.src="https://cdn.channel.io/plugin/ch-plugin-web.js";var x=document.getElementsByTagName("script")[0];if(x.parentNode){x.parentNode.insertBefore(s,x);}}if(document.readyState==="complete"){l();}else{w.addEventListener("DOMContentLoaded",l);w.addEventListener("load",l);}})();
+
+    ChannelIO('boot', {
+        "pluginKey": "07fe4ab3-e53f-465f-9ee2-85ef639c6ebc"
     });
 </script>
 

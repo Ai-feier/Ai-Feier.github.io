@@ -202,10 +202,10 @@
 
     <section class="article-content">
     <section class="copyright">
-        
-        <span id="busuanzi_container_page_pv" style="font-size: 13px;font-family: 宋体">本文阅读量: <span
-                id="busuanzi_value_page_pv"></span></span>
-        
+    
+    <span id="busuanzi_container_page_pv" style="font-size: 13px">本文阅读量: <span
+            id="busuanzi_value_page_pv"></span></span>
+    
     </section>
 
     
@@ -551,36 +551,45 @@
 
     
         
-    <div id="gitalk-container"></div>
-<link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
-/>
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
-<script>
-    const gitalk = new Gitalk({
-        clientID: "89b695d504478273932e",
-        clientSecret: "e5cf3fa723b64cb7857144f3f29e130aa3fa704b",
-        repo: "Ai-feier.github.io",
-        owner: "Ai-feier",
-        admin: ["Ai-feier"],
-        distractionFreeMode: false, 
-        id: md5(location.pathname), 
-    });
-    (function () {
-        if (
-            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
-        ) {
-            document.getElementById("gitalk-container").innerHTML =
-                "Gitalk comments not available by default when the website is previewed locally.";
-            return;
-        }
-        gitalk.render("gitalk-container");
-    })();
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.21/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/shimmering-brioche-816f72.netlify.app',
+        el: '#tcomment',})
 </script>
-
-
 
     
 
@@ -591,7 +600,7 @@
     <div class="busuanzi-footer">
       
       
-      <span id="busuanzi_container_site_uv" style="font-size: 10px;sfont-family: 宋体;">
+      <span id="busuanzi_container_site_uv" style="font-size: 10px">
       本站造访量: <span id="busuanzi_value_site_uv"></span>
     </span>
     </div>
@@ -707,6 +716,13 @@
     document.addEventListener("readystatechange", () => {
         if (document.readyState === "interactive") NProgress.inc(0.8);
         if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+<script>
+    (function(){var w=window;if(w.ChannelIO){return w.console.error("ChannelIO script included twice.");}var ch=function(){ch.c(arguments);};ch.q=[];ch.c=function(args){ch.q.push(args);};w.ChannelIO=ch;function l(){if(w.ChannelIOInitialized){return;}w.ChannelIOInitialized=true;var s=document.createElement("script");s.type="text/javascript";s.async=true;s.src="https://cdn.channel.io/plugin/ch-plugin-web.js";var x=document.getElementsByTagName("script")[0];if(x.parentNode){x.parentNode.insertBefore(s,x);}}if(document.readyState==="complete"){l();}else{w.addEventListener("DOMContentLoaded",l);w.addEventListener("load",l);}})();
+
+    ChannelIO('boot', {
+        "pluginKey": "07fe4ab3-e53f-465f-9ee2-85ef639c6ebc"
     });
 </script>
 

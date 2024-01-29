@@ -5498,12 +5498,12 @@ sysdig -h 和-l 查看帮助&lt;br /&gt;
 </description>
         </item>
         <item>
-        <title>k8s configmap 详解</title>
-        <link>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3/</link>
+        <title>k8s configmap 详解, 从理解 k8s volumes 挂载方式, 带你解决挂载 configmap 的种种疑难杂症, 以及 k8s 中如何创建 configmap</title>
+        <link>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/</link>
         <pubDate>Tue, 09 Jan 2024 14:42:57 +0800</pubDate>
         
-        <guid>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png" alt="Featured image of post k8s configmap 详解" /&gt;&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;
+        <guid>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/</guid>
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png" alt="Featured image of post k8s configmap 详解, 从理解 k8s volumes 挂载方式, 带你解决挂载 configmap 的种种疑难杂症, 以及 k8s 中如何创建 configmap" /&gt;&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;
 &lt;p&gt;ConfigMap 顾名思义，是用于保存配置数据的键值对，可以用来保存单个属性，也可以保存配置文件。Secret 可以为 Pod 提供密码、Token、私钥等敏感数据；对于一些非敏感数据，比如应用的配置信息，则可以使用 ConfigMap。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;ConfigMap 的创建和使用方式与 Secret 非常类似，主要的不同是以明文的形式存放&lt;/p&gt;
