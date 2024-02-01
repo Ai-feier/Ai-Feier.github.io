@@ -6,13 +6,14 @@
 
 <link rel='canonical' href='/categories/linux%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/'>
 
-<link rel="stylesheet" href="/scss/style.min.172a3f2c8b781fab5217dc0b57632378208c08cb340c8f862a9604273d8dcd1c.css"><meta property='og:title' content='Category: linux应用部署 - Ai-feier&#39;s Blog'>
+<link rel="stylesheet" href="/scss/style.min.43215e8edcca1d0d9d817cffe9b03351a8bf8ad6eaaef0fb29f1586f2e2afb52.css"><meta property='og:title' content='Category: linux应用部署 - Ai-feier&#39;s Blog'>
 <meta property='og:description' content='Dedicated to cloud-native development and Go backend development.'>
 <meta property='og:url' content='/categories/linux%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2024-01-28T17:02:38&#43;08:00 '/>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2024-01-28T17:02:38&#43;08:00 '/><meta property='og:image' content='https://learn.microsoft.com/zh-cn/windows/images/wsl-icon.png' />
 <meta name="twitter:title" content="Category: linux应用部署 - Ai-feier&#39;s Blog">
-<meta name="twitter:description" content="Dedicated to cloud-native development and Go backend development."><link rel="alternate" type="application/rss&#43;xml" href="/categories/linux%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/index.xml">
+<meta name="twitter:description" content="Dedicated to cloud-native development and Go backend development."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://learn.microsoft.com/zh-cn/windows/images/wsl-icon.png' /><link rel="alternate" type="application/rss&#43;xml" href="/categories/linux%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/index.xml">
     <link rel="shortcut icon" href="/favicon.png" />
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <meta name="referrer" content="no-referrer-when-downgrade">
@@ -326,10 +327,6 @@
                 golang
             </a>
         
-            <a href="/categories/docker-compose/" class="font_size_1">
-                docker compose
-            </a>
-        
             <a href="/categories/etcd/" class="font_size_1">
                 etcd
             </a>
@@ -420,6 +417,12 @@
                 <h1 class="section-term">linux应用部署</h1>
                 
             </div>
+                <div class="section-image">
+                    
+                        <img src="https://learn.microsoft.com/zh-cn/windows/images/wsl-icon.png" loading="lazy" />
+                    
+                </div>
+            
         </div>
     </header>
     
@@ -479,12 +482,24 @@
     </section>
 <footer class="site-footer">
   <section class="copyright">
+    <section style="font-size: 15px">
     &copy;  2023 -  2024 Ai-feier&#39;s Blog
+    </section>
+
+
+    
+    <section class="running-time" style="font-size: 13px;font-weight: bold">
+      本站已稳定运行
+      <span id="runningdays" class="running-days"></span>
+    </section>
+
+
+
     
     <div class="busuanzi-footer">
       
       
-      <span id="busuanzi_container_site_uv" style="font-size: 10px">
+      <span id="busuanzi_container_site_uv" style="font-size: 13px;font-weight: inherit">
       本站造访量: <span id="busuanzi_value_site_uv"></span>
     </span>
     </div>
@@ -492,6 +507,8 @@
   </section>
 
   
+
+
 
 
 </footer>
@@ -530,6 +547,21 @@
     ChannelIO('boot', {
         "pluginKey": "07fe4ab3-e53f-465f-9ee2-85ef639c6ebc"
     });
+</script>
+
+
+<script>
+    let s1 = '2023-12-29'; 
+    s1 = new Date(s1.replace(/-/g, "/"));
+    let s2 = new Date();
+    let timeDifference = s2.getTime() - s1.getTime();
+
+    let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+    let result = days + "天" + hours + "小时" + minutes + "分钟";
+    document.getElementById('runningdays').innerHTML = result;
 </script>
 
     </body>

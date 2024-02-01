@@ -12,7 +12,7 @@
         <pubDate>Sun, 28 Jan 2024 17:02:38 +0800</pubDate>
         
         <guid>/categories/kubernetes/</guid>
-        <description></description>
+        <description>&lt;img src="https://a.storyblok.com/f/153547/1024x768/5fb5c9d891/first-beta-version-of-kubernetes-1-10-is-here-your-chance-to-provide-feedback.jpg" alt="Featured image of post Kubernetes" /&gt;</description>
         </item>
         <item>
         <title>linux应用部署</title>
@@ -20,7 +20,7 @@
         <pubDate>Sat, 27 Jan 2024 19:05:45 +0800</pubDate>
         
         <guid>/categories/linux%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</guid>
-        <description></description>
+        <description>&lt;img src="https://learn.microsoft.com/zh-cn/windows/images/wsl-icon.png" alt="Featured image of post linux应用部署" /&gt;</description>
         </item>
         <item>
         <title>Shell</title>
@@ -28,7 +28,7 @@
         <pubDate>Sat, 27 Jan 2024 15:18:11 +0800</pubDate>
         
         <guid>/categories/shell/</guid>
-        <description></description>
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/post/images/Shell%e5%8f%98%e9%87%8f/cover.webp" alt="Featured image of post Shell" /&gt;</description>
         </item>
         <item>
         <title>Linux</title>
@@ -36,7 +36,7 @@
         <pubDate>Fri, 26 Jan 2024 20:36:58 +0800</pubDate>
         
         <guid>/categories/linux/</guid>
-        <description></description>
+        <description>&lt;img src="https://cdn.dribbble.com/users/595800/screenshots/1702094/media/6b45f049ff1546fca0654105aabba8fa.png" alt="Featured image of post Linux" /&gt;</description>
         </item>
         <item>
         <title>docker</title>
@@ -44,15 +44,7 @@
         <pubDate>Sun, 21 Jan 2024 18:18:54 +0800</pubDate>
         
         <guid>/categories/docker/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>docker compose</title>
-        <link>/categories/docker-compose/</link>
-        <pubDate>Sun, 21 Jan 2024 18:18:54 +0800</pubDate>
-        
-        <guid>/categories/docker-compose/</guid>
-        <description></description>
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/0_85-DDF3zAO5nAsNh.jpg" alt="Featured image of post docker" /&gt;</description>
         </item>
         <item>
         <title>Tips</title>
@@ -60,7 +52,7 @@
         <pubDate>Wed, 17 Jan 2024 10:52:14 +0800</pubDate>
         
         <guid>/categories/tips/</guid>
-        <description></description>
+        <description>&lt;img src="https://i.pinimg.com/736x/af/b5/7b/afb57b1932665b855277b646fcdf43a1.jpg" alt="Featured image of post Tips" /&gt;</description>
         </item>
         <item>
         <title>golang</title>
@@ -68,7 +60,7 @@
         <pubDate>Fri, 05 Jan 2024 18:20:08 +0800</pubDate>
         
         <guid>/categories/golang/</guid>
-        <description></description>
+        <description>&lt;img src="https://www.searchenginejournal.com/wp-content/uploads/2023/10/go-programming-language-651c24f6b0f77-sej-1520x800.webp" alt="Featured image of post golang" /&gt;</description>
         </item>
         <item>
         <title>etcd</title>
@@ -76,7 +68,7 @@
         <pubDate>Wed, 20 Dec 2023 18:25:32 +0800</pubDate>
         
         <guid>/categories/etcd/</guid>
-        <description></description>
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/etcd-v3-confusion.png" alt="Featured image of post etcd" /&gt;</description>
         </item>
         
     </channel>

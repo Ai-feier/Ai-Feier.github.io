@@ -20,7 +20,7 @@
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>/links/</guid>
-        <description>&lt;!--
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/anime/ed2041f0209ee915b06061f8c758997c7d9abee3cb566d8e292fad0178b777d7.0.jpg" alt="Featured image of post Links" /&gt;&lt;!--
 To use this feature, add `links` section to frontmatter.
 
 This page&#39;s frontmatter:
@@ -38,7 +38,8 @@ links:
 ```
 
 `image` field accepts both local and external images.
---&gt;</description>
+--&gt;
+</description>
         </item>
         <item>
         <title>Search</title>

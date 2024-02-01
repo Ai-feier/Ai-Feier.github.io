@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/'>
 
-<link rel="stylesheet" href="/scss/style.min.172a3f2c8b781fab5217dc0b57632378208c08cb340c8f862a9604273d8dcd1c.css"><meta property='og:title' content='Dockerfile: 制作精简镜像'>
+<link rel="stylesheet" href="/scss/style.min.43215e8edcca1d0d9d817cffe9b03351a8bf8ad6eaaef0fb29f1586f2e2afb52.css"><meta property='og:title' content='Dockerfile: 制作精简镜像'>
 <meta property='og:description' content='从 docker 原理出发, 理解 rootfs, 知晓镜像层, 而后精简镜像'>
 <meta property='og:url' content='/p/dockerfile-%E5%88%B6%E4%BD%9C%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
@@ -64,23 +64,31 @@
         
             
                 
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
 
 
 
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<button id="toggle-toc">Toc</button>
+
+<section class="widget archives" id="toc-container">
+    
+    <h2 class="widget-title section-title">Table of contents</h2>
+    
+
+    <div class="widget--toc">
         
-        <div class="widget--toc">
-            <nav id="TableOfContents">
+        <nav id="TableOfContents">
   <ol>
     <li><a href="#写时复制">写时复制</a></li>
     <li><a href="#制作精简镜像方法">制作精简镜像方法:</a>
@@ -117,11 +125,131 @@
         </li>
       </ol>
     </li>
+    <li><a href="#备忘录">备忘录</a>
+      <ol>
+        <li><a href="#alpine">alpine</a></li>
+      </ol>
+    </li>
     <li><a href="#总结">总结</a></li>
   </ol>
 </nav>
-        </div>
-    </section>
+        
+    </div>
+</section>
+
+
+<style>
+    #mulu {
+        z-index: 9999;
+    }
+
+    #toc-container {
+        display: none;
+         
+        position: fixed;
+         
+        bottom: 21%;
+         
+        right: 60px;
+         
+        background-color: var(--card-background);
+         
+        padding: 10px;
+         
+        border: 1px solid #96979a50;
+        border-radius: var(--card-border-radius);
+        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+         
+        z-index: 9998 !important;
+         
+        max-height: 80vh;
+         
+        overflow-y: auto;
+         
+        width: auto;
+         
+        max-width: 290px;
+    }
+
+    #toggle-toc {
+        position: fixed;
+        bottom: 22%;
+        right: 20px;
+        padding: 10px 10px;
+        z-index: 9998 !important;
+        border: 0px solid #96979a50;
+        border-radius: 7px;
+        box-shadow: var(--shadow-l1);
+        background-color: #00640010;
+        color: #34495e;
+         
+         
+        display: block;
+         
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-size: 1.2rem;
+         
+    }
+
+    .widget--toc #TableOfContents {
+        overflow-x: auto;
+        max-height: 66vh;
+        width: auto;
+    }
+
+    @media screen and (max-width: 768px) {
+        #toggle-toc {
+            bottom: 100px;
+        }
+    }
+</style>
+
+<script>
+    
+    var toggleButton = document.getElementById('toggle-toc');
+    var tocContainer = document.getElementById('toc-container');
+    var scrollThreshold = 200; 
+
+    
+    window.addEventListener('scroll', function() {
+        
+        var scrollY = window.scrollY || window.pageYOffset;
+
+        
+        if (scrollY >= scrollThreshold) {
+            
+            toggleButton.style.display = 'block';
+        } else {
+            
+            toggleButton.style.display = 'none';
+        }
+    });
+
+    
+    toggleButton.addEventListener('click', function() {
+        
+        if (tocContainer.style.display === 'none' || tocContainer.style.display === '') {
+            tocContainer.style.display = 'block';
+        } else {
+            tocContainer.style.display = 'none';
+        }
+    });
+    
+    toggleButton.addEventListener('mouseover', function() {
+        tocContainer.style.display = 'block';
+    });
+
+
+    
+    document.addEventListener('click', function(event) {
+        
+        if (!tocContainer.contains(event.target) && event.target !== toggleButton) {
+            
+            tocContainer.style.display = 'none';
+        }
+    });
+</script>
 
             
         
@@ -144,7 +272,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/docker/" >
+            <a href="/categories/docker/" style="background-color: #2a9d8f; color: #fff;">
                 docker
             </a>
         
@@ -194,7 +322,7 @@
 
 
                 <time class="article-time--reading">
-                    4 minute read
+                    5 minute read
                 </time>
             </div>
         
@@ -509,6 +637,18 @@
 </span></span><span class="line"><span class="cl">  -  2619184f193f <span class="m">17</span> seconds /bin/sh -c <span class="c1">#(squash) from 228aa3e189d7 370.1 MB</span>
 </span></span><span class="line"><span class="cl">Removing tempdir /tmp/docker-squash272131964
 </span></span><span class="line"><span class="cl">Loaded image: redis:many-lines-ubuntu
+</span></span></code></pre></div><h2 id="备忘录">备忘录</h2>
+<h3 id="alpine">alpine</h3>
+<p>安装包并清理缓存</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ apk add --no-cache &lt;package&gt;
+</span></span></code></pre></div><p><code>Alpine</code> 添加其余</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="s2">&#34;http://dl-cdn.alpinelinux.org/alpine/edge/testing&#34;</span> &gt;&gt; /etc/apk/repositories
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ apk --update add --no-cache &lt;package&gt;
+</span></span></code></pre></div><p><code>apk</code> 国内镜像加速</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">RUN sed -i <span class="s2">&#34;s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g&#34;</span> /etc/apk/repositories <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>
+</span></span><span class="line"><span class="cl">      <span class="o">&amp;&amp;</span> apk add --no-cache &lt;package&gt;
 </span></span></code></pre></div><h2 id="总结">总结</h2>
 <p>镜像大小</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@MKT:~/goproject/httppod/tmp# docker images
@@ -704,12 +844,24 @@
 
     <footer class="site-footer">
   <section class="copyright">
+    <section style="font-size: 15px">
     &copy;  2023 -  2024 Ai-feier&#39;s Blog
+    </section>
+
+
+    
+    <section class="running-time" style="font-size: 13px;font-weight: bold">
+      本站已稳定运行
+      <span id="runningdays" class="running-days"></span>
+    </section>
+
+
+
     
     <div class="busuanzi-footer">
       
       
-      <span id="busuanzi_container_site_uv" style="font-size: 10px">
+      <span id="busuanzi_container_site_uv" style="font-size: 13px;font-weight: inherit">
       本站造访量: <span id="busuanzi_value_site_uv"></span>
     </span>
     </div>
@@ -717,6 +869,8 @@
   </section>
 
   
+
+
 
 
 </footer>
@@ -833,6 +987,21 @@
     ChannelIO('boot', {
         "pluginKey": "07fe4ab3-e53f-465f-9ee2-85ef639c6ebc"
     });
+</script>
+
+
+<script>
+    let s1 = '2023-12-29'; 
+    s1 = new Date(s1.replace(/-/g, "/"));
+    let s2 = new Date();
+    let timeDifference = s2.getTime() - s1.getTime();
+
+    let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+    let result = days + "天" + hours + "小时" + minutes + "分钟";
+    document.getElementById('runningdays').innerHTML = result;
 </script>
 
     </body>

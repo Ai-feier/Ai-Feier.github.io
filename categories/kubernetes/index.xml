@@ -3312,7 +3312,7 @@ sysdig -h 和-l 查看帮助&lt;br /&gt;
         <guid>/p/%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E6%A1%88%E4%BE%8B%E4%BD%BF%E7%94%A8-configmap-%E6%9D%A5%E9%85%8D%E7%BD%AE-redis/</guid>
         <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/redis/1_cKRFZsFXbyrOyKNB5MLn9A.png" alt="Featured image of post 真实世界的案例：使用 ConfigMap 来配置 Redis" /&gt;&lt;h2 id=&#34;前置知识&#34;&gt;前置知识&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://ai-feier.github.io/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://ai-feier.github.io/p/k8s-configmap-%e8%af%a6%e8%a7%a3/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;k8s 中 configmap 详细使用&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;k8s-集群配置&#34;&gt;k8s 集群配置&lt;/h2&gt;
@@ -3803,12 +3803,12 @@ sysdig -h 和-l 查看帮助&lt;br /&gt;
 </description>
         </item>
         <item>
-        <title>k8s configmap 详解, 从理解 k8s volumes 挂载方式, 带你解决挂载 configmap 的种种疑难杂症, 以及 k8s 中如何创建 configmap</title>
-        <link>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/</link>
+        <title>k8s configmap 详解</title>
+        <link>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3/</link>
         <pubDate>Tue, 09 Jan 2024 14:42:57 +0800</pubDate>
         
-        <guid>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png" alt="Featured image of post k8s configmap 详解, 从理解 k8s volumes 挂载方式, 带你解决挂载 configmap 的种种疑难杂症, 以及 k8s 中如何创建 configmap" /&gt;&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;
+        <guid>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3/</guid>
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png" alt="Featured image of post k8s configmap 详解" /&gt;&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;
 &lt;p&gt;ConfigMap 顾名思义，是用于保存配置数据的键值对，可以用来保存单个属性，也可以保存配置文件。Secret 可以为 Pod 提供密码、Token、私钥等敏感数据；对于一些非敏感数据，比如应用的配置信息，则可以使用 ConfigMap。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;ConfigMap 的创建和使用方式与 Secret 非常类似，主要的不同是以明文的形式存放&lt;/p&gt;

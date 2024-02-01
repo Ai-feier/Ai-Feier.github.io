@@ -5007,7 +5007,7 @@ sysdig -h 和-l 查看帮助&lt;br /&gt;
         <guid>/p/%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E6%A1%88%E4%BE%8B%E4%BD%BF%E7%94%A8-configmap-%E6%9D%A5%E9%85%8D%E7%BD%AE-redis/</guid>
         <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/redis/1_cKRFZsFXbyrOyKNB5MLn9A.png" alt="Featured image of post 真实世界的案例：使用 ConfigMap 来配置 Redis" /&gt;&lt;h2 id=&#34;前置知识&#34;&gt;前置知识&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://ai-feier.github.io/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://ai-feier.github.io/p/k8s-configmap-%e8%af%a6%e8%a7%a3/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;k8s 中 configmap 详细使用&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;k8s-集群配置&#34;&gt;k8s 集群配置&lt;/h2&gt;
@@ -5498,12 +5498,12 @@ sysdig -h 和-l 查看帮助&lt;br /&gt;
 </description>
         </item>
         <item>
-        <title>k8s configmap 详解, 从理解 k8s volumes 挂载方式, 带你解决挂载 configmap 的种种疑难杂症, 以及 k8s 中如何创建 configmap</title>
-        <link>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/</link>
+        <title>k8s configmap 详解</title>
+        <link>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3/</link>
         <pubDate>Tue, 09 Jan 2024 14:42:57 +0800</pubDate>
         
-        <guid>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/</guid>
-        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png" alt="Featured image of post k8s configmap 详解, 从理解 k8s volumes 挂载方式, 带你解决挂载 configmap 的种种疑难杂症, 以及 k8s 中如何创建 configmap" /&gt;&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;
+        <guid>/p/k8s-configmap-%E8%AF%A6%E8%A7%A3/</guid>
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/blog_source/public/kubernetes/1_07R1--jVP2LB7WiraZ3ldw.png" alt="Featured image of post k8s configmap 详解" /&gt;&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;
 &lt;p&gt;ConfigMap 顾名思义，是用于保存配置数据的键值对，可以用来保存单个属性，也可以保存配置文件。Secret 可以为 Pod 提供密码、Token、私钥等敏感数据；对于一些非敏感数据，比如应用的配置信息，则可以使用 ConfigMap。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;ConfigMap 的创建和使用方式与 Secret 非常类似，主要的不同是以明文的形式存放&lt;/p&gt;
@@ -8456,6 +8456,18 @@ kubectl -h&lt;br /&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -  2619184f193f &lt;span class=&#34;m&#34;&gt;17&lt;/span&gt; seconds /bin/sh -c &lt;span class=&#34;c1&#34;&gt;#(squash) from 228aa3e189d7 370.1 MB&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Removing tempdir /tmp/docker-squash272131964
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Loaded image: redis:many-lines-ubuntu
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;备忘录&#34;&gt;备忘录&lt;/h2&gt;
+&lt;h3 id=&#34;alpine&#34;&gt;alpine&lt;/h3&gt;
+&lt;p&gt;安装包并清理缓存&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ apk add --no-cache &amp;lt;package&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;Alpine&lt;/code&gt; 添加其余&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://dl-cdn.alpinelinux.org/alpine/edge/testing&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; /etc/apk/repositories
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ apk --update add --no-cache &amp;lt;package&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;apk&lt;/code&gt; 国内镜像加速&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;RUN sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g&amp;#34;&lt;/span&gt; /etc/apk/repositories &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add --no-cache &amp;lt;package&amp;gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
 &lt;p&gt;镜像大小&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;root@MKT:~/goproject/httppod/tmp# docker images
@@ -12587,7 +12599,7 @@ Dockerfile中只允许有一个ENTRYPOINT命令，多指定时会覆盖前面的
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>/links/</guid>
-        <description>&lt;!--
+        <description>&lt;img src="https://blog-source-mkt.oss-cn-chengdu.aliyuncs.com/anime/ed2041f0209ee915b06061f8c758997c7d9abee3cb566d8e292fad0178b777d7.0.jpg" alt="Featured image of post Links" /&gt;&lt;!--
 To use this feature, add `links` section to frontmatter.
 
 This page&#39;s frontmatter:
@@ -12605,7 +12617,8 @@ links:
 ```
 
 `image` field accepts both local and external images.
---&gt;</description>
+--&gt;
+</description>
         </item>
         <item>
         <title>Search</title>

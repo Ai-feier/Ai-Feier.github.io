@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='/p/k8s-secret-%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-%E5%85%A8%E9%9D%A2%E8%A6%86%E7%9B%96-secret-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-%E5%85%A8%E5%AE%B6%E6%A1%B6/'>
 
-<link rel="stylesheet" href="/scss/style.min.172a3f2c8b781fab5217dc0b57632378208c08cb340c8f862a9604273d8dcd1c.css"><meta property='og:title' content='K8S Secret 一文详解, 全面覆盖 Secret 使用场景, 全家桶'>
+<link rel="stylesheet" href="/scss/style.min.43215e8edcca1d0d9d817cffe9b03351a8bf8ad6eaaef0fb29f1586f2e2afb52.css"><meta property='og:title' content='K8S Secret 一文详解, 全面覆盖 Secret 使用场景, 全家桶'>
 <meta property='og:description' content='Kubernetes secrets用于存储和管理一些敏感数据，比如密码，token，密钥等敏感信息。它把 Pod 想要访问的加密数据存放到 Etcd 中。'>
 <meta property='og:url' content='/p/k8s-secret-%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3-%E5%85%A8%E9%9D%A2%E8%A6%86%E7%9B%96-secret-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-%E5%85%A8%E5%AE%B6%E6%A1%B6/'>
 <meta property='og:site_name' content='Ai-feier&#39;s Blog'>
@@ -64,23 +64,31 @@
         
             
                 
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
 
 
 
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<button id="toggle-toc">Toc</button>
+
+<section class="widget archives" id="toc-container">
+    
+    <h2 class="widget-title section-title">Table of contents</h2>
+    
+
+    <div class="widget--toc">
         
-        <div class="widget--toc">
-            <nav id="TableOfContents">
+        <nav id="TableOfContents">
   <ol>
     <li><a href="#secret介绍">Secret介绍</a></li>
     <li><a href="#secret-类型">Secret 类型</a>
@@ -124,8 +132,123 @@
     <li><a href="#参考">参考</a></li>
   </ol>
 </nav>
-        </div>
-    </section>
+        
+    </div>
+</section>
+
+
+<style>
+    #mulu {
+        z-index: 9999;
+    }
+
+    #toc-container {
+        display: none;
+         
+        position: fixed;
+         
+        bottom: 21%;
+         
+        right: 60px;
+         
+        background-color: var(--card-background);
+         
+        padding: 10px;
+         
+        border: 1px solid #96979a50;
+        border-radius: var(--card-border-radius);
+        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+         
+        z-index: 9998 !important;
+         
+        max-height: 80vh;
+         
+        overflow-y: auto;
+         
+        width: auto;
+         
+        max-width: 290px;
+    }
+
+    #toggle-toc {
+        position: fixed;
+        bottom: 22%;
+        right: 20px;
+        padding: 10px 10px;
+        z-index: 9998 !important;
+        border: 0px solid #96979a50;
+        border-radius: 7px;
+        box-shadow: var(--shadow-l1);
+        background-color: #00640010;
+        color: #34495e;
+         
+         
+        display: block;
+         
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-size: 1.2rem;
+         
+    }
+
+    .widget--toc #TableOfContents {
+        overflow-x: auto;
+        max-height: 66vh;
+        width: auto;
+    }
+
+    @media screen and (max-width: 768px) {
+        #toggle-toc {
+            bottom: 100px;
+        }
+    }
+</style>
+
+<script>
+    
+    var toggleButton = document.getElementById('toggle-toc');
+    var tocContainer = document.getElementById('toc-container');
+    var scrollThreshold = 200; 
+
+    
+    window.addEventListener('scroll', function() {
+        
+        var scrollY = window.scrollY || window.pageYOffset;
+
+        
+        if (scrollY >= scrollThreshold) {
+            
+            toggleButton.style.display = 'block';
+        } else {
+            
+            toggleButton.style.display = 'none';
+        }
+    });
+
+    
+    toggleButton.addEventListener('click', function() {
+        
+        if (tocContainer.style.display === 'none' || tocContainer.style.display === '') {
+            tocContainer.style.display = 'block';
+        } else {
+            tocContainer.style.display = 'none';
+        }
+    });
+    
+    toggleButton.addEventListener('mouseover', function() {
+        tocContainer.style.display = 'block';
+    });
+
+
+    
+    document.addEventListener('click', function(event) {
+        
+        if (!tocContainer.contains(event.target) && event.target !== toggleButton) {
+            
+            tocContainer.style.display = 'none';
+        }
+    });
+</script>
 
             
         
@@ -148,7 +271,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/kubernetes/" >
+            <a href="/categories/kubernetes/" style="background-color: #2a9d8f; color: #fff;">
                 Kubernetes
             </a>
         
@@ -658,7 +781,7 @@
             
                 
 <article class="has-image">
-    <a href="/p/k8s-configmap-%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E7%90%86%E8%A7%A3-k8s-volumes-%E6%8C%82%E8%BD%BD%E6%96%B9%E5%BC%8F-%E5%B8%A6%E4%BD%A0%E8%A7%A3%E5%86%B3%E6%8C%82%E8%BD%BD-configmap-%E7%9A%84%E7%A7%8D%E7%A7%8D%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87-%E4%BB%A5%E5%8F%8A-k8s-%E4%B8%AD%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA-configmap/">
+    <a href="/p/k8s-configmap-%E8%AF%A6%E8%A7%A3/">
         
         
             <div class="article-image">
@@ -669,7 +792,7 @@
         
 
         <div class="article-details">
-            <h2 class="article-title">k8s configmap 详解, 从理解 k8s volumes 挂载方式, 带你解决挂载 configmap 的种种疑难杂症, 以及 k8s 中如何创建 configmap</h2>
+            <h2 class="article-title">k8s configmap 详解</h2>
         </div>
     </a>
 </article>
@@ -705,12 +828,24 @@
 
     <footer class="site-footer">
   <section class="copyright">
+    <section style="font-size: 15px">
     &copy;  2023 -  2024 Ai-feier&#39;s Blog
+    </section>
+
+
+    
+    <section class="running-time" style="font-size: 13px;font-weight: bold">
+      本站已稳定运行
+      <span id="runningdays" class="running-days"></span>
+    </section>
+
+
+
     
     <div class="busuanzi-footer">
       
       
-      <span id="busuanzi_container_site_uv" style="font-size: 10px">
+      <span id="busuanzi_container_site_uv" style="font-size: 13px;font-weight: inherit">
       本站造访量: <span id="busuanzi_value_site_uv"></span>
     </span>
     </div>
@@ -718,6 +853,8 @@
   </section>
 
   
+
+
 
 
 </footer>
@@ -834,6 +971,21 @@
     ChannelIO('boot', {
         "pluginKey": "07fe4ab3-e53f-465f-9ee2-85ef639c6ebc"
     });
+</script>
+
+
+<script>
+    let s1 = '2023-12-29'; 
+    s1 = new Date(s1.replace(/-/g, "/"));
+    let s2 = new Date();
+    let timeDifference = s2.getTime() - s1.getTime();
+
+    let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+    let result = days + "天" + hours + "小时" + minutes + "分钟";
+    document.getElementById('runningdays').innerHTML = result;
 </script>
 
     </body>
