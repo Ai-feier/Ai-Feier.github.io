@@ -144,7 +144,7 @@
     }
 
     #toc-container {
-        display: none;
+        display: block;
          
         position: fixed;
          
@@ -227,14 +227,14 @@
     });
 
     
-    toggleButton.addEventListener('click', function() {
-        
-        if (tocContainer.style.display === 'none' || tocContainer.style.display === '') {
-            tocContainer.style.display = 'block';
-        } else {
-            tocContainer.style.display = 'none';
-        }
-    });
+    
+    
+    
+    
+    
+    
+    
+    
     
     toggleButton.addEventListener('mouseover', function() {
         tocContainer.style.display = 'block';
@@ -242,13 +242,13 @@
 
 
     
-    document.addEventListener('click', function(event) {
-        
-        if (!tocContainer.contains(event.target) && event.target !== toggleButton) {
-            
-            tocContainer.style.display = 'none';
-        }
-    });
+    
+    
+    
+    
+    
+    
+    
 </script>
 
             
